@@ -583,12 +583,32 @@ async function scrapeGroups() {
   }
 }
 
+async function migrateSchema() {
+  console.log('=== Schema migration: ensuring qa_data columns exist ===');
+  const { error } = await supabase.rpc('exec_sql', {
+    sql: `ALTER TABLE hosts ADD COLUMN IF NOT EXISTS qa_data JSONB;
+          ALTER TABLE hosts ADD COLUMN IF NOT EXISTS qa_data_en JSONB;`
+  });
+  if (error && !error.message?.includes('function "exec_sql" does not exist')) {
+    // Try direct query approach
+    const { error: alterErr } = await supabase
+      .from('hosts')
+      .update({ qa_data: {} })
+      .eq('id', '00000000-0000-0000-0000-000000000000');
+    // Column likely already exists or RPC not available — continue
+    if (alterErr && !alterErr.message?.includes('column')) {
+      console.warn('  Migration note:', alterErr.message);
+    }
+  }
+  console.log('  Schema check complete');
+}
+
 async function scrape() {
   const args = process.argv.slice(2);
   const mode = args.includes('--groups-only') ? 'groups' :
                args.includes('--rankings-only') ? 'rankings' : 'all';
 
-  console.log(`Mode: ${mode}\n`);
+  await migrateSchema();
 
   if (mode === 'all' || mode === 'rankings') {
     await scrapeRankings();

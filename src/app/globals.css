@@ -1,26 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #F8F6F3;
+  --foreground: #1C1C2E;
+  --card-bg: #FFFFFF;
+  --card-border: #E8E4DE;
+
+  --rose-gold: #C8956D;
+  --dusty-pink: #C48686;
+  --neon-violet: #7C5CFC;
+
+  --font-inter: 'Inter', 'Noto Sans JP', sans-serif;
+  --font-playfair: 'Playfair Display', serif;
 }
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-card-bg: var(--card-bg);
+  --color-card-border: var(--card-border);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-rose-gold: var(--rose-gold);
+  --color-dusty-pink: var(--dusty-pink);
+  --color-neon-violet: var(--neon-violet);
+
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-playfair);
+
+  /* Light mode: flip zinc values so text-zinc-300/400/500/600 render appropriately on white bg */
+  --color-zinc-300: #52525B;
+  --color-zinc-400: #71717A;
+  --color-zinc-500: #A1A1AA;
+  --color-zinc-600: #D4D4D8;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter);
+  overflow-x: hidden;
 }
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.glass-premium {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(248, 246, 243, 0.9) 100%);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(200, 149, 109, 0.2);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+}
+
+/* Gold Gradient text and borders */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #C8956D 0%, #D4A5A5 50%, #7C5CFC 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.border-gold-gradient {
+  border-image: linear-gradient(135deg, #C8956D, #D4A5A5, #7C5CFC) 1;
+}
+
+
+/* Host photos: interpolate smoothly when scaled */
+.host-img {
+  image-rendering: auto;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #F0EDE8; }
+::-webkit-scrollbar-thumb { background: #D4CFC8; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #C8956D; }
+
+/* Input placeholders */
+::placeholder, input::placeholder, textarea::placeholder { color: #B0B0B8; }

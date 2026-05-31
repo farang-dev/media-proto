@@ -1,0 +1,157 @@
+-- Enable UUID extension if not exists
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- Drop existing tables if they exist (in reverse order of dependencies)
+DROP TABLE IF EXISTS comments CASCADE;
+DROP TABLE IF EXISTS threads CASCADE;
+DROP TABLE IF EXISTS votes CASCADE;
+DROP TABLE IF EXISTS hosts CASCADE;
+DROP TABLE IF EXISTS shops CASCADE;
+DROP TABLE IF EXISTS groups CASCADE;
+
+-- 0. グループ情報 (Groups)
+CREATE TABLE groups (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name_ja VARCHAR NOT NULL,
+  name_en VARCHAR,
+  name_kana VARCHAR,
+  description_ja TEXT,
+  description_en TEXT,
+  logo_url TEXT,
+  image_urls TEXT[],
+  source_url TEXT UNIQUE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 1. 店舗情報 (Shops)
+CREATE TABLE shops (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name_ja VARCHAR NOT NULL,
+  name_en VARCHAR,
+  group_id UUID REFERENCES groups(id) ON DELETE SET NULL,
+  group_name VARCHAR, -- 冬月, ユグドラシル等 (denormalized convenience)
+  area VARCHAR DEFAULT 'Kabukicho',
+  address_ja TEXT,
+  address_en TEXT,
+  system_info_ja TEXT, -- 初回料金など
+  system_info_en TEXT,
+  logo_url TEXT,
+  website_url TEXT,
+  source_url TEXT UNIQUE, -- スクレイピング元URL
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 2. ホスト情報 (Hosts)
+CREATE TABLE hosts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  shop_id UUID REFERENCES shops(id) ON DELETE CASCADE,
+  name_ja VARCHAR NOT NULL,
+  name_en VARCHAR,
+  rank_in_shop INT, -- 店舗内公式ランク
+  birthday VARCHAR,
+  height VARCHAR,
+  blood_type VARCHAR,
+  instagram_url TEXT,
+  twitter_url TEXT,
+  image_urls TEXT[], -- 複数画像対応
+  bio_ja TEXT,
+  bio_en TEXT,
+  source_url TEXT UNIQUE,
+  daily_rank INT,  -- 歌舞伎町全体デイリーランキング (host2.jp)
+  weekly_rank INT, -- 歌舞伎町全体ウィークリーランキング
+  monthly_rank INT, -- 歌舞伎町全体マンスリーランキング
+  is_active BOOLEAN DEFAULT TRUE,
+  qa_data JSONB, -- Q&A data (e.g. {"前職":"営業職","出身地":"北海道"})
+  qa_data_en JSONB, -- English translation of Q&A data
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 3. ユーザー投票・リアルタイムお気に入りランキング (Votes)
+CREATE TABLE votes (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  host_id UUID REFERENCES hosts(id) ON DELETE CASCADE,
+  user_ip_or_id VARCHAR NOT NULL, -- 簡易的な重複投票防止用
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 4. コミュニティスレッド (Threads)
+CREATE TABLE threads (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title VARCHAR NOT NULL,
+  host_id UUID REFERENCES hosts(id) ON DELETE SET NULL, -- 特定ホストに関するスレッド用
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 5. スレッド内コメント (Comments)
+CREATE TABLE comments (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  thread_id UUID REFERENCES threads(id) ON DELETE CASCADE,
+  user_id UUID, -- ログインユーザー用(任意)
+  user_name VARCHAR DEFAULT 'Anonymous Princess',
+  content TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- ENABLE ROW LEVEL SECURITY (RLS) FOR ALL TABLES
+ALTER TABLE groups ENABLE ROW LEVEL SECURITY;
+ALTER TABLE shops ENABLE ROW LEVEL SECURITY;
+ALTER TABLE hosts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE votes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE threads ENABLE ROW LEVEL SECURITY;
+ALTER TABLE comments ENABLE ROW LEVEL SECURITY;
+
+-- 0. Groups Policies: anyone can view; service_role can insert/update/delete
+CREATE POLICY "Groups are viewable by everyone" ON groups FOR SELECT USING (true);
+CREATE POLICY "Groups are insertable by service_role" ON groups FOR INSERT WITH CHECK (true);
+CREATE POLICY "Groups are updatable by service_role" ON groups FOR UPDATE USING (true);
+
+-- 1. Shops Policies: anyone can view; service_role can insert/update/delete
+CREATE POLICY "Shops are viewable by everyone" ON shops FOR SELECT USING (true);
+CREATE POLICY "Shops are insertable by service_role" ON shops FOR INSERT WITH CHECK (true);
+CREATE POLICY "Shops are updatable by service_role" ON shops FOR UPDATE USING (true);
+
+-- 2. Hosts Policies: anyone can view; service_role can insert/update/delete
+CREATE POLICY "Hosts are viewable by everyone" ON hosts FOR SELECT USING (true);
+CREATE POLICY "Hosts are insertable by service_role" ON hosts FOR INSERT WITH CHECK (true);
+CREATE POLICY "Hosts are updatable by service_role" ON hosts FOR UPDATE USING (true);
+
+-- 3. Votes Policies: anyone can view votes; anyone can insert votes
+CREATE POLICY "Votes are viewable by everyone" ON votes FOR SELECT USING (true);
+CREATE POLICY "Votes can be inserted by everyone" ON votes FOR INSERT WITH CHECK (true);
+
+-- 4. Threads Policies: anyone can view; anyone can insert
+CREATE POLICY "Threads are viewable by everyone" ON threads FOR SELECT USING (true);
+CREATE POLICY "Threads can be created by everyone" ON threads FOR INSERT WITH CHECK (true);
+
+-- 5. Comments Policies: anyone can view; anyone can insert
+CREATE POLICY "Comments are viewable by everyone" ON comments FOR SELECT USING (true);
+CREATE POLICY "Comments can be created by everyone" ON comments FOR INSERT WITH CHECK (true);
+
+-- ============================================================
+-- Migration for existing databases: add groups table + group_id
+-- ============================================================
+-- Run these ALTER statements if the tables already exist.
+-- (Skip if using the CREATE statements above on a fresh DB.)
+--
+-- CREATE TABLE IF NOT EXISTS groups (
+--   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+--   name_ja VARCHAR NOT NULL,
+--   name_en VARCHAR,
+--   name_kana VARCHAR,
+--   description_ja TEXT,
+--   logo_url TEXT,
+--   source_url TEXT UNIQUE,
+--   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+-- );
+--
+-- ALTER TABLE shops ADD COLUMN IF NOT EXISTS group_id UUID REFERENCES groups(id) ON DELETE SET NULL;
+-- ALTER TABLE groups ENABLE ROW LEVEL SECURITY;
+-- CREATE POLICY IF NOT EXISTS "Groups are viewable by everyone" ON groups FOR SELECT USING (true);
+-- CREATE POLICY IF NOT EXISTS "Groups are insertable by service_role" ON groups FOR INSERT WITH CHECK (true);
+-- CREATE POLICY IF NOT EXISTS "Groups are updatable by service_role" ON groups FOR UPDATE USING (true);
+
+-- ============================================================
+-- Migration: add qa_data columns to hosts table
+-- ============================================================
+-- ALTER TABLE hosts ADD COLUMN IF NOT EXISTS qa_data JSONB;
+-- ALTER TABLE hosts ADD COLUMN IF NOT EXISTS qa_data_en JSONB;

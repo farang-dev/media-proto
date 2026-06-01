@@ -6,10 +6,10 @@ import { ShieldCheck, Book, CreditCard, Utensils, ArrowRight } from 'lucide-reac
 import { useLanguage } from '../lib/LanguageContext';
 
 const guideCards = [
-  { icon: Book, key: 'card1', color: 'from-rose-gold to-dusty-pink', shadowColor: 'shadow-rose-gold/20' },
-  { icon: ShieldCheck, key: 'card2', color: 'from-neon-violet to-rose-gold', shadowColor: 'shadow-neon-violet/20' },
+  { icon: Book, key: 'card1', color: 'from-accent to-accent-light', shadowColor: 'shadow-accent/20' },
+  { icon: ShieldCheck, key: 'card2', color: 'from-accent-gold to-accent', shadowColor: 'shadow-accent-gold/20' },
   { icon: CreditCard, key: 'card3', color: 'from-emerald-400 to-teal-500', shadowColor: 'shadow-emerald-400/20' },
-  { icon: Utensils, key: 'card4', color: 'from-dusty-pink to-neon-violet', shadowColor: 'shadow-dusty-pink/20' },
+  { icon: Utensils, key: 'card4', color: 'from-accent-light to-accent-gold', shadowColor: 'shadow-accent-light/20' },
 ];
 
 export const CultureGuide: React.FC = () => {
@@ -19,8 +19,8 @@ export const CultureGuide: React.FC = () => {
     <section id="guide" className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       {/* Decorative background */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute top-1/2 left-1/4 w-96 h-96 bg-neon-violet/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-rose-gold/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/4 w-96 h-96 bg-accent-gold/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-accent/5 rounded-full blur-3xl" />
       </div>
 
       <div className="max-w-7xl mx-auto">
@@ -30,7 +30,7 @@ export const CultureGuide: React.FC = () => {
             initial={{ opacity: 0, y: -10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 bg-neon-violet/10 text-neon-violet text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-4 border border-neon-violet/20"
+            className="inline-flex items-center gap-2 bg-accent-gold/10 text-accent-gold text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-4 border border-accent-gold/20"
           >
             <ShieldCheck className="w-3.5 h-3.5" />
             Safe Play Guide
@@ -40,7 +40,7 @@ export const CultureGuide: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl font-black font-serif text-gold-gradient mb-3"
+            className="text-4xl md:text-5xl font-black font-serif text-foreground mb-3"
           >
             {t('guide.title')}
           </motion.h2>

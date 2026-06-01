@@ -43,7 +43,7 @@ export default function AuthPage() {
     <div className="min-h-screen bg-background flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold font-serif text-gold-gradient">
+          <h1 className="text-3xl font-bold font-serif text-foreground">
             {mode === 'login' ? 'Welcome back' : 'Join OshiHost'}
           </h1>
           <p className="text-zinc-400 text-sm mt-2">
@@ -60,7 +60,7 @@ export default function AuthPage() {
               onClick={() => { setMode('login'); setError(''); }}
               className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors cursor-pointer ${
                 mode === 'login'
-                  ? 'bg-rose-gold text-background'
+                  ? 'bg-accent text-background'
                   : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
@@ -70,7 +70,7 @@ export default function AuthPage() {
               onClick={() => { setMode('signup'); setError(''); }}
               className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors cursor-pointer ${
                 mode === 'signup'
-                  ? 'bg-rose-gold text-background'
+                  ? 'bg-accent text-background'
                   : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
@@ -89,7 +89,7 @@ export default function AuthPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 rounded-lg bg-background border border-card-border text-foreground placeholder-zinc-500 focus:outline-none focus:border-rose-gold/50 transition-colors"
+              className="w-full px-4 py-3 rounded-lg bg-background border border-card-border text-foreground placeholder-zinc-500 focus:outline-none focus:border-accent/50 transition-colors"
             />
             <input
               type="password"
@@ -98,12 +98,12 @@ export default function AuthPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
-              className="w-full px-4 py-3 rounded-lg bg-background border border-card-border text-foreground placeholder-zinc-500 focus:outline-none focus:border-rose-gold/50 transition-colors"
+              className="w-full px-4 py-3 rounded-lg bg-background border border-card-border text-foreground placeholder-zinc-500 focus:outline-none focus:border-accent/50 transition-colors"
             />
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 rounded-lg bg-rose-gold text-background font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 cursor-pointer"
+              className="w-full py-3 rounded-lg bg-accent text-background font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 cursor-pointer"
             >
               {loading ? '...' : mode === 'login' ? 'Sign In' : 'Sign Up'}
             </button>

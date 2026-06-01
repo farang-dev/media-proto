@@ -55,11 +55,11 @@ const ThreadItem: React.FC<{ thread: Thread }> = ({ thread }) => {
         className="w-full flex items-center justify-between gap-4 p-5 text-left cursor-pointer group"
       >
         <div className="flex items-start gap-3 min-w-0">
-          <div className="w-9 h-9 rounded-xl bg-neon-violet/10 border border-neon-violet/20 flex items-center justify-center shrink-0 mt-0.5">
-            <MessageSquare className="w-4 h-4 text-neon-violet" />
+          <div className="w-9 h-9 rounded-xl bg-accent-gold/10 border border-accent-gold/20 flex items-center justify-center shrink-0 mt-0.5">
+            <MessageSquare className="w-4 h-4 text-accent-gold" />
           </div>
           <div className="min-w-0">
-            <p className="text-sm font-semibold text-foreground group-hover:text-rose-gold transition-colors leading-snug truncate pr-4">
+            <p className="text-sm font-semibold text-foreground group-hover:text-accent transition-colors leading-snug truncate pr-4">
               {thread.title}
             </p>
             <div className="flex items-center gap-3 mt-1">
@@ -92,7 +92,7 @@ const ThreadItem: React.FC<{ thread: Thread }> = ({ thread }) => {
             <div className="px-5 pt-4 pb-2 space-y-3 max-h-72 overflow-y-auto">
               {loading && (
                 <div className="flex justify-center py-4">
-                  <div className="w-5 h-5 rounded-full border-2 border-neon-violet border-t-transparent animate-spin" />
+                  <div className="w-5 h-5 rounded-full border-2 border-accent-gold border-t-transparent animate-spin" />
                 </div>
               )}
               {!loading && comments.length === 0 && (
@@ -100,12 +100,12 @@ const ThreadItem: React.FC<{ thread: Thread }> = ({ thread }) => {
               )}
               {comments.map((c) => (
                 <div key={c.id} className="flex gap-3">
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-dusty-pink to-neon-violet flex items-center justify-center text-[9px] font-bold text-white shrink-0">
+                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-accent-light to-accent-gold flex items-center justify-center text-[9px] font-bold text-white shrink-0">
                     {(c.user_name || 'A')[0].toUpperCase()}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-[10px] font-bold text-dusty-pink">{c.user_name || t('community.anonymous')}</span>
+                      <span className="text-[10px] font-bold text-accent-light">{c.user_name || t('community.anonymous')}</span>
                       <span className="text-[9px] text-zinc-700">{formatDate(c.created_at)}</span>
                     </div>
                     <p className="text-xs text-zinc-300 leading-relaxed break-words">{c.content}</p>
@@ -121,7 +121,7 @@ const ThreadItem: React.FC<{ thread: Thread }> = ({ thread }) => {
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
                 placeholder={`Your name (optional, default: ${t('community.anonymous')})`}
-                className="w-full bg-black/[0.03] border border-card-border rounded-lg px-3 py-2 text-xs text-foreground placeholder-zinc-600 focus:outline-none focus:border-neon-violet/50 transition-colors"
+                className="w-full bg-black/[0.03] border border-card-border rounded-lg px-3 py-2 text-xs text-foreground placeholder-zinc-600 focus:outline-none focus:border-accent-gold/50 transition-colors"
               />
               <div className="flex gap-2">
                 <input
@@ -129,12 +129,12 @@ const ThreadItem: React.FC<{ thread: Thread }> = ({ thread }) => {
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
                   placeholder={t('community.comment_placeholder')}
-                  className="flex-1 bg-black/[0.03] border border-card-border rounded-lg px-3 py-2 text-xs text-foreground placeholder-zinc-600 focus:outline-none focus:border-neon-violet/50 transition-colors"
+                  className="flex-1 bg-black/[0.03] border border-card-border rounded-lg px-3 py-2 text-xs text-foreground placeholder-zinc-600 focus:outline-none focus:border-accent-gold/50 transition-colors"
                 />
                 <button
                   type="submit"
                   disabled={posting || !content.trim()}
-                  className="px-3 py-2 rounded-lg bg-neon-violet/80 hover:bg-neon-violet disabled:opacity-40 disabled:cursor-not-allowed text-white transition-colors flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
+                  className="px-3 py-2 rounded-lg bg-accent-gold/80 hover:bg-accent-gold disabled:opacity-40 disabled:cursor-not-allowed text-white transition-colors flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
                 >
                   <Send className="w-3 h-3" />
                   {t('community.comment_submit')}
@@ -185,7 +185,7 @@ export const CommunitySection: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="text-4xl md:text-5xl font-black font-serif text-gold-gradient mb-3"
+          className="text-4xl md:text-5xl font-black font-serif text-foreground mb-3"
         >
           {t('community.title')}
         </motion.h2>
@@ -210,7 +210,7 @@ export const CommunitySection: React.FC = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setShowNewThread(true)}
-              className="w-full flex items-center gap-3 p-4 rounded-2xl border border-dashed border-card-border hover:border-neon-violet/40 bg-card-bg hover:bg-neon-violet/5 transition-all text-zinc-500 hover:text-neon-violet cursor-pointer"
+              className="w-full flex items-center gap-3 p-4 rounded-2xl border border-dashed border-card-border hover:border-accent-gold/40 bg-card-bg hover:bg-accent-gold/5 transition-all text-zinc-500 hover:text-accent-gold cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span className="text-sm">{t('community.create_thread')}</span>
@@ -222,7 +222,7 @@ export const CommunitySection: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               onSubmit={handleCreateThread}
-              className="rounded-2xl bg-card-bg border border-neon-violet/30 p-5 space-y-3"
+              className="rounded-2xl bg-card-bg border border-accent-gold/30 p-5 space-y-3"
             >
               <p className="text-sm font-bold text-foreground">{t('community.create_thread')}</p>
               <input
@@ -231,7 +231,7 @@ export const CommunitySection: React.FC = () => {
                 value={newTitle}
                 onChange={(e) => setNewTitle(e.target.value)}
                 placeholder={t('community.thread_title_placeholder')}
-                className="w-full bg-black/[0.03] border border-card-border rounded-xl px-4 py-3 text-sm text-foreground placeholder-zinc-600 focus:outline-none focus:border-neon-violet/60 transition-colors"
+                className="w-full bg-black/[0.03] border border-card-border rounded-xl px-4 py-3 text-sm text-foreground placeholder-zinc-600 focus:outline-none focus:border-accent-gold/60 transition-colors"
               />
               <div className="flex gap-2 justify-end">
                 <button
@@ -244,7 +244,7 @@ export const CommunitySection: React.FC = () => {
                 <button
                   type="submit"
                   disabled={creating || !newTitle.trim()}
-                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-neon-violet to-dusty-pink text-white font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-neon-violet/20 transition-all cursor-pointer"
+                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-accent-gold to-accent-light text-white font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-accent-gold/20 transition-all cursor-pointer"
                 >
                   {creating ? 'Creating...' : t('community.post')}
                 </button>

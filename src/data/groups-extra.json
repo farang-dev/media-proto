@@ -1,50 +1,44 @@
 {
-  "groupdandy": {
-    "description_ja": "創業以来、数多のドラマを生み出してきた『TOP DANDY』。特徴的な円形のフロア。頭上には特大シャンデリア──知名度に裏付けされた“老舗”の理由、その目で確かめてみては？",
+  "b3f323e4-75f0-483a-bc53-491c84113702": {
     "description_en": "\"TOP DANDY\" has produced numerous dramas since its founding.  A distinctive circular floor.  Overhead is an oversized chandelier - Why not see for yourself why it's a \"long-established store\" backed by its popularity?",
     "image_urls": [
       "https://www.host2.jp/shop_grp/groupdandy/pr_img2.jpg",
       "https://www.host2.jp/shop_grp/groupdandy/logo.jpg"
     ]
   },
-  "Smappa! Group": {
-    "description_ja": "『SMAPPA!HANS AXEL VON FERSEN -Smappa! Group本店-』は、ベルサイユ宮殿をイメージした華やかな内装と大きなシャンデリアが印象的♪ソムリエ資格を持つスタッフが多く、ドリンク選びも楽しめます☆",
+  "afed338f-7868-40ad-be93-4cac63c0db0c": {
     "description_en": "\"SMAPPA! HANS AXEL VON FERSEN -Smappa! Group main store-\" is impressive with its gorgeous interior inspired by the Palace of Versailles and large chandeliers ♪ Many of the staff are certified sommeliers, and you can enjoy choosing drinks ☆",
     "image_urls": [
       "https://www.host2.jp/shop_grp/smappa/pr_img2.jpg",
       "https://www.host2.jp/shop_grp/smappa/logo.jpg"
     ]
   },
-  "AIR GROUP": {
-    "description_ja": "歌舞伎町最大級ブランドAIR GROUPの革命は止まらない…。有名デザイナープロデュースによる、120坪の超大型店舗は他の追従を許さない圧倒的スケール!!その豪華絢爛の店内の総工費は間違いなく業界トップクラス!!",
+  "6411b345-486a-4b33-9715-6ecab387aede": {
     "description_en": "The revolution of Kabukicho's largest brand AIR GROUP is unstoppable...  Produced by a famous designer, this super large store of 120 tsubo has an overwhelming scale that is unrivaled by any other store!The total construction cost of this gorgeous store is definitely one of the highest in the industry!!",
     "image_urls": [
       "https://www.host2.jp/shop_grp/air/pr_img2.jpg",
       "https://www.host2.jp/shop_grp/air/logo.jpg"
     ]
   },
-  "ACQUA Group": {
-    "description_ja": "ACQUA Group総本山『ACQUA』。圧倒的なスケールと洗練されたデザインが織りなす、まさに非日常のラグジュアリー空間。一歩足を踏み入れれば、煌めくシャンデリアが輝き、贅沢な世界が広がります。",
+  "a85b1876-f222-44c8-8d26-77c887bf731f": {
     "description_en": "ACQUA Group head office ``ACQUA''.  A truly extraordinary luxury space with overwhelming scale and sophisticated design.  As soon as you step inside, the sparkling chandelier lights up and you enter a world of luxury.",
     "image_urls": [
       "https://www.host2.jp/shop_grp/acquagroup/pr_img2.jpg",
       "https://www.host2.jp/shop_grp/acquagroup/logo.jpg"
     ]
   },
-  "L's collection": {
-    "description_ja": "重厚感ある石壁の階段が特徴的な『Leo』！こだわり抜かれた装飾や照明による演出で、日常とは一味違う空間を味わってみませんか？",
-    "description_en": "\"Leo\" is characterized by its solid stone wall staircase!  Why not enjoy a space that is a little different from your everyday life with carefully selected decorations and lighting?",
-    "image_urls": [
-      "https://www.host2.jp/shop_grp/lcolle/pr_img2.jpg",
-      "https://www.host2.jp/shop_grp/lcolle/logo.jpg"
-    ]
-  },
-  "冬月グループHOLDINGS": {
-    "description_ja": "120坪、総額2億円、50卓の超大型店「FUYUTSUKI -DeZon-」が冬月グループの次代を背負い風林会館についに誕生！！",
+  "65204f32-50f8-498d-b878-d2c8e15b784a": {
     "description_en": "FUYUTSUKI -DeZon-, a super large store with 120 tsubo, total of 200 million yen, and 50 tables, has finally opened in Furin Kaikan with the next generation of Fuyutsuki Group on its shoulders!  !",
     "image_urls": [
       "https://www.host2.jp/shop_grp/fg/pr_img2.jpg",
       "https://www.host2.jp/shop_grp/fg/logo.jpg"
+    ]
+  },
+  "8010632a-aca6-431f-b003-0faf9fd5120e": {
+    "description_en": "\"Leo\" is characterized by its solid stone wall staircase!  Why not enjoy a space that is a little different from your everyday life with carefully selected decorations and lighting?",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/lcolle/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/lcolle/logo.jpg"
     ]
   }
 }

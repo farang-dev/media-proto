@@ -23,7 +23,7 @@ function HostCard({ host, rank }: { host: Host; rank: number }) {
   return (
     <Link
       href={`/hosts/${host.id}`}
-      className="rounded-2xl bg-card-bg border border-card-border overflow-hidden hover:border-rose-gold/40 transition-all duration-300 group block"
+      className="rounded-2xl bg-card-bg border border-card-border overflow-hidden hover:border-accent/40 transition-all duration-300 group block"
     >
       <div className="relative aspect-[3/4] overflow-hidden">
         <img
@@ -34,7 +34,7 @@ function HostCard({ host, rank }: { host: Host; rank: number }) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/5 to-transparent" />
 
-        <div className="absolute top-3 left-3 z-10 w-8 h-8 rounded-full bg-gradient-to-br from-rose-gold to-dusty-pink flex items-center justify-center shadow-lg">
+        <div className="absolute top-3 left-3 z-10 w-8 h-8 rounded-full bg-gradient-to-br from-accent to-accent-light flex items-center justify-center shadow-lg">
           <span className="text-background text-xs font-black">{rank}</span>
         </div>
 
@@ -59,8 +59,8 @@ function HostCard({ host, rank }: { host: Host; rank: number }) {
         </div>
 
         <div className="flex items-center gap-1.5 text-xs">
-          <Heart className="w-3 h-3 text-dusty-pink" />
-          <span className="font-semibold text-dusty-pink">{(host.votes_count || 0).toLocaleString()}</span>
+          <Heart className="w-3 h-3 text-accent-light" />
+          <span className="font-semibold text-accent-light">{(host.votes_count || 0).toLocaleString()}</span>
           <span className="text-zinc-400">votes</span>
         </div>
       </div>
@@ -78,7 +78,7 @@ export default async function ShopPage(props: { params: Promise<{ id: string }> 
         <div className="text-center">
           <Store className="w-16 h-16 text-zinc-700 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-zinc-400 mb-2">Club not found</h1>
-          <Link href="/clubs" className="text-sm text-rose-gold hover:underline">
+          <Link href="/clubs" className="text-sm text-accent hover:underline">
             Back to clubs
           </Link>
         </div>
@@ -94,7 +94,7 @@ export default async function ShopPage(props: { params: Promise<{ id: string }> 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <Link
           href="/clubs"
-          className="inline-flex items-center gap-1 text-sm text-zinc-400 hover:text-rose-gold transition-colors mb-8"
+          className="inline-flex items-center gap-1 text-sm text-zinc-400 hover:text-accent transition-colors mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to clubs
@@ -102,11 +102,11 @@ export default async function ShopPage(props: { params: Promise<{ id: string }> 
 
         <div className="mb-10">
           {groupName && (
-            <p className="text-xs font-semibold text-rose-gold uppercase tracking-widest mb-1">
+            <p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">
               {groupName}
             </p>
           )}
-          <h1 className="text-3xl md:text-4xl font-black font-serif text-gold-gradient mb-2">
+          <h1 className="text-3xl md:text-4xl font-black font-serif text-foreground mb-2">
             {shopName}
           </h1>
           <p className="text-sm text-zinc-400">

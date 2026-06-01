@@ -17,7 +17,7 @@ function HostCard({ host, language }: { host: Host; language: string }) {
 
   return (
     <Link href={`/host/${host.id}`} className="group block shrink-0 snap-start">
-      <div className="w-[180px] sm:w-[200px] rounded-2xl overflow-hidden bg-card-bg border border-card-border hover:border-rose-gold/30 transition-all duration-300">
+      <div className="w-[180px] sm:w-[200px] rounded-2xl overflow-hidden bg-card-bg border border-card-border hover:border-accent/30 transition-all duration-300">
         <div className="relative aspect-[3/4] overflow-hidden">
           <img
             src={mainImage}
@@ -27,7 +27,7 @@ function HostCard({ host, language }: { host: Host; language: string }) {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/5 to-transparent" />
           {host.votes_count !== undefined && host.votes_count > 0 && (
-            <div className="absolute top-3 right-3 bg-black/50 backdrop-blur-sm rounded-full px-2.5 py-1 flex items-center gap-1 text-[10px] text-dusty-pink font-semibold">
+            <div className="absolute top-3 right-3 bg-black/50 backdrop-blur-sm rounded-full px-2.5 py-1 flex items-center gap-1 text-[10px] text-accent-light font-semibold">
               <Heart className="w-2.5 h-2.5" />
               {host.votes_count}
             </div>
@@ -35,11 +35,11 @@ function HostCard({ host, language }: { host: Host; language: string }) {
         </div>
         <div className="p-3">
           {shopName && (
-            <p className="text-[9px] font-semibold text-rose-gold uppercase tracking-wider truncate mb-0.5">
+            <p className="text-[9px] font-semibold text-accent uppercase tracking-wider truncate mb-0.5">
               {shopName}
             </p>
           )}
-          <p className="text-sm font-bold font-serif text-foreground truncate group-hover:text-rose-gold transition-colors">
+          <p className="text-sm font-bold font-serif text-foreground truncate group-hover:text-accent transition-colors">
             {name}
           </p>
         </div>

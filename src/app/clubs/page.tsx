@@ -23,7 +23,7 @@ function getGroupGradient(name: string): string {
   for (const [key, gradient] of Object.entries(groupGradients)) {
     if (name.includes(key) || key.includes(name)) return gradient;
   }
-  return 'from-rose-gold to-neon-violet';
+  return 'from-accent to-accent-gold';
 }
 
 function GroupSection({ group }: { group: GroupClub }) {
@@ -100,13 +100,13 @@ function GroupSection({ group }: { group: GroupClub }) {
             <Link
               key={shop.id}
               href={`/clubs/${shop.id}`}
-              className="block rounded-2xl bg-card-bg border border-card-border hover:border-rose-gold/40 transition-all duration-300 p-5 group"
+              className="block rounded-2xl bg-card-bg border border-card-border hover:border-accent/40 transition-all duration-300 p-5 group"
             >
               <div className="flex items-start justify-between mb-3">
-                <h3 className="font-semibold text-foreground group-hover:text-rose-gold transition-colors">
+                <h3 className="font-semibold text-foreground group-hover:text-accent transition-colors">
                   {shopName}
                 </h3>
-                <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:text-rose-gold transition-colors shrink-0 group-hover:translate-x-0.5 transition-transform" />
+                <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:text-accent transition-colors shrink-0 group-hover:translate-x-0.5 transition-transform" />
               </div>
 
               <div className="flex items-center gap-2 text-xs text-zinc-500">
@@ -176,7 +176,7 @@ export default async function ClubsPage() {
     <div className="min-h-screen bg-background text-foreground">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="mb-10">
-          <h1 className="text-3xl md:text-4xl font-black font-serif text-gold-gradient mb-2">
+          <h1 className="text-3xl md:text-4xl font-black font-serif text-foreground mb-2">
             Clubs
           </h1>
           <p className="text-sm text-zinc-400">

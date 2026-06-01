@@ -1,13 +1,16 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { use } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Heart, MessageSquare, Calendar, Ruler, Droplets } from 'lucide-react';
+import { ArrowLeft, Heart, MessageSquare, Calendar, Ruler, Droplets, Share2, Bookmark, ChevronLeft, ChevronRight, Music2 } from 'lucide-react';
 import Link from 'next/link';
-import { Host, getHost, getHostsByShop, castVote } from '@/lib/db';
+import { Host, getHost, getHostsByShop, castVote, addFavorite, removeFavorite, getFavoriteIds } from '@/lib/db';
 import { useLanguage } from '@/lib/LanguageContext';
+import { useAuth } from '@/lib/AuthContext';
+import { AuthPromptModal } from '@/components/AuthPromptModal';
 import { getEnglishName, looksLikeDate } from '@/lib/japanese';
+import TikTokEmbed from '@/components/TikTokEmbed';
 
 const formatDate = (iso: string) => {
   const d = new Date(iso);
@@ -17,6 +20,7 @@ const formatDate = (iso: string) => {
 export default function HostPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { language, t } = useLanguage();
+  const { user } = useAuth();
   const [host, setHost] = useState<Host | null>(null);
   const [relatedHosts, setRelatedHosts] = useState<Host[]>([]);
   const [loading, setLoading] = useState(true);
@@ -24,6 +28,40 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
   const [voted, setVoted] = useState(false);
   const [voteLoading, setVoteLoading] = useState(false);
   const [votes, setVotes] = useState(0);
+  const [favorited, setFavorited] = useState(false);
+  const [favLoading, setFavLoading] = useState(false);
+  const [showAuth, setShowAuth] = useState(false);
+  const [shareMsg, setShareMsg] = useState('');
+
+  useEffect(() => {
+    if (!user) return;
+    getFavoriteIds().then(ids => setFavorited(ids.includes(id)));
+  }, [user, id]);
+
+  const handleFavorite = async () => {
+    if (!user) { setShowAuth(true); return; }
+    if (favLoading) return;
+    setFavLoading(true);
+    if (favorited) {
+      const ok = await removeFavorite(id);
+      if (ok) setFavorited(false);
+    } else {
+      const ok = await addFavorite(id);
+      if (ok) setFavorited(true);
+    }
+    setFavLoading(false);
+  };
+
+  const handleShare = useCallback(async () => {
+    const url = window.location.href;
+    if (navigator.share) {
+      await navigator.share({ title: host?.name_ja || 'OshiHost', url });
+    } else {
+      await navigator.clipboard.writeText(url);
+      setShareMsg(language === 'ja' ? 'リンクをコピーしました' : 'Link copied');
+      setTimeout(() => setShareMsg(''), 2000);
+    }
+  }, [host, language]);
 
   useEffect(() => {
     (async () => {
@@ -82,7 +120,7 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
         <p className="text-zinc-400">{language === 'ja' ? 'ホストが見つかりません' : 'Host not found'}</p>
-        <Link href="/" className="text-rose-gold hover:underline text-sm">← {language === 'ja' ? 'トップに戻る' : 'Back to top'}</Link>
+        <Link href="/" className="text-accent hover:underline text-sm">← {language === 'ja' ? 'トップに戻る' : 'Back to top'}</Link>
       </div>
     );
   }
@@ -107,7 +145,7 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
         {/* Back button */}
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-rose-gold transition-colors mb-6 group"
+          className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-accent transition-colors mb-6 group"
         >
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
           {language === 'ja' ? 'トップに戻る' : 'Back'}
@@ -116,7 +154,7 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
           {/* Image gallery */}
           <div className="w-full sm:max-w-[300px]">
-            <div className="relative rounded-2xl overflow-hidden bg-card-bg border border-card-border mb-3">
+            <div className="relative rounded-2xl overflow-hidden bg-card-bg border border-card-border mb-3 group">
               <img
                 key={selectedImage}
                 src={images[selectedImage] || 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=600&auto=format&fit=crop'}
@@ -125,10 +163,37 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
                 onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=600&auto=format&fit=crop'; }}
               />
               {host.votes_count !== undefined && (
-                <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm rounded-full px-3 py-1.5 flex items-center gap-1.5 text-sm text-dusty-pink font-semibold">
+                <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm rounded-full px-3 py-1.5 flex items-center gap-1.5 text-sm text-accent-light font-semibold">
                   <Heart className="w-4 h-4" />
                   {votes.toLocaleString()}
                 </div>
+              )}
+              {images.length > 1 && (
+                <>
+                  <button
+                    onClick={() => setSelectedImage((i) => (i === 0 ? images.length - 1 : i - 1))}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:bg-black/70"
+                  >
+                    <ChevronLeft className="w-4 h-4 text-white" />
+                  </button>
+                  <button
+                    onClick={() => setSelectedImage((i) => (i === images.length - 1 ? 0 : i + 1))}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:bg-black/70"
+                  >
+                    <ChevronRight className="w-4 h-4 text-white" />
+                  </button>
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                    {images.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setSelectedImage(i)}
+                        className={`w-1.5 h-1.5 rounded-full transition-all cursor-pointer ${
+                          i === selectedImage ? 'bg-white w-3' : 'bg-white/50'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </>
               )}
             </div>
 
@@ -141,7 +206,7 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
                     onClick={() => setSelectedImage(i)}
                     className={`shrink-0 rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${
                       i === selectedImage
-                        ? 'border-rose-gold opacity-100'
+                        ? 'border-accent opacity-100'
                         : 'border-transparent opacity-60 hover:opacity-80'
                     }`}
                   >
@@ -160,10 +225,10 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
           <div className="flex-1 space-y-6">
             <div>
               {groupName && (
-                <p className="text-xs font-semibold text-neon-violet uppercase tracking-wider mb-1">{groupName}</p>
+                <p className="text-xs font-semibold text-accent-gold uppercase tracking-wider mb-1">{groupName}</p>
               )}
               {shopName && (
-                <p className="text-sm text-rose-gold font-semibold mb-1">{shopName}</p>
+                <p className="text-sm text-accent font-semibold mb-1">{shopName}</p>
               )}
               <h1 className="text-4xl sm:text-5xl font-black font-serif text-foreground leading-tight">{name}</h1>
             </div>
@@ -204,9 +269,10 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
             <div className="flex items-center gap-3">
               {host.instagram_url && (
                 <a href={host.instagram_url} target="_blank" rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-xl bg-black/5 hover:bg-rose-gold/20 border border-card-border flex items-center justify-center transition-colors"
+                  className="w-10 h-10 rounded-xl bg-black/5 hover:bg-accent/20 border border-card-border flex items-center justify-center transition-colors"
+                  title="Instagram"
                 >
-                  <svg className="w-4 h-4 text-zinc-400 hover:text-rose-gold transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg className="w-4 h-4 text-zinc-400 hover:text-accent transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
                     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
                     <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
@@ -215,18 +281,38 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
               )}
               {host.twitter_url && (
                 <a href={host.twitter_url} target="_blank" rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-xl bg-black/5 hover:bg-neon-violet/20 border border-card-border flex items-center justify-center transition-colors"
+                  className="w-10 h-10 rounded-xl bg-black/5 hover:bg-accent-gold/20 border border-card-border flex items-center justify-center transition-colors"
+                  title="X (Twitter)"
                 >
-                  <svg className="w-4 h-4 text-zinc-400 hover:text-neon-violet transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg className="w-4 h-4 text-zinc-400 hover:text-accent-gold transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>
+                  </svg>
+                </a>
+              )}
+              {host.tiktok_url && (
+                <a href={host.tiktok_url} target="_blank" rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-xl bg-black/5 hover:bg-pink-400/20 border border-card-border flex items-center justify-center transition-colors"
+                  title="TikTok"
+                >
+                  <Music2 className="w-4 h-4 text-zinc-400 hover:text-pink-400 transition-colors" />
+                </a>
+              )}
+              {host.youtube_url && (
+                <a href={host.youtube_url} target="_blank" rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-xl bg-black/5 hover:bg-red-500/20 border border-card-border flex items-center justify-center transition-colors"
+                  title="YouTube"
+                >
+                  <svg className="w-4 h-4 text-zinc-400 hover:text-red-500 transition-colors" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.38.55A3.02 3.02 0 0 0 .5 6.19 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.81 3.02 3.02 0 0 0 2.12 2.14c1.88.55 9.38.55 9.38.55s7.5 0 9.38-.55a3.02 3.02 0 0 0 2.12-2.14A31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.81zM9.55 15.57V8.43L15.82 12l-6.27 3.57z"/>
                   </svg>
                 </a>
               )}
               <Link
                 href={`/host/${host.id}`}
-                className="w-10 h-10 rounded-xl bg-black/5 hover:bg-dusty-pink/20 border border-card-border flex items-center justify-center transition-colors"
+                className="w-10 h-10 rounded-xl bg-black/5 hover:bg-accent-light/20 border border-card-border flex items-center justify-center transition-colors"
+                title="Profile"
               >
-                <MessageSquare className="w-4 h-4 text-zinc-400 hover:text-dusty-pink transition-colors" />
+                <MessageSquare className="w-4 h-4 text-zinc-400 hover:text-accent-light transition-colors" />
               </Link>
             </div>
 
@@ -236,13 +322,42 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
               disabled={voteLoading}
               className={`w-full sm:w-auto px-8 py-3 rounded-xl font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2 cursor-pointer ${
                 voted
-                  ? 'bg-rose-gold/10 text-rose-gold border border-rose-gold/30 cursor-default'
-                  : 'bg-gradient-to-r from-rose-gold to-dusty-pink text-background hover:shadow-lg hover:shadow-rose-gold/30 hover:scale-[1.02] active:scale-[0.98]'
+                  ? 'bg-accent/10 text-accent border border-accent/30 cursor-default'
+                  : 'bg-gradient-to-r from-accent to-accent-light text-background hover:shadow-lg hover:shadow-accent/30 hover:scale-[1.02] active:scale-[0.98]'
               }`}
             >
-              <Heart className={`w-4 h-4 ${voted ? 'fill-rose-gold' : ''}`} />
+              <Heart className={`w-4 h-4 ${voted ? 'fill-accent' : ''}`} />
               {voteLoading ? '...' : voted ? t('rank.voted') : t('rank.vote')}
             </motion.button>
+
+            {/* Share + Save row */}
+            <div className="flex items-center gap-3">
+              {/* Bookmark */}
+              <button
+                onClick={handleFavorite}
+                disabled={favLoading}
+                className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all border cursor-pointer ${
+                  favorited
+                    ? 'bg-accent text-background border-accent'
+                    : 'bg-black/5 text-zinc-400 hover:text-accent hover:border-accent/30 border-card-border'
+                }`}
+              >
+                <Bookmark className={`w-4 h-4 ${favorited ? 'fill-background' : ''}`} />
+              </button>
+
+              {/* Share */}
+              <button
+                onClick={handleShare}
+                className="w-10 h-10 rounded-xl bg-black/5 hover:bg-accent-light/20 border border-card-border flex items-center justify-center transition-colors cursor-pointer relative"
+              >
+                <Share2 className="w-4 h-4 text-zinc-400 hover:text-accent-light transition-colors" />
+                {shareMsg && (
+                  <span className="absolute -top-8 left-1/2 -translate-x-1/2 text-[10px] bg-foreground text-background px-2 py-0.5 rounded whitespace-nowrap">
+                    {shareMsg}
+                  </span>
+                )}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -258,7 +373,7 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
                 const en = qaDataEn?.[key];
                 return (
                   <div key={key} className="rounded-xl bg-card-bg border border-card-border p-4">
-                    <p className="text-[10px] font-semibold text-rose-gold uppercase tracking-wider mb-1">
+                    <p className="text-[10px] font-semibold text-accent uppercase tracking-wider mb-1">
                       {language === 'ja' ? key : (en?.q || key)}
                     </p>
                     <p className="text-sm text-foreground font-medium">
@@ -268,6 +383,19 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
                 );
               })}
             </div>
+          </div>
+        )}
+
+        {/* TikTok Section */}
+        {host.tiktok_url && (
+          <div className="mt-16 max-w-md">
+            <h2 className="text-xl font-bold font-serif text-foreground mb-6">
+              <div className="flex items-center gap-2">
+                <Music2 className="w-5 h-5 text-pink-400" />
+                <span>{language === 'ja' ? 'TikTok 動画' : 'TikTok Videos'}</span>
+              </div>
+            </h2>
+            <TikTokEmbed tiktokUrl={host.tiktok_url} />
           </div>
         )}
 
@@ -287,7 +415,7 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
                     href={`/host/${h.id}`}
                     className="snap-start shrink-0 group"
                   >
-                    <div className="w-[130px] rounded-2xl overflow-hidden bg-card-bg border border-card-border hover:border-rose-gold/30 transition-all duration-300">
+                    <div className="w-[130px] rounded-2xl overflow-hidden bg-card-bg border border-card-border hover:border-accent/30 transition-all duration-300">
                       <div className="aspect-[3/4] overflow-hidden">
                         <img
                           src={hImg}
@@ -296,7 +424,7 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
                         />
                       </div>
                       <div className="p-2.5">
-                        <p className="text-xs font-bold font-serif text-foreground truncate group-hover:text-rose-gold transition-colors">{hName}</p>
+                        <p className="text-xs font-bold font-serif text-foreground truncate group-hover:text-accent transition-colors">{hName}</p>
                       </div>
                     </div>
                   </Link>
@@ -306,6 +434,7 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
           </div>
         )}
       </div>
+      <AuthPromptModal open={showAuth} onClose={() => setShowAuth(false)} />
     </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
 import { Trophy, Flame, Calendar, RefreshCw, Filter, TrendingUp } from 'lucide-react';
 import { Host, getHosts, getKabukichoRanking } from '../lib/db';
 import { HostCard } from './HostCard';
@@ -65,7 +66,7 @@ export const RankingSection: React.FC = () => {
           initial={{ opacity: 0, y: -10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="inline-flex items-center gap-2 bg-rose-gold/10 text-rose-gold text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-4 border border-rose-gold/20"
+          className="inline-flex items-center gap-2 bg-accent/10 text-accent text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-4 border border-accent/20"
         >
           <Flame className="w-3.5 h-3.5" />
           {language === 'ja' ? '歌舞伎町ランキング' : 'Kabukicho Rankings'}
@@ -75,7 +76,7 @@ export const RankingSection: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="text-4xl md:text-5xl font-black font-serif text-gold-gradient mb-3"
+          className="text-4xl md:text-5xl font-black font-serif text-foreground mb-3"
         >
           {t('rank.title')}
         </motion.h2>
@@ -99,7 +100,7 @@ export const RankingSection: React.FC = () => {
             <button
               onClick={() => setSource('kabukicho')}
               className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                source === 'kabukicho' ? 'bg-rose-gold text-background shadow-md' : 'text-zinc-400 hover:text-foreground'
+                source === 'kabukicho' ? 'bg-accent text-background shadow-md' : 'text-zinc-400 hover:text-foreground'
               }`}
             >
               <TrendingUp className="w-3.5 h-3.5" />
@@ -108,7 +109,7 @@ export const RankingSection: React.FC = () => {
             <button
               onClick={() => setSource('votes')}
               className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                source === 'votes' ? 'bg-neon-violet text-background shadow-md' : 'text-zinc-400 hover:text-foreground'
+                source === 'votes' ? 'bg-accent-gold text-background shadow-md' : 'text-zinc-400 hover:text-foreground'
               }`}
             >
               <Trophy className="w-3.5 h-3.5" />
@@ -122,7 +123,7 @@ export const RankingSection: React.FC = () => {
               <button
                 onClick={() => setTab('daily')}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                  tab === 'daily' ? 'bg-rose-gold text-background shadow-md' : 'text-zinc-400 hover:text-foreground'
+                  tab === 'daily' ? 'bg-accent text-background shadow-md' : 'text-zinc-400 hover:text-foreground'
                 }`}
               >
                 <Flame className="w-3 h-3" />
@@ -131,7 +132,7 @@ export const RankingSection: React.FC = () => {
               <button
                 onClick={() => setTab('weekly')}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                  tab === 'weekly' ? 'bg-rose-gold text-background shadow-md' : 'text-zinc-400 hover:text-foreground'
+                  tab === 'weekly' ? 'bg-accent text-background shadow-md' : 'text-zinc-400 hover:text-foreground'
                 }`}
               >
                 <Calendar className="w-3 h-3" />
@@ -140,7 +141,7 @@ export const RankingSection: React.FC = () => {
               <button
                 onClick={() => setTab('monthly')}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                  tab === 'monthly' ? 'bg-rose-gold text-background shadow-md' : 'text-zinc-400 hover:text-foreground'
+                  tab === 'monthly' ? 'bg-accent text-background shadow-md' : 'text-zinc-400 hover:text-foreground'
                 }`}
               >
                 <Calendar className="w-3 h-3" />
@@ -159,7 +160,7 @@ export const RankingSection: React.FC = () => {
                 key={g}
                 onClick={() => setFilter(g)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer capitalize whitespace-nowrap ${
-                  filter === g ? 'bg-rose-gold/20 text-rose-gold border border-rose-gold/40' : 'bg-card-bg border border-card-border text-zinc-400 hover:border-zinc-500'
+                  filter === g ? 'bg-accent/20 text-accent border border-accent/40' : 'bg-card-bg border border-card-border text-zinc-400 hover:border-zinc-500'
                 }`}
               >
                 {g === 'all' ? (language === 'ja' ? 'すべて' : 'All') : g}
@@ -220,6 +221,23 @@ export const RankingSection: React.FC = () => {
               />
             ))}
           </AnimatePresence>
+        </motion.div>
+      )}
+
+      {/* Link to full ranking page */}
+      {!loading && filteredHosts.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          className="text-center mt-10"
+        >
+          <Link
+            href="/ranking"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-card-border text-zinc-400 hover:text-accent hover:border-accent/30 text-sm font-semibold transition-all"
+          >
+            {language === 'ja' ? 'すべてのランキングを見る' : 'View Full Ranking'}
+            <TrendingUp className="w-4 h-4" />
+          </Link>
         </motion.div>
       )}
     </section>

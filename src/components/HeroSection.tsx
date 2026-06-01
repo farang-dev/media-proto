@@ -14,7 +14,7 @@ function FloatingParticle({ index }: { index: number }) {
 
   return (
     <motion.div
-      className="absolute rounded-full bg-neon-violet/10"
+      className="absolute rounded-full bg-accent-gold/10"
       style={{
         width: size,
         height: size,

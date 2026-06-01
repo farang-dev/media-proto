@@ -10,7 +10,7 @@ export const translations: Translations = {
   en: {
     // Header & Navigation
     'nav.home': 'Discovery',
-    'nav.rankings': 'Oshi Battle',
+    'nav.rankings': 'Ranking',
     'nav.guide': 'Culture Guide',
     'nav.community': 'Oshi Talks',
     'nav.about': 'About Host Culture',
@@ -20,11 +20,12 @@ export const translations: Translations = {
     'hero.guide_cta': 'Explore Culture Guide',
     
     // Rankings & Battle
-    'rank.title': 'Real-Time Oshi Battle',
+    'rank.title': 'Real-Time Oshi Ranking',
     'rank.subtitle': 'Support your favorite stars. In host culture, a fan\'s support ("Oshi-katsu") is everything. Cast your daily vote to spot trending hosts.',
     'rank.vote': 'Support Star (Vote)',
     'rank.voted': 'Voted!',
-    'rank.already_voted': 'Daily limit reached!',
+    'rank.already_voted': 'Already voted for this star today!',
+    'rank.daily_limit': 'Daily vote limit reached (10/10). Try again tomorrow!',
     'rank.rank': 'Rank',
     'rank.votes': 'Votes',
     'rank.empty': 'No stars found. Run the seed script!',
@@ -62,6 +63,22 @@ export const translations: Translations = {
     'community.comment_submit': 'Reply',
     'community.anonymous': 'Anonymous',
     
+    // Hos-Match
+    'match.title': 'Hos-Match',
+    'match.subtitle': 'Swipe right to like, left to pass. Find your perfect host!',
+    'match.like': 'Like',
+    'match.nope': 'Nope',
+    'match.view_profile': 'View Profile',
+    'match.no_more': 'No more hosts to show',
+    'match.reset': 'Start Over',
+    'match.liked': 'Liked!',
+    'match.saved': 'Saved to Favorites',
+    'match.signup_title': 'Great matches! 🎉',
+    'match.signup_text': 'Sign up to save your favorites and never lose a match.',
+    'match.signup_cta': 'Create Account',
+    'match.later': 'Maybe later',
+    'match.likes_left': 'likes left to save',
+    
     // Ads
     'ads.hiring': 'Discover Shinjuku nightlife. Leading clubs offer premium VIP reservations and safety-guided access for international guests.',
     'ads.vip_booking': 'Want a safe, guided tour of Kabukicho\'s top host clubs? Contact our bilingual booking assistants.',
@@ -69,7 +86,7 @@ export const translations: Translations = {
   ja: {
     // Header & Navigation
     'nav.home': 'カルチャー発見',
-    'nav.rankings': '推しバトル',
+    'nav.rankings': 'ランキング',
     'nav.guide': 'カルチャーガイド',
     'nav.community': '推しトーク',
     'nav.about': 'ホスト文化について',
@@ -79,11 +96,12 @@ export const translations: Translations = {
     'hero.guide_cta': 'カルチャーガイドを見る',
     
     // Rankings & Battle
-    'rank.title': 'リアルタイム推しバトル',
+    'rank.title': 'リアルタイム推しランキング',
     'rank.subtitle': 'お気に入りのスターを応援しましょう。ホストクラブ文化において「推し活」は最も重要な要素です。毎日投票して最新トレンドを作ろう！',
     'rank.vote': '推す (投票)',
     'rank.voted': '投票完了！',
-    'rank.already_voted': '本日の投票は終了しています',
+    'rank.already_voted': 'このホストにはすでに投票済みです',
+    'rank.daily_limit': '本日の投票上限（10回）に達しました。また明日！',
     'rank.rank': '順位',
     'rank.votes': '票',
     'rank.empty': 'ホストが見つかりません。シードを実行してください。',
@@ -120,6 +138,22 @@ export const translations: Translations = {
     'community.comment_placeholder': '会話に参加する...',
     'community.comment_submit': '返信する',
     'community.anonymous': '匿名さん',
+    
+    // Hos-Match
+    'match.title': 'ホスマッチ',
+    'match.subtitle': '右にスワイプでLike、左でスキップ。理想のホストに出会おう！',
+    'match.like': 'いいね！',
+    'match.nope': 'スキップ',
+    'match.view_profile': 'プロフィールを見る',
+    'match.no_more': '表示できるホストがいません',
+    'match.reset': '最初から',
+    'match.liked': 'いいね！',
+    'match.saved': 'お気に入りに保存しました',
+    'match.signup_title': 'いいマッチですね！🎉',
+    'match.signup_text': 'アカウントを作成して、お気に入りを保存しよう。',
+    'match.signup_cta': 'アカウント作成',
+    'match.later': 'あとで',
+    'match.likes_left': 'あとのいいねで保存可能',
     
     // Ads
     'ads.hiring': '新宿歌舞伎町のナイトカルチャーを体験。大手グループがインバウンド向けに安全な予約プランとVIPシートを提供中。',

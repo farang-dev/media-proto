@@ -1,10 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, Heart, Camera, MessageSquareShare, Ruler, Droplets, Cake, Award } from 'lucide-react';
+import { ArrowLeft, Heart, Camera, MessageSquareShare, Ruler, Droplets, Cake, Award, Music2 } from 'lucide-react';
 import { getHost, getHostsByShop } from '@/lib/db';
 import type { Host } from '@/lib/db';
 import { getEnglishName, looksLikeDate } from '@/lib/japanese';
+import TikTokEmbed from '@/components/TikTokEmbed';
 
 export const dynamic = 'force-dynamic';
 
@@ -48,7 +49,7 @@ export default async function HostPage(props: { params: Promise<{ id: string }> 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <Link
           href={shop ? `/clubs/${shop.id}` : '/clubs'}
-          className="inline-flex items-center gap-1 text-sm text-zinc-400 hover:text-rose-gold transition-colors mb-8"
+          className="inline-flex items-center gap-1 text-sm text-zinc-400 hover:text-accent transition-colors mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
           {shop ? `Back to ${shop.name_ja}` : 'Back to clubs'}
@@ -85,7 +86,7 @@ export default async function HostPage(props: { params: Promise<{ id: string }> 
               <div>
                 <Link
                   href={`/clubs/${shop.id}`}
-                  className="text-xs font-semibold text-rose-gold uppercase tracking-widest hover:underline"
+                  className="text-xs font-semibold text-accent uppercase tracking-widest hover:underline"
                 >
                   {shop.group?.name_ja && `${shop.group.name_ja} · `}{shop.name_ja}
                 </Link>
@@ -94,7 +95,7 @@ export default async function HostPage(props: { params: Promise<{ id: string }> 
 
             {/* Name */}
             <div>
-              <h1 className="text-4xl md:text-5xl font-black font-serif text-gold-gradient">
+              <h1 className="text-4xl md:text-5xl font-black font-serif text-foreground">
                 {host.name_ja}
               </h1>
               {host.name_en && host.name_en !== host.name_ja && (
@@ -122,27 +123,27 @@ export default async function HostPage(props: { params: Promise<{ id: string }> 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {host.birthday && looksLikeDate(host.birthday) && (
                 <div className="bg-card-bg border border-card-border rounded-xl p-4">
-                  <Cake className="w-4 h-4 text-rose-gold mb-1" />
+                  <Cake className="w-4 h-4 text-accent mb-1" />
                   <p className="text-[10px] text-zinc-500 uppercase tracking-wider">Birthday</p>
                   <p className="text-sm font-semibold mt-0.5">{normalizeBirthday(host.birthday)}</p>
                 </div>
               )}
               {host.height && (
                 <div className="bg-card-bg border border-card-border rounded-xl p-4">
-                  <Ruler className="w-4 h-4 text-rose-gold mb-1" />
+                  <Ruler className="w-4 h-4 text-accent mb-1" />
                   <p className="text-[10px] text-zinc-500 uppercase tracking-wider">Height</p>
                   <p className="text-sm font-semibold mt-0.5">{host.height}</p>
                 </div>
               )}
               {host.blood_type && host.blood_type !== '?' && (
                 <div className="bg-card-bg border border-card-border rounded-xl p-4">
-                  <Droplets className="w-4 h-4 text-rose-gold mb-1" />
+                  <Droplets className="w-4 h-4 text-accent mb-1" />
                   <p className="text-[10px] text-zinc-500 uppercase tracking-wider">Blood Type</p>
                   <p className="text-sm font-semibold mt-0.5">{host.blood_type}</p>
                 </div>
               )}
               <div className="bg-card-bg border border-card-border rounded-xl p-4">
-                <Heart className="w-4 h-4 text-dusty-pink mb-1" />
+                <Heart className="w-4 h-4 text-accent-light mb-1" />
                 <p className="text-[10px] text-zinc-500 uppercase tracking-wider">Votes</p>
                 <p className="text-sm font-semibold mt-0.5">{(host.votes_count || 0).toLocaleString()}</p>
               </div>
@@ -156,7 +157,7 @@ export default async function HostPage(props: { params: Promise<{ id: string }> 
             )}
 
             {/* Social links */}
-            <div className="flex gap-3">
+            <div className="flex flex-wrap items-center gap-2">
               {host.instagram_url && (
                 <a
                   href={host.instagram_url}
@@ -176,7 +177,31 @@ export default async function HostPage(props: { params: Promise<{ id: string }> 
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-zinc-700 text-zinc-200 text-sm font-semibold hover:bg-zinc-600 transition-colors"
                 >
                   <MessageSquareShare className="w-4 h-4" />
-                  {host.twitter_url.includes('x.com') ? 'X (Twitter)' : 'Twitter'}
+                  {host.twitter_url.includes('x.com') ? 'X' : 'Twitter'}
+                </a>
+              )}
+              {host.tiktok_url && (
+                <a
+                  href={host.tiktok_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-zinc-700 text-zinc-200 text-sm font-semibold hover:bg-pink-500 hover:text-white transition-colors"
+                >
+                  <Music2 className="w-4 h-4" />
+                  TikTok
+                </a>
+              )}
+              {host.youtube_url && (
+                <a
+                  href={host.youtube_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-zinc-700 text-zinc-200 text-sm font-semibold hover:bg-red-600 hover:text-white transition-colors"
+                >
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.38.55A3.02 3.02 0 0 0 .5 6.19 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.81 3.02 3.02 0 0 0 2.12 2.14c1.88.55 9.38.55 9.38.55s7.5 0 9.38-.55a3.02 3.02 0 0 0 2.12-2.14A31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.81zM9.55 15.57V8.43L15.82 12l-6.27 3.57z"/>
+                  </svg>
+                  YouTube
                 </a>
               )}
             </div>
@@ -186,7 +211,7 @@ export default async function HostPage(props: { params: Promise<{ id: string }> 
         {/* Q&A Section */}
         {host.qa_data && Object.keys(host.qa_data).length > 0 && (
           <div className="mt-16">
-            <h2 className="text-2xl font-bold font-serif text-gold-gradient mb-6">
+            <h2 className="text-2xl font-bold font-serif text-foreground mb-6">
               Profile Q&A
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -194,7 +219,7 @@ export default async function HostPage(props: { params: Promise<{ id: string }> 
                 const en = host.qa_data_en?.[key];
                 return (
                   <div key={key} className="rounded-xl bg-card-bg border border-card-border p-4">
-                    <p className="text-[10px] font-semibold text-rose-gold uppercase tracking-wider mb-1">{key}</p>
+                    <p className="text-[10px] font-semibold text-accent uppercase tracking-wider mb-1">{key}</p>
                     <p className="text-sm text-foreground font-medium">{answer}</p>
                     {en && (
                       <div className="mt-2 pt-2 border-t border-card-border">
@@ -209,10 +234,23 @@ export default async function HostPage(props: { params: Promise<{ id: string }> 
           </div>
         )}
 
+        {/* TikTok Section */}
+        {host.tiktok_url && (
+          <div className="mt-16 max-w-md">
+            <h2 className="text-2xl font-bold font-serif text-foreground mb-6">
+              <div className="flex items-center gap-2">
+                <Music2 className="w-5 h-5 text-pink-400" />
+                <span>TikTok Videos</span>
+              </div>
+            </h2>
+            <TikTokEmbed tiktokUrl={host.tiktok_url} />
+          </div>
+        )}
+
         {/* Same shop hosts */}
         {sameShopHosts.length > 0 && (
           <section className="mt-16">
-            <h2 className="text-2xl font-bold font-serif text-gold-gradient mb-6">
+            <h2 className="text-2xl font-bold font-serif text-foreground mb-6">
               Other Hosts at {shop ? getEnglishName(shop.name_ja, shop.name_en) : 'this club'}
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
@@ -222,7 +260,7 @@ export default async function HostPage(props: { params: Promise<{ id: string }> 
                   <Link
                     key={h.id}
                     href={`/hosts/${h.id}`}
-                    className="rounded-2xl bg-card-bg border border-card-border overflow-hidden hover:border-rose-gold/30 transition-all group"
+                    className="rounded-2xl bg-card-bg border border-card-border overflow-hidden hover:border-accent/30 transition-all group"
                   >
                     <div className="aspect-[3/4] relative overflow-hidden">
                       <img

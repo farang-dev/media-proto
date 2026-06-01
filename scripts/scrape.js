@@ -17,6 +17,23 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
   auth: { persistSession: false, autoRefreshToken: false }
 });
 
+const projectRef = supabaseUrl.match(/https:\/\/([^.]+)\.supabase\.co/)?.[1];
+const NEW_SHOP_COLUMNS = ['description_ja','description_en','phone','hours','regular_holiday','logo_url','image_urls','system_info_ja','system_info_en'];
+const NEW_HOST_COLUMNS = ['line_id','type_tags','ratings','qa_data','qa_data_en','image_urls','instagram_url','twitter_url','tiktok_url'];
+const availableColumns = { shops: new Set(['id','name_ja','name_en','source_url','area','group_id','score','rank','created_at']), hosts: new Set(['id','shop_id','name_ja','name_en','birthday','height','blood_type','bio_ja','bio_en','source_url','daily_rank','weekly_rank','monthly_rank','rank_in_shop','created_at']) };
+
+async function probeColumn(table, col) {
+  const { error } = await supabase.from(table).select(col).limit(1);
+  return !error;
+}
+
+async function detectColumns() {
+  for (const col of NEW_SHOP_COLUMNS) if (await probeColumn('shops', col)) availableColumns.shops.add(col);
+  for (const col of NEW_HOST_COLUMNS) if (await probeColumn('hosts', col)) availableColumns.hosts.add(col);
+  console.log(`  Shops columns: ${[...availableColumns.shops].filter(c => c !== 'id').join(', ')}`);
+  console.log(`  Hosts columns: ${[...availableColumns.hosts].filter(c => c !== 'id').join(', ')}`);
+}
+
 const RANKING_URLS = {
   daily: 'https://www.host2.jp/ranking/day14.html',
   weekly: 'https://www.host2.jp/ranking/week14.html',
@@ -67,11 +84,22 @@ async function translateText(text, targetLang = 'en') {
   }
 }
 
-async function upsertShop(nameJa, sourceUrl, groupId) {
+async function upsertShop(nameJa, sourceUrl, groupId, extra = {}) {
   const cacheKey = sourceUrl || nameJa;
   if (shopCache[cacheKey]) return shopCache[cacheKey];
 
-  const shopData = { name_ja: nameJa, source_url: sourceUrl, area: 'Kabukicho' };
+  const shopData = {
+    name_ja: nameJa,
+    source_url: sourceUrl,
+    area: 'Kabukicho',
+  };
+  if (extra.description_ja && availableColumns.shops.has('description_ja')) shopData.description_ja = extra.description_ja;
+  if (extra.phone && availableColumns.shops.has('phone')) shopData.phone = extra.phone;
+  if (extra.hours && availableColumns.shops.has('hours')) shopData.hours = extra.hours;
+  if (extra.regular_holiday && availableColumns.shops.has('regular_holiday')) shopData.regular_holiday = extra.regular_holiday;
+  if (extra.logo_url && availableColumns.shops.has('logo_url')) shopData.logo_url = extra.logo_url;
+  if (extra.image_urls && extra.image_urls.length > 0 && availableColumns.shops.has('image_urls')) shopData.image_urls = extra.image_urls;
+  if (extra.system_info_ja && availableColumns.shops.has('system_info_ja')) shopData.system_info_ja = extra.system_info_ja;
   if (groupId) shopData.group_id = groupId;
 
   const { data, error } = await supabase
@@ -86,6 +114,24 @@ async function upsertShop(nameJa, sourceUrl, groupId) {
   if (!data || !data[0]) {
     console.warn(`  Shop upsert returned no data for "${nameJa}"`);
     return null;
+  }
+
+  // Translate description
+  if (shopData.description_ja && !extra.description_en) {
+    const en = await translateText(shopData.description_ja);
+    await new Promise(r => setTimeout(r, 200));
+    if (en && availableColumns.shops.has('description_en')) {
+      await supabase.from('shops').update({ description_en: en }).eq('id', data[0].id);
+    }
+  }
+
+  // Translate system info
+  if (shopData.system_info_ja && !extra.system_info_en) {
+    const en = await translateText(shopData.system_info_ja);
+    await new Promise(r => setTimeout(r, 200));
+    if (en && availableColumns.shops.has('system_info_en')) {
+      await supabase.from('shops').update({ system_info_en: en }).eq('id', data[0].id);
+    }
   }
 
   shopCache[cacheKey] = data[0].id;
@@ -165,17 +211,54 @@ async function parseHostProfile(html, hostUrl) {
     if (btMatch) bloodType = btMatch[1].trim().replace('型', '');
   });
 
-  let instagram = '', twitter = '', tiktok = '';
+  let instagram = '', twitter = '', tiktok = '', lineId = '';
+  const typeTags = [];
+  const ratings = {};
+
   $('.staff-profile dl dt, .staff-profile dl dd').each((i, el) => {
     const tag = el.tagName.toLowerCase();
     if (tag === 'dt') {
       const label = $(el).text().trim();
-      const link = $(el).next('dd').find('a').attr('href') || '';
+      const ddEl = $(el).next('dd');
+      const link = ddEl.find('a').attr('href') || ddEl.text().trim();
       if (label.includes('Instagram')) instagram = link;
       else if (label.includes('X') || label.includes('Twitter')) twitter = link;
       else if (label.includes('TikTok')) tiktok = link;
+      else if (label.includes('LINE')) lineId = link;
     }
   });
+
+  // Type tags (e.g. アイドル系, K-POP系)
+  $('.staff-profile ul.f_type li').each((_, el) => {
+    const tag = $(el).text().trim();
+    if (tag) typeTags.push(tag);
+  });
+
+  // Ratings from f_level stars in the cmt sections
+  const cmtSections = [];
+  $('.staff-profile .cmt').each((_, el) => {
+    cmtSections.push($(el));
+  });
+  if (cmtSections.length >= 3) {
+    const ratingCmts = cmtSections[2];
+    ratingCmts.contents().each((_, node) => {
+      if (node.type === 'text') {
+        const text = $(node).text().trim();
+        const match = text.match(/^(.+?)：/);
+        if (match) {
+          const label = match[1];
+          const levelUl = $(node).next('ul.f_level');
+          if (levelUl.length) {
+            const total = levelUl.find('li').length;
+            const filled = levelUl.find('li:not(.non)').length;
+            if (total > 0) {
+              ratings[label] = { filled, total };
+            }
+          }
+        }
+      }
+    });
+  }
 
   const hostBase = hostUrl.startsWith('http') ? new URL(hostUrl).origin : 'https://www.host2.jp';
   const resolveUrl = (u) => {
@@ -186,11 +269,20 @@ async function parseHostProfile(html, hostUrl) {
 
   const images = [];
 
-  // Main PR image
-  const prImage = resolveUrl($('.staff-dtl-pr img').first().attr('src') || '');
-  if (prImage) images.push(prImage);
+  // Main PR image (high-res — pr01.jpg, not -thum)
+  const prImgSrc = $('.staff-dtl-pr img').first().attr('src') || '';
+  const prFull = resolveUrl(prImgSrc.replace(/-(thumb|thum|m)\b/i, ''));
+  if (prFull) images.push(prFull);
 
-  // Gallery images — prefer full-res href over thumbnail src
+  // Gallery images — ONLY use the lightbox href (full resolution)
+  $('.staff-photo li.item a[rel="lightbox"]').each((_, el) => {
+    const href = resolveUrl($(el).attr('href') || '');
+    if (href && !images.includes(href)) {
+      images.push(href);
+    }
+  });
+
+  // Also check any a[rel=lightbox] outside .staff-photo
   $('.staff-photo a[rel="lightbox"]').each((_, el) => {
     const href = resolveUrl($(el).attr('href') || '');
     if (href && !images.includes(href)) {
@@ -198,27 +290,19 @@ async function parseHostProfile(html, hostUrl) {
     }
   });
 
-  // Also check for images in staff-photo that might not have rel="lightbox"
-  $('.staff-photo img').each((_, el) => {
-    const src = resolveUrl($(el).attr('src') || '');
-    if (src && !images.includes(src)) {
-      // Try to promote thumbnail to full-res by removing -m, _m, -thumb suffixes
-      const fullRes = src.replace(/-(m|thumb|tn)\./i, '.');
-      if (fullRes !== src && !images.includes(fullRes)) {
-        images.push(fullRes);
-      } else {
-        images.push(src);
-      }
-    }
-  });
-
   // Q&A data
   const qaData = parseQaData($);
 
-  // Bio — use staff-question as fallback or look for a PR comment
+  // Bio from staff-cmt section (free-text self-intro)
   let bioJa = '';
-  const prComment = $('.staff-dtl-pr .cmt, .staff-dtl-pr p').first().text().trim();
-  if (prComment && prComment.length > 10) bioJa = prComment;
+  const staffCmt = $('.staff-cmt').first().text().trim();
+  if (staffCmt && staffCmt.length > 5) {
+    bioJa = staffCmt;
+  } else {
+    // Fallback to PR comment
+    const prComment = $('.staff-dtl-pr .cmt, .staff-dtl-pr p').first().text().trim();
+    if (prComment && prComment.length > 10) bioJa = prComment;
+  }
 
   const fullUrl = hostUrl.startsWith('http') ? hostUrl : `https://www.host2.jp${hostUrl}`;
 
@@ -231,6 +315,10 @@ async function parseHostProfile(html, hostUrl) {
     blood_type: bloodType,
     instagram_url: instagram || null,
     twitter_url: twitter || null,
+    tiktok_url: tiktok || null,
+    line_id: lineId || null,
+    type_tags: typeTags,
+    ratings: Object.keys(ratings).length > 0 ? ratings : null,
     image_urls: [...new Set(images)].filter(Boolean),
     bio_ja: bioJa,
     qa_data: qaData,
@@ -305,25 +393,25 @@ async function scrapeRankings() {
         qaDataEn = await translateQaData(profile.qa_data);
       }
 
-      const hostRecord = {
-        shop_id: shopId,
-        name_ja: profile.name_ja,
-        name_en: profile.name_en,
-        birthday: profile.birthday,
-        height: profile.height,
-        blood_type: profile.blood_type,
-        instagram_url: profile.instagram_url,
-        twitter_url: profile.twitter_url,
-        image_urls: profile.image_urls,
-        bio_ja: profile.bio_ja,
-        bio_en: bioEn || null,
-        qa_data: profile.qa_data,
-        qa_data_en: qaDataEn,
-        source_url: profile.source_url,
-        daily_rank: info.daily || null,
-        weekly_rank: info.weekly || null,
-        monthly_rank: info.monthly || null
-      };
+      const hostRecord = { shop_id: shopId, name_ja: profile.name_ja, source_url: profile.source_url };
+      if (profile.name_en) hostRecord.name_en = profile.name_en;
+      if (profile.birthday) hostRecord.birthday = profile.birthday;
+      if (profile.height) hostRecord.height = profile.height;
+      if (profile.blood_type) hostRecord.blood_type = profile.blood_type;
+      if (profile.bio_ja) hostRecord.bio_ja = profile.bio_ja;
+      if (bioEn) hostRecord.bio_en = bioEn;
+      if (availableColumns.hosts.has('instagram_url') && profile.instagram_url) hostRecord.instagram_url = profile.instagram_url;
+      if (availableColumns.hosts.has('twitter_url') && profile.twitter_url) hostRecord.twitter_url = profile.twitter_url;
+      if (availableColumns.hosts.has('tiktok_url') && profile.tiktok_url) hostRecord.tiktok_url = profile.tiktok_url;
+      if (availableColumns.hosts.has('line_id') && profile.line_id) hostRecord.line_id = profile.line_id;
+      if (availableColumns.hosts.has('type_tags') && profile.type_tags?.length) hostRecord.type_tags = profile.type_tags;
+      if (availableColumns.hosts.has('ratings') && profile.ratings) hostRecord.ratings = profile.ratings;
+      if (availableColumns.hosts.has('image_urls') && profile.image_urls?.length) hostRecord.image_urls = profile.image_urls;
+      if (availableColumns.hosts.has('qa_data') && profile.qa_data) hostRecord.qa_data = profile.qa_data;
+      if (availableColumns.hosts.has('qa_data_en') && qaDataEn) hostRecord.qa_data_en = qaDataEn;
+      if (info.daily) hostRecord.daily_rank = info.daily;
+      if (info.weekly) hostRecord.weekly_rank = info.weekly;
+      if (info.monthly) hostRecord.monthly_rank = info.monthly;
 
       const { error: hostErr } = await supabase
         .from('hosts')
@@ -470,6 +558,100 @@ async function upsertGroups(groups) {
   return groupIdMap;
 }
 
+async function parseShopDetail(shopUrl) {
+  try {
+    const html = await fetchHtml(shopUrl);
+    const $ = cheerio.load(html);
+    const base = shopUrl.substring(0, shopUrl.lastIndexOf('/') + 1);
+
+    const resolveUrl = (u) => {
+      if (!u) return '';
+      if (u.startsWith('http')) return u;
+      return u.startsWith('/') ? `https://www.host2.jp${u}` : base + u;
+    };
+
+    // Sidebar info
+    const logo = resolveUrl($('.shop-sub-info .bd .img img').attr('src') || '');
+    const address = $('.shop-sub-info .bd .bs .adrs').text().trim().replace(/\s+/g, ' ');
+    const phone = $('.shop-sub-info .bd .bs .tel').text().trim().replace(/^TEL:/i, '');
+    const description = $('.shop-sub-info .bd .info').text().trim();
+
+    // Shop rankings (top N)
+    const ranking = [];
+    $('.list.shop-number-list .cts > ul > li.cell.link').each((i, el) => {
+      const $el = $(el);
+      const rankText = $el.find('.num').text().trim().replace('No.', '');
+      const hostName = $el.find('.tit a').text().trim();
+      const hostUrl = $el.attr('data-href') || '';
+      ranking.push({
+        rank: parseInt(rankText, 10) || i + 1,
+        name: hostName,
+        url: hostUrl.startsWith('http') ? hostUrl : `https://www.host2.jp${hostUrl}`
+      });
+    });
+
+    // Shop gallery images from shop/system pages
+    const galleryImages = [];
+    const shopPhotoUrls = [];
+    $('.shopPhoto a[rel="lightbox"]').each((_, el) => {
+      const href = resolveUrl($(el).attr('href') || '');
+      if (href) shopPhotoUrls.push(href);
+    });
+    $('.shop-photo a[rel="lightbox"]').each((_, el) => {
+      const href = resolveUrl($(el).attr('href') || '');
+      if (href) shopPhotoUrls.push(href);
+    });
+
+    return { logo, address, phone, description, ranking, galleryImages: [...new Set(shopPhotoUrls)] };
+  } catch (err) {
+    console.warn(`  Shop detail parse failed: ${err.message}`);
+    return { logo: '', address: '', phone: '', description: '', ranking: [], galleryImages: [] };
+  }
+}
+
+async function parseSystemPage(systemUrl) {
+  try {
+    const html = await fetchHtml(systemUrl);
+    const $ = cheerio.load(html);
+    const base = systemUrl.substring(0, systemUrl.lastIndexOf('/') + 1);
+    const resolveUrl = (u) => {
+      if (!u) return '';
+      if (u.startsWith('http')) return u;
+      return u.startsWith('/') ? `https://www.host2.jp${u}` : base + u;
+    };
+
+    // Parse pricing table
+    const systemData = {};
+    $('.shop-system-tbl table tr').each((_, tr) => {
+      const $tr = $(tr);
+      const label = $tr.find('.ti').text().trim();
+      const value = $tr.find('.bd').text().trim().replace(/\s+/g, ' ');
+      const memo = $tr.find('.ti2 .memo').text().trim();
+      if (label && value) {
+        systemData[label] = value;
+      }
+      if (memo) {
+        systemData._memos = systemData._memos || [];
+        systemData._memos.push(memo);
+      }
+    });
+
+    // Shop photos on system page
+    const galleryImages = [];
+    $('a[rel="lightbox"]').each((_, el) => {
+      const href = resolveUrl($(el).attr('href') || '');
+      if (href && (href.includes('shop') || href.match(/pic\d+\.jpg$/))) {
+        galleryImages.push(href);
+      }
+    });
+
+    return { systemData, galleryImages: [...new Set(galleryImages)] };
+  } catch (err) {
+    console.warn(`  System page parse failed: ${err.message}`);
+    return { systemData: {}, galleryImages: [] };
+  }
+}
+
 async function parseShopForHosts(shopUrl) {
   const html = await fetchHtml(shopUrl);
   const $ = cheerio.load(html);
@@ -507,22 +689,22 @@ async function scrapeHostProfile(hostUrl, shopId) {
     qaDataEn = await translateQaData(profile.qa_data);
   }
 
-  const hostRecord = {
-    shop_id: shopId,
-    name_ja: profile.name_ja,
-    name_en: profile.name_en,
-    birthday: profile.birthday,
-    height: profile.height,
-    blood_type: profile.blood_type,
-    instagram_url: profile.instagram_url,
-    twitter_url: profile.twitter_url,
-    image_urls: profile.image_urls,
-    bio_ja: profile.bio_ja,
-    bio_en: bioEn || null,
-    qa_data: profile.qa_data,
-    qa_data_en: qaDataEn,
-    source_url: profile.source_url
-  };
+  const hostRecord = { shop_id: shopId, name_ja: profile.name_ja, source_url: profile.source_url };
+  if (profile.name_en) hostRecord.name_en = profile.name_en;
+  if (profile.birthday) hostRecord.birthday = profile.birthday;
+  if (profile.height) hostRecord.height = profile.height;
+  if (profile.blood_type) hostRecord.blood_type = profile.blood_type;
+  if (profile.bio_ja) hostRecord.bio_ja = profile.bio_ja;
+  if (bioEn) hostRecord.bio_en = bioEn;
+  if (availableColumns.hosts.has('instagram_url') && profile.instagram_url) hostRecord.instagram_url = profile.instagram_url;
+  if (availableColumns.hosts.has('twitter_url') && profile.twitter_url) hostRecord.twitter_url = profile.twitter_url;
+  if (availableColumns.hosts.has('tiktok_url') && profile.tiktok_url) hostRecord.tiktok_url = profile.tiktok_url;
+  if (availableColumns.hosts.has('line_id') && profile.line_id) hostRecord.line_id = profile.line_id;
+  if (availableColumns.hosts.has('type_tags') && profile.type_tags?.length) hostRecord.type_tags = profile.type_tags;
+  if (availableColumns.hosts.has('ratings') && profile.ratings) hostRecord.ratings = profile.ratings;
+  if (availableColumns.hosts.has('image_urls') && profile.image_urls?.length) hostRecord.image_urls = profile.image_urls;
+  if (availableColumns.hosts.has('qa_data') && profile.qa_data) hostRecord.qa_data = profile.qa_data;
+  if (availableColumns.hosts.has('qa_data_en') && qaDataEn) hostRecord.qa_data_en = qaDataEn;
 
   const { error } = await supabase
     .from('hosts')
@@ -531,7 +713,8 @@ async function scrapeHostProfile(hostUrl, shopId) {
   if (error) {
     console.error(`  Host upsert error for ${profile.name_ja}: ${error.message}`);
   } else {
-    console.log(`  ✓ ${profile.name_ja}${bioEn ? ' (translated)' : ''}`);
+    const imgCount = profile.image_urls.length;
+    console.log(`  ✓ ${profile.name_ja} | ${imgCount} imgs | ${profile.type_tags?.length || 0} tags${bioEn ? ' (translated)' : ''}`);
   }
 }
 
@@ -557,10 +740,60 @@ async function scrapeGroups() {
       console.log(`\n--- Shop: ${shop.name} ---`);
       console.log(`  URL: ${shop.url}`);
 
-      const shopId = await upsertShop(shop.name, shop.url, groupId);
+      // Scrape shop detail page for description, address, logo, ranking
+      console.log(`  Fetching shop detail...`);
+      const shopDetail = await parseShopDetail(shop.url);
+      await new Promise(r => setTimeout(r, 400));
+
+      // Scrape system page for pricing
+      const systemUrl = shop.url.replace('index.html', 'system.html');
+      let systemData = {};
+      let systemGallery = [];
+      try {
+        console.log(`  Fetching system page...`);
+        const system = await parseSystemPage(systemUrl);
+        systemData = system.systemData;
+        systemGallery = system.galleryImages;
+        await new Promise(r => setTimeout(r, 400));
+      } catch (err) {
+        console.warn(`  System page failed: ${err.message}`);
+      }
+
+      // Build pricing string from system data
+      let systemInfoJa = '';
+      if (Object.keys(systemData).length > 0) {
+        systemInfoJa = Object.entries(systemData)
+          .filter(([k]) => k !== '_memos')
+          .map(([k, v]) => `${k}: ${v}`).join('\n');
+        const memos = systemData._memos;
+        if (memos && memos.length > 0) {
+          systemInfoJa += '\n' + memos.join('\n');
+        }
+      }
+
+      const allImages = [...new Set([
+        ...shopDetail.galleryImages,
+        ...systemGallery
+      ])];
+
+      const shopId = await upsertShop(shop.name, shop.url, groupId, {
+        description_ja: shopDetail.description,
+        phone: shopDetail.phone,
+        hours: systemData['営業時間'] || null,
+        regular_holiday: systemData['定休日'] || null,
+        logo_url: shopDetail.logo,
+        image_urls: allImages,
+        system_info_ja: systemInfoJa,
+      });
       if (!shopId) {
         console.warn(`  Skipping — could not upsert shop`);
         continue;
+      }
+
+      // Store shop ranking data for host rank_in_shop
+      const shopRankMap = {};
+      for (const r of shopDetail.ranking) {
+        shopRankMap[r.url] = r.rank;
       }
 
       try {
@@ -569,7 +802,14 @@ async function scrapeGroups() {
 
         for (const hostUrl of hostUrls) {
           try {
-            await scrapeHostProfile(hostUrl, shopId);
+            const fullHostUrl = hostUrl.startsWith('http') ? hostUrl : `https://www.host2.jp${hostUrl}`;
+            await scrapeHostProfile(fullHostUrl, shopId);
+            // Update rank_in_shop from shop ranking list
+            if (shopRankMap[fullHostUrl]) {
+              await supabase.from('hosts')
+                .update({ rank_in_shop: shopRankMap[fullHostUrl] })
+                .eq('source_url', fullHostUrl);
+            }
             await new Promise(r => setTimeout(r, 500));
           } catch (err) {
             console.error(`  ✗ ${hostUrl}: ${err.message}`);
@@ -583,24 +823,41 @@ async function scrapeGroups() {
   }
 }
 
-async function migrateSchema() {
-  console.log('=== Schema migration: ensuring qa_data columns exist ===');
-  const { error } = await supabase.rpc('exec_sql', {
-    sql: `ALTER TABLE hosts ADD COLUMN IF NOT EXISTS qa_data JSONB;
-          ALTER TABLE hosts ADD COLUMN IF NOT EXISTS qa_data_en JSONB;`
-  });
-  if (error && !error.message?.includes('function "exec_sql" does not exist')) {
-    // Try direct query approach
-    const { error: alterErr } = await supabase
-      .from('hosts')
-      .update({ qa_data: {} })
-      .eq('id', '00000000-0000-0000-0000-000000000000');
-    // Column likely already exists or RPC not available — continue
-    if (alterErr && !alterErr.message?.includes('column')) {
-      console.warn('  Migration note:', alterErr.message);
+async function migrateViaPostgrest() {
+  // Try RPC exec_sql (works if user created the function in Supabase)
+  try {
+    const { error } = await supabase.rpc('exec_sql', { sql: 'SELECT 1' });
+    if (!error) {
+      console.log('  exec_sql RPC available');
+      const migrations = [
+        `ALTER TABLE shops ADD COLUMN IF NOT EXISTS description_ja TEXT`,
+        `ALTER TABLE shops ADD COLUMN IF NOT EXISTS description_en TEXT`,
+        `ALTER TABLE shops ADD COLUMN IF NOT EXISTS phone TEXT`,
+        `ALTER TABLE shops ADD COLUMN IF NOT EXISTS hours TEXT`,
+        `ALTER TABLE shops ADD COLUMN IF NOT EXISTS regular_holiday TEXT`,
+        `ALTER TABLE shops ADD COLUMN IF NOT EXISTS logo_url TEXT`,
+        `ALTER TABLE shops ADD COLUMN IF NOT EXISTS image_urls TEXT[] DEFAULT '{}'`,
+        `ALTER TABLE shops ADD COLUMN IF NOT EXISTS system_info_ja TEXT`,
+        `ALTER TABLE shops ADD COLUMN IF NOT EXISTS system_info_en TEXT`,
+        `ALTER TABLE hosts ADD COLUMN IF NOT EXISTS qa_data JSONB`,
+        `ALTER TABLE hosts ADD COLUMN IF NOT EXISTS qa_data_en JSONB`,
+        `ALTER TABLE hosts ADD COLUMN IF NOT EXISTS line_id TEXT`,
+        `ALTER TABLE hosts ADD COLUMN IF NOT EXISTS type_tags TEXT[] DEFAULT '{}'`,
+        `ALTER TABLE hosts ADD COLUMN IF NOT EXISTS ratings JSONB`,
+        `ALTER TABLE hosts ADD COLUMN IF NOT EXISTS instagram_url TEXT`,
+        `ALTER TABLE hosts ADD COLUMN IF NOT EXISTS twitter_url TEXT`,
+        `ALTER TABLE hosts ADD COLUMN IF NOT EXISTS tiktok_url TEXT`,
+        `ALTER TABLE hosts ADD COLUMN IF NOT EXISTS image_urls TEXT[] DEFAULT '{}'`,
+      ];
+      for (const sql of migrations) {
+        const { error: e } = await supabase.rpc('exec_sql', { sql });
+        if (e) console.warn(`  ✗ ${e.message}`);
+      }
+      console.log('  Migration via exec_sql complete');
+      return;
     }
-  }
-  console.log('  Schema check complete');
+  } catch { }
+  console.log('  No SQL execution available — will probe columns at runtime');
 }
 
 async function scrape() {
@@ -608,7 +865,9 @@ async function scrape() {
   const mode = args.includes('--groups-only') ? 'groups' :
                args.includes('--rankings-only') ? 'rankings' : 'all';
 
-  await migrateSchema();
+  console.log('=== Schema check ===');
+  await migrateViaPostgrest();
+  await detectColumns();
 
   if (mode === 'all' || mode === 'rankings') {
     await scrapeRankings();
@@ -620,6 +879,10 @@ async function scrape() {
 
   console.log('\nScraping complete!');
 }
+
+process.on('unhandledRejection', (err) => {
+  console.error('Unhandled rejection (ignored):', err?.message || err);
+});
 
 scrape().catch(err => {
   console.error('Fatal:', err);

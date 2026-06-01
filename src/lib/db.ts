@@ -44,6 +44,11 @@ export interface Host {
   blood_type?: string;
   instagram_url?: string;
   twitter_url?: string;
+  tiktok_url?: string;
+  youtube_url?: string;
+  line_id?: string;
+  type_tags?: string[];
+  ratings?: Record<string, { filled: number; total: number }>;
   image_urls: string[];
   bio_ja?: string;
   bio_en?: string;
@@ -283,9 +288,9 @@ export async function getKabukichoRanking(type: 'daily' | 'weekly' | 'monthly'):
 
 // Cast a vote for a host
 export async function castVote(hostId: string, ipOrId: string): Promise<{ success: boolean; message: string }> {
-  // Check if they already voted in the last 24 hours for this host
   const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
+  // Fairness check 1: already voted for this host in 24h
   const { data: existingVotes, error: checkError } = await supabase
     .from('votes')
     .select('id')
@@ -299,6 +304,21 @@ export async function castVote(hostId: string, ipOrId: string): Promise<{ succes
 
   if (existingVotes && existingVotes.length > 0) {
     return { success: false, message: 'already_voted' };
+  }
+
+  // Fairness check 2: max 10 votes per 24h per session (anti-bot)
+  const { data: recentVotes, error: countError } = await supabase
+    .from('votes')
+    .select('id', { count: 'exact' })
+    .eq('user_ip_or_id', ipOrId)
+    .gt('created_at', twentyFourHoursAgo);
+
+  if (countError) {
+    return { success: false, message: countError.message };
+  }
+
+  if (recentVotes && recentVotes.length >= 10) {
+    return { success: false, message: 'daily_limit_reached' };
   }
 
   // Insert vote
@@ -415,6 +435,72 @@ export async function getHostsByShop(shopId: string, excludeId?: string): Promis
   return (data || []) as Host[];
 }
 
+// Fetch random hosts for Hos-Match
+export async function getRandomHosts(count: number = 20): Promise<Host[]> {
+  const { data: hostsData, error: hostsError } = await supabase
+    .from('hosts')
+    .select('*, shop:shops(*, group:groups(*))')
+    .limit(50);
+
+  if (hostsError) {
+    console.error('Error fetching random hosts:', hostsError.message);
+    return [];
+  }
+
+  const { data: votesData } = await supabase
+    .from('votes')
+    .select('host_id');
+
+  const voteCounts: { [key: string]: number } = {};
+  if (votesData) {
+    votesData.forEach((v) => {
+      voteCounts[v.host_id] = (voteCounts[v.host_id] || 0) + 1;
+    });
+  }
+
+  const hosts = (hostsData || []).map((h: Record<string, unknown>) => ({
+    ...h,
+    votes_count: voteCounts[h.id as string] || 0,
+  } as unknown as Host));
+
+  return hosts.sort(() => Math.random() - 0.5).slice(0, count);
+}
+
+// Fetch all hosts that have at least one image, shuffled randomly (for Hos-Match)
+export async function getAllHostsForMatching(): Promise<Host[]> {
+  const { data: hostsData, error: hostsError } = await supabase
+    .from('hosts')
+    .select('*, shop:shops(*, group:groups(*))')
+    .not('image_urls', 'is', null);
+
+  if (hostsError) {
+    console.error('Error fetching hosts for matching:', hostsError.message);
+    return [];
+  }
+
+  const hostsWithImages = (hostsData || []).filter(
+    (h: Record<string, unknown>) => Array.isArray(h.image_urls) && (h.image_urls as string[]).length > 0
+  );
+
+  const { data: votesData } = await supabase
+    .from('votes')
+    .select('host_id');
+
+  const voteCounts: { [key: string]: number } = {};
+  if (votesData) {
+    votesData.forEach((v) => {
+      voteCounts[v.host_id] = (voteCounts[v.host_id] || 0) + 1;
+    });
+  }
+
+  const hosts = hostsWithImages.map((h: Record<string, unknown>) => ({
+    ...h,
+    votes_count: voteCounts[h.id as string] || 0,
+  } as unknown as Host));
+
+  return hosts.sort(() => Math.random() - 0.5);
+}
+
 // Add a comment to a thread
 export async function addComment(threadId: string, content: string, userName?: string): Promise<Comment | null> {
   const { data, error } = await supabase
@@ -427,4 +513,92 @@ export async function addComment(threadId: string, content: string, userName?: s
     return null;
   }
   return data ? data[0] : null;
+}
+
+// Get hosts that were recently favorited by anyone (for fairness/dynamic feed)
+export async function getRecentlyFavoritedHosts(
+  limit: number = 12,
+  hours: number = 48
+): Promise<Host[]> {
+  const since = new Date(Date.now() - hours * 60 * 60 * 1000).toISOString();
+  const { data: favData, error: favError } = await supabase
+    .from('favorites')
+    .select('host_id, created_at')
+    .gt('created_at', since)
+    .order('created_at', { ascending: false });
+
+  if (favError) {
+    console.error('Error fetching recent favorites:', favError.message);
+    return [];
+  }
+
+  if (!favData || favData.length === 0) return [];
+
+  // Deduplicate and keep most recent per host
+  const seen = new Set<string>();
+  const recentIds: string[] = [];
+  for (const f of favData) {
+    if (!seen.has(f.host_id)) {
+      seen.add(f.host_id);
+      recentIds.push(f.host_id);
+      if (recentIds.length >= limit) break;
+    }
+  }
+
+  const { data: hostsData, error: hostsError } = await supabase
+    .from('hosts')
+    .select('*, shop:shops(*, group:groups(*))')
+    .in('id', recentIds);
+
+  if (hostsError) {
+    console.error('Error fetching recently favorited hosts:', hostsError.message);
+    return [];
+  }
+
+  const hostMap = new Map(hostsData.map(h => [h.id, h]));
+  return recentIds.map(id => hostMap.get(id)).filter(Boolean) as Host[];
+}
+
+// ── Favorites / Bookmarks ──
+
+export async function getFavoriteIds(): Promise<string[]> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return [];
+  const { data, error } = await supabase
+    .from('favorites')
+    .select('host_id')
+    .eq('user_id', user.id);
+  if (error) {
+    console.error('Error fetching favorites:', error.message);
+    return [];
+  }
+  return (data || []).map(f => f.host_id);
+}
+
+export async function addFavorite(hostId: string): Promise<boolean> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return false;
+  const { error } = await supabase
+    .from('favorites')
+    .insert([{ user_id: user.id, host_id: hostId }]);
+  if (error) {
+    console.error('Error adding favorite:', error.message);
+    return false;
+  }
+  return true;
+}
+
+export async function removeFavorite(hostId: string): Promise<boolean> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return false;
+  const { error } = await supabase
+    .from('favorites')
+    .delete()
+    .eq('user_id', user.id)
+    .eq('host_id', hostId);
+  if (error) {
+    console.error('Error removing favorite:', error.message);
+    return false;
+  }
+  return true;
 }

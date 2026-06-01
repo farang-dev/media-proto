@@ -33,9 +33,15 @@ CREATE TABLE shops (
   area VARCHAR DEFAULT 'Kabukicho',
   address_ja TEXT,
   address_en TEXT,
-  system_info_ja TEXT, -- 初回料金など
+  description_ja TEXT,
+  description_en TEXT,
+  phone TEXT,
+  hours TEXT,
+  regular_holiday TEXT,
+  system_info_ja TEXT, -- 料金体系 (JSON文字列)
   system_info_en TEXT,
   logo_url TEXT,
+  image_urls TEXT[],
   website_url TEXT,
   source_url TEXT UNIQUE, -- スクレイピング元URL
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
@@ -53,6 +59,11 @@ CREATE TABLE hosts (
   blood_type VARCHAR,
   instagram_url TEXT,
   twitter_url TEXT,
+  tiktok_url TEXT,
+  youtube_url TEXT,
+  line_id TEXT,
+  type_tags TEXT[],
+  ratings JSONB,
   image_urls TEXT[], -- 複数画像対応
   bio_ja TEXT,
   bio_en TEXT,
@@ -127,31 +138,55 @@ CREATE POLICY "Threads can be created by everyone" ON threads FOR INSERT WITH CH
 CREATE POLICY "Comments are viewable by everyone" ON comments FOR SELECT USING (true);
 CREATE POLICY "Comments can be created by everyone" ON comments FOR INSERT WITH CHECK (true);
 
--- ============================================================
--- Migration for existing databases: add groups table + group_id
--- ============================================================
--- Run these ALTER statements if the tables already exist.
--- (Skip if using the CREATE statements above on a fresh DB.)
---
--- CREATE TABLE IF NOT EXISTS groups (
---   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
---   name_ja VARCHAR NOT NULL,
---   name_en VARCHAR,
---   name_kana VARCHAR,
---   description_ja TEXT,
---   logo_url TEXT,
---   source_url TEXT UNIQUE,
---   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
--- );
---
--- ALTER TABLE shops ADD COLUMN IF NOT EXISTS group_id UUID REFERENCES groups(id) ON DELETE SET NULL;
--- ALTER TABLE groups ENABLE ROW LEVEL SECURITY;
--- CREATE POLICY IF NOT EXISTS "Groups are viewable by everyone" ON groups FOR SELECT USING (true);
--- CREATE POLICY IF NOT EXISTS "Groups are insertable by service_role" ON groups FOR INSERT WITH CHECK (true);
--- CREATE POLICY IF NOT EXISTS "Groups are updatable by service_role" ON groups FOR UPDATE USING (true);
+-- 6. お気に入り (Favorites / Bookmarks)
+CREATE TABLE favorites (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  host_id UUID NOT NULL REFERENCES hosts(id) ON DELETE CASCADE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  UNIQUE(user_id, host_id)
+);
+
+ALTER TABLE favorites ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view their own favorites"
+  ON favorites FOR SELECT
+  USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can create their own favorites"
+  ON favorites FOR INSERT
+  WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete their own favorites"
+  ON favorites FOR DELETE
+  USING (auth.uid() = user_id);
 
 -- ============================================================
--- Migration: add qa_data columns to hosts table
+-- 🚨 MIGRATION: Run this in Supabase SQL Editor for existing DBs
 -- ============================================================
--- ALTER TABLE hosts ADD COLUMN IF NOT EXISTS qa_data JSONB;
--- ALTER TABLE hosts ADD COLUMN IF NOT EXISTS qa_data_en JSONB;
+-- Copy and paste the section below into the Supabase Dashboard
+-- SQL Editor to add columns that may be missing.
+-- ============================================================
+/*
+-- Shops: add missing columns
+ALTER TABLE shops ADD COLUMN IF NOT EXISTS description_ja TEXT;
+ALTER TABLE shops ADD COLUMN IF NOT EXISTS description_en TEXT;
+ALTER TABLE shops ADD COLUMN IF NOT EXISTS phone TEXT;
+ALTER TABLE shops ADD COLUMN IF NOT EXISTS hours TEXT;
+ALTER TABLE shops ADD COLUMN IF NOT EXISTS regular_holiday TEXT;
+ALTER TABLE shops ADD COLUMN IF NOT EXISTS logo_url TEXT;
+ALTER TABLE shops ADD COLUMN IF NOT EXISTS image_urls TEXT[] DEFAULT '{}';
+ALTER TABLE shops ADD COLUMN IF NOT EXISTS system_info_ja TEXT;
+ALTER TABLE shops ADD COLUMN IF NOT EXISTS system_info_en TEXT;
+
+-- Hosts: add missing columns
+ALTER TABLE hosts ADD COLUMN IF NOT EXISTS qa_data JSONB;
+ALTER TABLE hosts ADD COLUMN IF NOT EXISTS qa_data_en JSONB;
+ALTER TABLE hosts ADD COLUMN IF NOT EXISTS line_id TEXT;
+ALTER TABLE hosts ADD COLUMN IF NOT EXISTS type_tags TEXT[] DEFAULT '{}';
+ALTER TABLE hosts ADD COLUMN IF NOT EXISTS ratings JSONB;
+ALTER TABLE hosts ADD COLUMN IF NOT EXISTS image_urls TEXT[] DEFAULT '{}';
+ALTER TABLE hosts ADD COLUMN IF NOT EXISTS instagram_url TEXT;
+ALTER TABLE hosts ADD COLUMN IF NOT EXISTS twitter_url TEXT;
+ALTER TABLE hosts ADD COLUMN IF NOT EXISTS tiktok_url TEXT;
+*/

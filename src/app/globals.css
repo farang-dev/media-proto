@@ -7,9 +7,9 @@
   --card-bg: #FFFFFF;
   --card-border: #E8E4DE;
 
-  --rose-gold: #C8956D;
-  --dusty-pink: #C48686;
-  --neon-violet: #7C5CFC;
+  --accent: #C8956D;
+  --accent-light: #D48A8A;
+  --accent-gold: #9B5E7C;
 
   --font-inter: 'Inter', 'Noto Sans JP', sans-serif;
   --font-playfair: 'Playfair Display', serif;
@@ -21,14 +21,13 @@
   --color-card-bg: var(--card-bg);
   --color-card-border: var(--card-border);
 
-  --color-rose-gold: var(--rose-gold);
-  --color-dusty-pink: var(--dusty-pink);
-  --color-neon-violet: var(--neon-violet);
+  --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+  --color-accent-gold: var(--accent-gold);
 
   --font-sans: var(--font-inter);
   --font-serif: var(--font-playfair);
 
-  /* Light mode: flip zinc values so text-zinc-300/400/500/600 render appropriately on white bg */
   --color-zinc-300: #52525B;
   --color-zinc-400: #71717A;
   --color-zinc-500: #A1A1AA;
@@ -42,7 +41,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Glassmorphism utility */
 .glass {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
@@ -52,32 +50,17 @@ body {
 .glass-premium {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(248, 246, 243, 0.9) 100%);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(200, 149, 109, 0.2);
+  border: 1px solid var(--accent-light);
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
 }
 
-/* Gold Gradient text and borders */
-.text-gold-gradient {
-  background: linear-gradient(135deg, #C8956D 0%, #D4A5A5 50%, #7C5CFC 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.border-gold-gradient {
-  border-image: linear-gradient(135deg, #C8956D, #D4A5A5, #7C5CFC) 1;
-}
-
-
-/* Host photos: interpolate smoothly when scaled */
 .host-img {
   image-rendering: auto;
 }
 
-/* Custom scrollbars */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #F0EDE8; }
 ::-webkit-scrollbar-thumb { background: #D4CFC8; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #C8956D; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-gold); }
 
-/* Input placeholders */
 ::placeholder, input::placeholder, textarea::placeholder { color: #B0B0B8; }

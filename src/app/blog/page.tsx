@@ -10,7 +10,7 @@ export default function BlogIndexPage() {
     <div className="min-h-screen bg-background text-foreground">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-black font-serif text-gold-gradient mb-4">
+          <h1 className="text-4xl md:text-5xl font-black font-serif text-foreground mb-4">
             Guides & Resources
           </h1>
           <p className="text-zinc-400 text-lg max-w-2xl">
@@ -23,7 +23,7 @@ export default function BlogIndexPage() {
           const catArticles = articles.filter((a) => a.category === category);
           return (
             <section key={category} className="mb-12">
-              <h2 className="text-xs font-semibold text-rose-gold uppercase tracking-widest mb-4">
+              <h2 className="text-xs font-semibold text-accent uppercase tracking-widest mb-4">
                 {category}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -31,7 +31,7 @@ export default function BlogIndexPage() {
                   <Link
                     key={article.slug}
                     href={`/blog/${article.slug}`}
-                    className="group block rounded-2xl bg-card-bg border border-card-border hover:border-rose-gold/30 transition-all overflow-hidden"
+                    className="group block rounded-2xl bg-card-bg border border-card-border hover:border-accent/30 transition-all overflow-hidden"
                   >
                     <div className="aspect-[2/1] relative overflow-hidden">
                       <img
@@ -42,7 +42,7 @@ export default function BlogIndexPage() {
                       <div className="absolute inset-0 bg-gradient-to-t from-card-bg via-card-bg/10 to-transparent" />
                     </div>
                     <div className="p-5">
-                      <h3 className="font-bold text-foreground group-hover:text-rose-gold transition-colors mb-2 leading-snug">
+                      <h3 className="font-bold text-foreground group-hover:text-accent transition-colors mb-2 leading-snug">
                         {article.title}
                       </h3>
                       <p className="text-sm text-zinc-500 leading-relaxed line-clamp-2 mb-3">

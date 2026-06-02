@@ -6,20 +6,31 @@ import { useLanguage } from '../lib/LanguageContext';
 import { useAuth } from '../lib/AuthContext';
 import { useTheme } from '../lib/ThemeContext';
 import { signOut } from '../lib/auth';
-import { Globe, Store, Award, User, LogOut, BookOpen, Bookmark, Heart, Moon, Sun, PartyPopper } from 'lucide-react';
+import { Globe, User, LogOut, Bookmark, Moon, Sun, Menu, X } from 'lucide-react';
 
 export const Header: React.FC = () => {
   const { language, setLanguage, t } = useLanguage();
   const { user, loading } = useAuth();
   const { theme, toggleTheme } = useTheme();
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+
+  const navLinks = [
+    { href: '/blog', label: language === 'ja' ? 'ガイド' : 'Guides' },
+    { href: '/clubs', label: language === 'ja' ? 'グループ' : 'Clubs' },
+    { href: '/hos-match', label: language === 'ja' ? 'ホスマッチ' : 'Hos-Match', accent: true },
+    { href: '/hos-tv', label: t('nav.hostv') },
+    { href: '/events', label: language === 'ja' ? 'イベント' : 'Events' },
+    { href: '/threads', label: t('nav.community') },
+    { href: '/ranking', label: t('nav.rankings') },
+  ];
 
   return (
     <header className="sticky top-0 z-50 w-full glass border-b border-card-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-        
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-2">
+
         {/* Logo */}
-        <a href="/" className="flex items-center gap-2">
+        <a href="/" className="flex items-center gap-2 shrink-0">
           <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center shadow-lg shadow-accent/20 text-lg">
             🥂
           </div>
@@ -33,32 +44,21 @@ export const Header: React.FC = () => {
           </div>
         </a>
 
-        {/* Navigation */}
+        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6 lg:gap-8">
-          <a href="/blog" className="text-sm font-medium text-zinc-300 hover:text-accent transition-colors flex items-center gap-2">
-            <BookOpen className="w-4 h-4" />
-            {language === 'ja' ? 'ガイド' : 'Guides'}
-          </a>
-          <a href="/clubs" className="text-sm font-medium text-zinc-300 hover:text-accent transition-colors flex items-center gap-2">
-            <Store className="w-4 h-4" />
-            {language === 'ja' ? 'グループ' : 'Clubs'}
-          </a>
-          <a href="/hos-match" className="text-sm font-medium text-accent hover:text-accent-light transition-colors flex items-center gap-2">
-            <Heart className="w-4 h-4" />
-            {language === 'ja' ? 'ホスマッチ' : 'Hos-Match'}
-          </a>
-          <a href="/events" className="text-sm font-medium text-zinc-300 hover:text-accent transition-colors flex items-center gap-2">
-            <PartyPopper className="w-4 h-4" />
-            {language === 'ja' ? 'イベント' : 'Events'}
-          </a>
-          <Link href="/ranking" className="text-sm font-medium text-zinc-300 hover:text-accent transition-colors flex items-center gap-2">
-            <Award className="w-4 h-4" />
-            {t('nav.rankings')}
-          </Link>
+          {navLinks.map(l => (
+            <a
+              key={l.href}
+              href={l.href}
+              className={`text-sm font-medium transition-colors ${l.accent ? 'text-accent hover:text-accent-light' : 'text-zinc-300 hover:text-accent'}`}
+            >
+              {l.label}
+            </a>
+          ))}
         </nav>
 
         {/* Controls */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4 shrink-0">
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
@@ -75,29 +75,29 @@ export const Header: React.FC = () => {
           {/* Language Toggle */}
           <button
             onClick={() => setLanguage(language === 'en' ? 'ja' : 'en')}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-card-border hover:border-accent/50 bg-card-bg/50 transition-all text-xs font-semibold text-zinc-300 cursor-pointer"
+            className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1.5 rounded-lg border border-card-border hover:border-accent/50 bg-card-bg/50 transition-all text-xs font-semibold text-zinc-300 cursor-pointer"
           >
             <Globe className="w-3.5 h-3.5 text-accent animate-pulse" />
-            <span>{language === 'en' ? '日本語' : 'English'}</span>
+            <span className="hidden sm:inline">{language === 'en' ? '日本語' : 'English'}</span>
           </button>
 
           {/* Auth */}
           {loading ? null : user ? (
             <div className="relative">
               <button
-                onClick={() => setMenuOpen(!menuOpen)}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-card-border hover:border-accent/50 bg-card-bg/50 transition-all text-xs font-semibold text-zinc-300 cursor-pointer"
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                className="flex items-center gap-2 px-2 sm:px-3 py-1.5 rounded-lg border border-card-border hover:border-accent/50 bg-card-bg/50 transition-all text-xs font-semibold text-zinc-300 cursor-pointer"
               >
                 <User className="w-3.5 h-3.5 text-accent" />
-                <span className="max-w-24 truncate">{user.email?.split('@')[0]}</span>
+                <span className="max-w-20 sm:max-w-24 truncate">{user.email?.split('@')[0]}</span>
               </button>
-              {menuOpen && (
+              {userMenuOpen && (
                 <>
-                  <div className="fixed inset-0 z-10" onClick={() => setMenuOpen(false)} />
+                  <div className="fixed inset-0 z-10" onClick={() => setUserMenuOpen(false)} />
                   <div className="absolute right-0 mt-2 w-48 bg-card-bg border border-card-border rounded-xl shadow-xl z-20 py-2">
                     <a
                       href="/favorites"
-                      onClick={() => setMenuOpen(false)}
+                      onClick={() => setUserMenuOpen(false)}
                       className="flex items-center gap-2 px-4 py-2 text-sm text-zinc-300 hover:text-accent hover:bg-background transition-colors"
                     >
                       <Bookmark className="w-4 h-4" />
@@ -105,7 +105,7 @@ export const Header: React.FC = () => {
                     </a>
                     <hr className="border-card-border my-1" />
                     <button
-                      onClick={() => { signOut(); setMenuOpen(false); }}
+                      onClick={() => { signOut(); setUserMenuOpen(false); }}
                       className="w-full flex items-center gap-2 px-4 py-2 text-sm text-zinc-300 hover:text-red-400 hover:bg-background transition-colors cursor-pointer"
                     >
                       <LogOut className="w-4 h-4" />
@@ -118,15 +118,53 @@ export const Header: React.FC = () => {
           ) : (
             <a
               href="/auth"
-              className="flex items-center gap-2 px-4 py-1.5 rounded-lg bg-accent text-background font-semibold text-xs hover:opacity-90 transition-opacity"
+              className="flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-lg bg-accent text-background font-semibold text-xs hover:opacity-90 transition-opacity"
             >
               <User className="w-3.5 h-3.5" />
               Sign In
             </a>
           )}
+
+          {/* Hamburger */}
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg border border-card-border hover:border-accent/50 bg-card-bg/50 transition-all cursor-pointer"
+            aria-label="Toggle navigation"
+          >
+            {mobileOpen ? (
+              <X className="w-4 h-4 text-accent" />
+            ) : (
+              <Menu className="w-4 h-4 text-accent" />
+            )}
+          </button>
         </div>
 
       </div>
+
+      {/* Mobile Navigation Drawer */}
+      {mobileOpen && (
+        <>
+          <div className="fixed inset-0 z-40 bg-black/40" onClick={() => setMobileOpen(false)} />
+          <div className="absolute top-20 left-0 right-0 z-50 bg-card-bg border-b border-card-border shadow-xl md:hidden">
+            <nav className="px-4 py-4 space-y-1">
+              {navLinks.map(l => (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={`block px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
+                    l.accent
+                      ? 'text-accent bg-accent/5 hover:bg-accent/10'
+                      : 'text-zinc-300 hover:text-accent hover:bg-accent/5'
+                  }`}
+                >
+                  {l.label}
+                </a>
+              ))}
+            </nav>
+          </div>
+        </>
+      )}
     </header>
   );
 };

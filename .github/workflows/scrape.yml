@@ -42,5 +42,20 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: node scripts/scrape.js --${{ github.event.inputs.mode || 'all' }}-only
 
+      - name: 🎬 Fetch latest hos-tv YouTube videos
+        run: node scripts/fetch-hos-tv.js
+
+      - name: 📤 Commit updated hos-tv data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/hos-tv.ts
+          if git diff --cached --quiet; then
+            echo "No changes to hos-tv.ts"
+          else
+            git commit -m "chore: auto-update hos-tv video data [skip ci]"
+            git push
+          fi
+
       - name: 📊 Report completion
         run: echo "✅ OshiHost scraping pipeline completed at $(date -u)"

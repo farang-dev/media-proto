@@ -12,7 +12,8 @@ export const translations: Translations = {
     'nav.home': 'Discovery',
     'nav.rankings': 'Ranking',
     'nav.guide': 'Culture Guide',
-    'nav.community': 'Oshi Talks',
+    'nav.community': 'Threads',
+    'nav.hostv': 'Hos-TV',
     'nav.about': 'About Host Culture',
     'hero.title': 'OshiHos KABUKICHO HOST',
     'hero.subtitle': 'Discover Kabukicho\'s top host stars. Browse real-time rankings, explore profiles, and find your perfect host.',
@@ -54,7 +55,7 @@ export const translations: Translations = {
     'clubs.hosts': 'hosts',
 
     // Community
-    'community.title': 'Oshi Talks',
+    'community.title': 'Threads',
     'community.subtitle': 'Discuss host fashion trends, share experiences, and connect with fans.',
     'community.create_thread': 'Start a New Discussion',
     'community.thread_title_placeholder': 'e.g., Any advice for a solo female traveler visiting Fuyutsuki Group?',
@@ -87,8 +88,10 @@ export const translations: Translations = {
     'events.this_week': 'This Week\'s Events',
     'events.at': 'at',
 
-    'ads.hiring': 'Discover Shinjuku nightlife. Leading clubs offer premium VIP reservations and safety-guided access for international guests.',
-    'ads.vip_booking': 'Want a safe, guided tour of Kabukicho\'s top host clubs? Contact our bilingual booking assistants.',
+    'culture.title': 'Know Host Culture',
+    'culture.subtitle': 'Get insider knowledge about Kabukicho host clubs — from a beginner\'s first visit to understanding the groups, pricing, and etiquette.',
+    'culture.watch_video': 'Host Culture Basics',
+    'culture.read_more': 'Read More Guides',
   },
   ja: {
     // Header & Navigation
@@ -96,6 +99,7 @@ export const translations: Translations = {
     'nav.rankings': 'ランキング',
     'nav.guide': 'カルチャーガイド',
     'nav.community': '推しトーク',
+    'nav.hostv': 'ホスTV',
     'nav.about': 'ホスト文化について',
     'hero.title': '推しホス - 歌舞伎町',
     'hero.subtitle': '歌舞伎町のトップホストスターを発見。リアルタイムランキング、プロフィール、お気に入りのホストを見つけよう。',
@@ -170,7 +174,9 @@ export const translations: Translations = {
     'events.this_week': '今週のイベント',
     'events.at': '開催',
 
-    'ads.hiring': '新宿歌舞伎町のナイトカルチャーを体験。大手グループがインバウンド向けに安全な予約プランとVIPシートを提供中。',
-    'ads.vip_booking': '外国人観光客向け：歌舞伎町ホストクラブの安全なガイドツアーとバイリンガル予約はこちら。',
+    'culture.title': 'ホスト文化を知る',
+    'culture.subtitle': '歌舞伎町ホストクラブの全てがわかる — 初めての方から上級者まで、グループ、料金、マナーを徹底解説。',
+    'culture.watch_video': 'ホスト文化の基礎',
+    'culture.read_more': 'ガイドをもっと読む',
   }
 };

@@ -4,8 +4,8 @@ import React from 'react';
 import { HeroSection } from '../components/HeroSection';
 import { ClubsSection } from '../components/ClubsSection';
 import { RankingSection } from '../components/RankingSection';
+import { KnowHostCulture } from '../components/KnowHostCulture';
 import { CommunitySection } from '../components/CommunitySection';
-import { AdBanner } from '../components/AdBanner';
 
 export default function HomePage() {
   return (
@@ -13,7 +13,7 @@ export default function HomePage() {
       <HeroSection />
       <ClubsSection />
       <RankingSection />
-      <AdBanner />
+      <KnowHostCulture />
       <CommunitySection />
     </>
   );

@@ -39,7 +39,7 @@ export default function BlogIndexPage() {
                         alt={article.title}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-card-bg via-card-bg/10 to-transparent" />
+
                     </div>
                     <div className="p-5">
                       <h3 className="font-bold text-foreground group-hover:text-accent transition-colors mb-2 leading-snug">

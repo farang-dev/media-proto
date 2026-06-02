@@ -49,12 +49,12 @@ export default function TikTokEmbed({ tiktokUrl }: { tiktokUrl?: string }) {
   if (parsed.type === 'video' && parsed.videoId && parsed.username) {
     return (
       <div className="rounded-2xl overflow-hidden bg-card-bg border border-card-border">
-        <div ref={containerRef}>
+        <div ref={containerRef} className="overflow-hidden max-w-full">
           <blockquote
             className="tiktok-embed"
             cite={`https://www.tiktok.com/@${parsed.username}/video/${parsed.videoId}`}
             data-video-id={parsed.videoId}
-            style={{ maxWidth: 605, minWidth: 325 }}
+            style={{ maxWidth: '100%', width: 605, minWidth: 325 }}
           >
             <section>
               <a target="_blank" href={`https://www.tiktok.com/@${parsed.username}/video/${parsed.videoId}`}>
@@ -70,13 +70,13 @@ export default function TikTokEmbed({ tiktokUrl }: { tiktokUrl?: string }) {
   if (parsed.type === 'profile' && parsed.username) {
     return (
       <div className="rounded-2xl overflow-hidden bg-card-bg border border-card-border">
-        <div ref={containerRef}>
+        <div ref={containerRef} className="overflow-hidden max-w-full">
           <blockquote
             className="tiktok-embed"
             cite={`https://www.tiktok.com/@${parsed.username}`}
             data-unique-id={parsed.username}
             data-embed-type="creator"
-            style={{ maxWidth: 780, minWidth: 288 }}
+            style={{ maxWidth: '100%', width: 780, minWidth: 288 }}
           >
             <section>
               <a target="_blank" href={`https://www.tiktok.com/@${parsed.username}`}>

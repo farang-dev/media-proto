@@ -34,7 +34,7 @@ function ShopCard({ shop, gradient }: { shop: GroupClub['shops'][0]; gradient: s
     <Link
       key={shop.id}
       href={`/clubs/${shop.id}`}
-      className="relative rounded-2xl overflow-hidden bg-card-bg border border-card-border hover:border-accent/40 transition-all duration-300 group block aspect-[1/1]"
+      className="relative rounded-2xl overflow-hidden bg-card-bg border border-card-border hover:border-accent/40 transition-all duration-300 group block aspect-[3/4] sm:aspect-[1/1]"
     >
       {/* Background image */}
       {shop.logo_url ? (

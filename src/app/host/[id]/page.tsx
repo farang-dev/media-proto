@@ -3,7 +3,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { use } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Heart, MessageSquare, Calendar, Ruler, Droplets, Share2, Bookmark, ChevronLeft, ChevronRight, Music2 } from 'lucide-react';
+import {
+  ArrowLeft, Heart, Ruler, Droplets, Calendar,
+  Share2, Bookmark, ChevronLeft, ChevronRight, Music2, MapPin
+} from 'lucide-react';
 import Link from 'next/link';
 import { Host, getHost, getHostsByShop, castVote, addFavorite, removeFavorite, getFavoriteIds } from '@/lib/db';
 import { useLanguage } from '@/lib/LanguageContext';
@@ -103,8 +106,9 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
         <div className="max-w-5xl mx-auto px-4 py-8">
           <div className="animate-pulse space-y-6">
             <div className="h-8 w-24 bg-card-bg rounded-lg" />
+            <div className="h-96 bg-card-bg rounded-2xl" />
             <div className="flex flex-col lg:flex-row gap-8">
-              <div className="w-full lg:w-1/2 aspect-[3/4] bg-card-bg rounded-2xl" />
+              <div className="w-full lg:w-1/3 aspect-[3/4] bg-card-bg rounded-2xl" />
               <div className="flex-1 space-y-4">
                 <div className="h-8 bg-card-bg rounded-full w-3/4" />
                 <div className="h-4 bg-card-bg rounded-full w-1/2" />
@@ -139,6 +143,7 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
   const qaDataJa = host.qa_data;
   const qaDataEn = host.qa_data_en;
   const qaKeys = qaDataJa ? Object.keys(qaDataJa) : [];
+  const hasTikTok = !!host.tiktok_url;
 
   return (
     <div className="min-h-screen bg-background">
@@ -152,7 +157,8 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
           {language === 'ja' ? 'トップに戻る' : 'Back'}
         </Link>
 
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
+        {/* Profile section */}
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 mb-16">
           {/* Image gallery */}
           <div className="w-full sm:max-w-[300px]">
             <div className="relative rounded-2xl overflow-hidden bg-card-bg border border-card-border mb-3 group">
@@ -198,7 +204,6 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
               )}
             </div>
 
-            {/* Thumbnail strip */}
             {images.length > 1 && (
               <div className="flex gap-2 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none' }}>
                 {images.map((url, i) => (
@@ -222,45 +227,52 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
             )}
           </div>
 
-          {/* Host info */}
+          {/* Info */}
           <div className="flex-1 space-y-6">
             <div>
               {groupName && (
-                <p className="text-xs font-semibold text-accent-gold uppercase tracking-wider mb-1">{groupName}</p>
+                <p className="text-xs font-semibold text-accent-gold uppercase tracking-wider mb-1">
+                  {groupName}
+                </p>
               )}
               {shopName && (
-                <p className="text-sm text-accent font-semibold mb-1">{shopName}</p>
+                <p className="text-sm text-accent font-semibold mb-1 flex items-center gap-1.5">
+                  <MapPin className="w-3 h-3" />
+                  {shopName}
+                </p>
               )}
-              <h1 className="text-4xl sm:text-5xl font-black font-serif text-foreground leading-tight">{name}</h1>
+              <h1 className="text-4xl sm:text-5xl font-black font-serif text-foreground leading-tight">
+                {name}
+              </h1>
             </div>
 
             {/* Bio */}
             {bio && (
-              <p className="text-sm text-zinc-300 leading-relaxed">{bio}</p>
+              <p className="text-sm text-zinc-500 leading-relaxed">{bio}</p>
             )}
 
             {/* Stats */}
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-2">
               {host.height && (
-                <span className="flex items-center gap-1.5 text-xs text-zinc-400 bg-black/5 px-3 py-1.5 rounded-full">
-                  <Ruler className="w-3 h-3 text-zinc-500" />
+                <span className="flex items-center gap-1.5 text-xs text-zinc-500 bg-black/5 px-3 py-1.5 rounded-full">
+                  <Ruler className="w-3 h-3" />
                   {host.height}
                 </span>
               )}
               {host.blood_type && (
-                <span className="flex items-center gap-1.5 text-xs text-zinc-400 bg-black/5 px-3 py-1.5 rounded-full">
-                  <Droplets className="w-3 h-3 text-zinc-500" />
+                <span className="flex items-center gap-1.5 text-xs text-zinc-500 bg-black/5 px-3 py-1.5 rounded-full">
+                  <Droplets className="w-3 h-3" />
                   {language === 'ja' ? `${host.blood_type}型` : `Type ${host.blood_type}`}
                 </span>
               )}
               {host.birthday && looksLikeDate(host.birthday) && (
-                <span className="flex items-center gap-1.5 text-xs text-zinc-400 bg-black/5 px-3 py-1.5 rounded-full">
-                  <Calendar className="w-3 h-3 text-zinc-500" />
+                <span className="flex items-center gap-1.5 text-xs text-zinc-500 bg-black/5 px-3 py-1.5 rounded-full">
+                  <Calendar className="w-3 h-3" />
                   {host.birthday}
                 </span>
               )}
               {host.rank_in_shop && (
-                <span className="text-xs text-zinc-400 bg-black/5 px-3 py-1.5 rounded-full">
+                <span className="text-xs text-zinc-500 bg-black/5 px-3 py-1.5 rounded-full">
                   {language === 'ja' ? `店舗内順位: ${host.rank_in_shop}位` : `Shop Rank: #${host.rank_in_shop}`}
                 </span>
               )}
@@ -273,7 +285,7 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
                   className="w-10 h-10 rounded-xl bg-black/5 hover:bg-accent/20 border border-card-border flex items-center justify-center transition-colors"
                   title="Instagram"
                 >
-                  <svg className="w-4 h-4 text-zinc-400 hover:text-accent transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg className="w-4 h-4 text-zinc-500 hover:text-accent transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
                     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
                     <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
@@ -285,7 +297,7 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
                   className="w-10 h-10 rounded-xl bg-black/5 hover:bg-accent-gold/20 border border-card-border flex items-center justify-center transition-colors"
                   title="X (Twitter)"
                 >
-                  <svg className="w-4 h-4 text-zinc-400 hover:text-accent-gold transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg className="w-4 h-4 text-zinc-500 hover:text-accent-gold transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>
                   </svg>
                 </a>
@@ -295,7 +307,7 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
                   className="w-10 h-10 rounded-xl bg-black/5 hover:bg-pink-400/20 border border-card-border flex items-center justify-center transition-colors"
                   title="TikTok"
                 >
-                  <Music2 className="w-4 h-4 text-zinc-400 hover:text-pink-400 transition-colors" />
+                  <Music2 className="w-4 h-4 text-zinc-500 hover:text-pink-400 transition-colors" />
                 </a>
               )}
               {host.youtube_url && (
@@ -303,55 +315,45 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
                   className="w-10 h-10 rounded-xl bg-black/5 hover:bg-red-500/20 border border-card-border flex items-center justify-center transition-colors"
                   title="YouTube"
                 >
-                  <svg className="w-4 h-4 text-zinc-400 hover:text-red-500 transition-colors" viewBox="0 0 24 24" fill="currentColor">
+                  <svg className="w-4 h-4 text-zinc-500 hover:text-red-500 transition-colors" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.38.55A3.02 3.02 0 0 0 .5 6.19 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.81 3.02 3.02 0 0 0 2.12 2.14c1.88.55 9.38.55 9.38.55s7.5 0 9.38-.55a3.02 3.02 0 0 0 2.12-2.14A31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.81zM9.55 15.57V8.43L15.82 12l-6.27 3.57z"/>
                   </svg>
                 </a>
               )}
-              <Link
-                href={`/host/${host.id}`}
-                className="w-10 h-10 rounded-xl bg-black/5 hover:bg-accent-light/20 border border-card-border flex items-center justify-center transition-colors"
-                title="Profile"
-              >
-                <MessageSquare className="w-4 h-4 text-zinc-400 hover:text-accent-light transition-colors" />
-              </Link>
             </div>
 
-            {/* Vote button */}
-            <motion.button
-              onClick={handleVote}
-              disabled={voteLoading}
-              className={`w-full sm:w-auto px-8 py-3 rounded-xl font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2 cursor-pointer ${
-                voted
-                  ? 'bg-accent/10 text-accent border border-accent/30 cursor-default'
-                  : 'bg-gradient-to-r from-accent to-accent-light text-background hover:shadow-lg hover:shadow-accent/30 hover:scale-[1.02] active:scale-[0.98]'
-              }`}
-            >
-              <Heart className={`w-4 h-4 ${voted ? 'fill-accent' : ''}`} />
-              {voteLoading ? '...' : voted ? t('rank.voted') : t('rank.vote')}
-            </motion.button>
-
-            {/* Share + Save row */}
+            {/* Vote + Bookmark + Share row */}
             <div className="flex items-center gap-3">
-              {/* Bookmark */}
+              <motion.button
+                onClick={handleVote}
+                disabled={voteLoading}
+                className={`px-6 py-2.5 rounded-xl font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                  voted
+                    ? 'bg-accent/10 text-accent border border-accent/30 cursor-default'
+                    : 'bg-gradient-to-r from-accent to-accent-light text-background hover:shadow-lg hover:shadow-accent/30 hover:scale-[1.02] active:scale-[0.98]'
+                }`}
+              >
+                <Heart className={`w-4 h-4 ${voted ? 'fill-accent' : ''}`} />
+                {voteLoading ? '...' : voted ? t('rank.voted') : t('rank.vote')}
+              </motion.button>
+
               <button
                 onClick={handleFavorite}
                 disabled={favLoading}
                 className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all border cursor-pointer ${
                   favorited
                     ? 'bg-accent text-background border-accent'
-                    : 'bg-black/5 text-zinc-400 hover:text-accent hover:border-accent/30 border-card-border'
+                    : 'bg-black/5 text-zinc-500 hover:text-accent hover:border-accent/30 border-card-border'
                 }`}
               >
                 <Bookmark className={`w-4 h-4 ${favorited ? 'fill-background' : ''}`} />
               </button>
 
-              {/* Share */}
               <button
                 onClick={handleShare}
                 className="w-10 h-10 rounded-xl bg-black/5 hover:bg-accent-light/20 border border-card-border flex items-center justify-center transition-colors cursor-pointer relative"
               >
-                <Share2 className="w-4 h-4 text-zinc-400 hover:text-accent-light transition-colors" />
+                <Share2 className="w-4 h-4 text-zinc-500 hover:text-accent-light transition-colors" />
                 {shareMsg && (
                   <span className="absolute -top-8 left-1/2 -translate-x-1/2 text-[10px] bg-foreground text-background px-2 py-0.5 rounded whitespace-nowrap">
                     {shareMsg}
@@ -362,9 +364,22 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
           </div>
         </div>
 
+        {/* TikTok Section */}
+        {hasTikTok && (
+          <div className="mb-16">
+            <h2 className="text-xl font-bold font-serif text-foreground mb-6 flex items-center gap-2">
+              <Music2 className="w-5 h-5 text-pink-400" />
+              <span>{language === 'ja' ? 'TikTok 動画' : 'TikTok Videos'}</span>
+            </h2>
+            <div className="relative rounded-2xl overflow-hidden bg-card-bg border border-card-border">
+              <TikTokEmbed tiktokUrl={host.tiktok_url} />
+            </div>
+          </div>
+        )}
+
         {/* Q&A Section */}
         {qaKeys.length > 0 && (
-          <div className="mt-16">
+          <div className="mb-16">
             <h2 className="text-xl font-bold font-serif text-foreground mb-6">
               {language === 'ja' ? 'プロフィール' : 'Profile Q&A'}
             </h2>
@@ -387,27 +402,14 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
           </div>
         )}
 
-        {/* TikTok Section */}
-        {host.tiktok_url && (
-          <div className="mt-16 max-w-md">
-            <h2 className="text-xl font-bold font-serif text-foreground mb-6">
-              <div className="flex items-center gap-2">
-                <Music2 className="w-5 h-5 text-pink-400" />
-                <span>{language === 'ja' ? 'TikTok 動画' : 'TikTok Videos'}</span>
-              </div>
-            </h2>
-            <TikTokEmbed tiktokUrl={host.tiktok_url} />
-          </div>
-        )}
-
         {/* Comments */}
-        <div className="mt-16 max-w-xl">
+        <div className="mb-16 max-w-xl">
           <CommentSection type="host" targetId={id} />
         </div>
 
         {/* Same-shop hosts */}
         {relatedHosts.length > 0 && (
-          <div className="mt-16">
+          <div className="mb-16">
             <h2 className="text-xl font-bold font-serif text-foreground mb-6">
               {language === 'ja' ? '同じお店のホスト' : 'Same Shop Hosts'}
             </h2>

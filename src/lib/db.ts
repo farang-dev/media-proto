@@ -683,6 +683,7 @@ export interface EventItem {
   group_id?: string;
   event_date: string;
   group?: Group;
+  shop?: Shop;
 }
 
 export async function getEvents(): Promise<EventItem[]> {
@@ -694,7 +695,8 @@ export async function getEvents(): Promise<EventItem[]> {
 
   const { data, error } = await supabase
     .from('events')
-    .select('*, group:groups(*)')
+    .select('*, group:groups(*), shop:shops(*)')
+    .not('shop_id', 'is', null)
     .gte('event_date', today)
     .lte('event_date', weekLater)
     .order('event_date', { ascending: true });

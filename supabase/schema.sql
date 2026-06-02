@@ -1,16 +1,8 @@
 -- Enable UUID extension if not exists
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- Drop existing tables if they exist (in reverse order of dependencies)
-DROP TABLE IF EXISTS comments CASCADE;
-DROP TABLE IF EXISTS threads CASCADE;
-DROP TABLE IF EXISTS votes CASCADE;
-DROP TABLE IF EXISTS hosts CASCADE;
-DROP TABLE IF EXISTS shops CASCADE;
-DROP TABLE IF EXISTS groups CASCADE;
-
 -- 0. グループ情報 (Groups)
-CREATE TABLE groups (
+CREATE TABLE IF NOT EXISTS groups (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name_ja VARCHAR NOT NULL,
   name_en VARCHAR,
@@ -24,7 +16,7 @@ CREATE TABLE groups (
 );
 
 -- 1. 店舗情報 (Shops)
-CREATE TABLE shops (
+CREATE TABLE IF NOT EXISTS shops (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name_ja VARCHAR NOT NULL,
   name_en VARCHAR,
@@ -48,7 +40,7 @@ CREATE TABLE shops (
 );
 
 -- 2. ホスト情報 (Hosts)
-CREATE TABLE hosts (
+CREATE TABLE IF NOT EXISTS hosts (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   shop_id UUID REFERENCES shops(id) ON DELETE CASCADE,
   name_ja VARCHAR NOT NULL,
@@ -78,7 +70,7 @@ CREATE TABLE hosts (
 );
 
 -- 3. ユーザー投票・リアルタイムお気に入りランキング (Votes)
-CREATE TABLE votes (
+CREATE TABLE IF NOT EXISTS votes (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   host_id UUID REFERENCES hosts(id) ON DELETE CASCADE,
   user_ip_or_id VARCHAR NOT NULL, -- 簡易的な重複投票防止用
@@ -86,7 +78,7 @@ CREATE TABLE votes (
 );
 
 -- 4. コミュニティスレッド (Threads)
-CREATE TABLE threads (
+CREATE TABLE IF NOT EXISTS threads (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   title VARCHAR NOT NULL,
   host_id UUID REFERENCES hosts(id) ON DELETE SET NULL, -- 特定ホストに関するスレッド用
@@ -94,7 +86,7 @@ CREATE TABLE threads (
 );
 
 -- 5. スレッド内コメント (Comments)
-CREATE TABLE comments (
+CREATE TABLE IF NOT EXISTS comments (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   thread_id UUID REFERENCES threads(id) ON DELETE CASCADE,
   user_id UUID, -- ログインユーザー用(任意)
@@ -111,32 +103,74 @@ ALTER TABLE votes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE threads ENABLE ROW LEVEL SECURITY;
 ALTER TABLE comments ENABLE ROW LEVEL SECURITY;
 
--- 0. Groups Policies: anyone can view; service_role can insert/update/delete
-CREATE POLICY "Groups are viewable by everyone" ON groups FOR SELECT USING (true);
-CREATE POLICY "Groups are insertable by service_role" ON groups FOR INSERT WITH CHECK (true);
-CREATE POLICY "Groups are updatable by service_role" ON groups FOR UPDATE USING (true);
+-- 0. Groups Policies
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Groups are viewable by everyone') THEN
+    CREATE POLICY "Groups are viewable by everyone" ON groups FOR SELECT USING (true);
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Groups are insertable by service_role') THEN
+    CREATE POLICY "Groups are insertable by service_role" ON groups FOR INSERT WITH CHECK (true);
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Groups are updatable by service_role') THEN
+    CREATE POLICY "Groups are updatable by service_role" ON groups FOR UPDATE USING (true);
+  END IF;
+END $$;
 
--- 1. Shops Policies: anyone can view; service_role can insert/update/delete
-CREATE POLICY "Shops are viewable by everyone" ON shops FOR SELECT USING (true);
-CREATE POLICY "Shops are insertable by service_role" ON shops FOR INSERT WITH CHECK (true);
-CREATE POLICY "Shops are updatable by service_role" ON shops FOR UPDATE USING (true);
+-- 1. Shops Policies
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Shops are viewable by everyone') THEN
+    CREATE POLICY "Shops are viewable by everyone" ON shops FOR SELECT USING (true);
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Shops are insertable by service_role') THEN
+    CREATE POLICY "Shops are insertable by service_role" ON shops FOR INSERT WITH CHECK (true);
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Shops are updatable by service_role') THEN
+    CREATE POLICY "Shops are updatable by service_role" ON shops FOR UPDATE USING (true);
+  END IF;
+END $$;
 
--- 2. Hosts Policies: anyone can view; service_role can insert/update/delete
-CREATE POLICY "Hosts are viewable by everyone" ON hosts FOR SELECT USING (true);
-CREATE POLICY "Hosts are insertable by service_role" ON hosts FOR INSERT WITH CHECK (true);
-CREATE POLICY "Hosts are updatable by service_role" ON hosts FOR UPDATE USING (true);
+-- 2. Hosts Policies
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Hosts are viewable by everyone') THEN
+    CREATE POLICY "Hosts are viewable by everyone" ON hosts FOR SELECT USING (true);
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Hosts are insertable by service_role') THEN
+    CREATE POLICY "Hosts are insertable by service_role" ON hosts FOR INSERT WITH CHECK (true);
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Hosts are updatable by service_role') THEN
+    CREATE POLICY "Hosts are updatable by service_role" ON hosts FOR UPDATE USING (true);
+  END IF;
+END $$;
 
--- 3. Votes Policies: anyone can view votes; anyone can insert votes
-CREATE POLICY "Votes are viewable by everyone" ON votes FOR SELECT USING (true);
-CREATE POLICY "Votes can be inserted by everyone" ON votes FOR INSERT WITH CHECK (true);
+-- 3. Votes Policies
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Votes are viewable by everyone') THEN
+    CREATE POLICY "Votes are viewable by everyone" ON votes FOR SELECT USING (true);
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Votes can be inserted by everyone') THEN
+    CREATE POLICY "Votes can be inserted by everyone" ON votes FOR INSERT WITH CHECK (true);
+  END IF;
+END $$;
 
--- 4. Threads Policies: anyone can view; anyone can insert
-CREATE POLICY "Threads are viewable by everyone" ON threads FOR SELECT USING (true);
-CREATE POLICY "Threads can be created by everyone" ON threads FOR INSERT WITH CHECK (true);
+-- 4. Threads Policies
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Threads are viewable by everyone') THEN
+    CREATE POLICY "Threads are viewable by everyone" ON threads FOR SELECT USING (true);
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Threads can be created by everyone') THEN
+    CREATE POLICY "Threads can be created by everyone" ON threads FOR INSERT WITH CHECK (true);
+  END IF;
+END $$;
 
--- 5. Comments Policies: anyone can view; anyone can insert
-CREATE POLICY "Comments are viewable by everyone" ON comments FOR SELECT USING (true);
-CREATE POLICY "Comments can be created by everyone" ON comments FOR INSERT WITH CHECK (true);
+-- 5. Comments Policies
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Comments are viewable by everyone') THEN
+    CREATE POLICY "Comments are viewable by everyone" ON comments FOR SELECT USING (true);
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Comments can be created by everyone') THEN
+    CREATE POLICY "Comments can be created by everyone" ON comments FOR INSERT WITH CHECK (true);
+  END IF;
+END $$;
 
 -- 7. お気に入り (Favorites / Bookmarks)
 CREATE TABLE IF NOT EXISTS favorites (
@@ -265,4 +299,3 @@ ALTER TABLE hosts ADD COLUMN IF NOT EXISTS image_urls TEXT[] DEFAULT '{}';
 ALTER TABLE hosts ADD COLUMN IF NOT EXISTS instagram_url TEXT;
 ALTER TABLE hosts ADD COLUMN IF NOT EXISTS twitter_url TEXT;
 ALTER TABLE hosts ADD COLUMN IF NOT EXISTS tiktok_url TEXT;
-*/

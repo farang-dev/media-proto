@@ -99,7 +99,7 @@ function GroupSection({ group }: { group: GroupClub }) {
   const groupName = getEnglishName(group.name_ja, group.name_en);
   const gradient = getGroupGradient(group.name_ja);
   const extra = (groupsExtra as ExtraMap)[group.id] || {};
-  const heroImage = extra.image_urls?.find(u => u.includes('pr_img')) || extra.image_urls?.[0] || group.image_urls?.[0] || group.logo_url || '';
+  const heroImage = group.image_urls?.find(u => u.includes('pr_img')) || group.image_urls?.[0] || extra.image_urls?.find(u => u.includes('pr_img')) || extra.image_urls?.[0] || group.logo_url || '';
   const groupDesc = group.description_en || '';
 
   return (

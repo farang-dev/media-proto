@@ -65,8 +65,8 @@ export const ClubsSection: React.FC = () => {
           {groups.map((group, index) => {
             const name = language === 'ja' ? group.name_ja : getEnglishName(group.name_ja, group.name_en);
             const extraGroup = extra[group.id] || extra[group.name_ja] || {};
-            const coverImage = extraGroup.image_urls?.find(u => u.includes('pr_img')) || extraGroup.image_urls?.[0] || group.image_urls?.[0] || group.logo_url || '';
-            const descEn = extraGroup.description_en || '';
+            const coverImage = group.image_urls?.find(u => u.includes('pr_img')) || group.image_urls?.[0] || extraGroup.image_urls?.find(u => u.includes('pr_img')) || extraGroup.image_urls?.[0] || group.logo_url || '';
+            const descEn = group.description_en || extraGroup.description_en || '';
             const descJa = group.description_ja || extraGroup.description_ja || '';
             const description = language === 'ja' ? descJa : (descEn || descJa);
 

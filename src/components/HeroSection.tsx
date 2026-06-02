@@ -40,7 +40,7 @@ export const HeroSection: React.FC = () => {
   const particles = Array.from({ length: 12 });
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-4">
+    <section className="relative min-h-[70vh] sm:min-h-screen flex flex-col items-center justify-center overflow-hidden px-4">
       {/* Animated background */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-background" />
@@ -64,7 +64,9 @@ export const HeroSection: React.FC = () => {
         />
 
         {particles.map((_, i) => (
-          <FloatingParticle key={i} index={i} />
+          <div key={i} className={i >= 6 ? 'hidden sm:block' : ''}>
+            <FloatingParticle index={i} />
+          </div>
         ))}
       </div>
 
@@ -74,7 +76,7 @@ export const HeroSection: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.5, delay: 0.5 }}
-          className="text-[18vw] sm:text-[14vw] font-black font-serif text-foreground/[0.04] tracking-tight leading-none"
+          className="text-[14vw] sm:text-[14vw] font-black font-serif text-foreground/[0.04] tracking-tight leading-none"
         >
           OshiHos
         </motion.span>

@@ -178,9 +178,9 @@ export default function ThreadsPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-6 sm:mb-8">
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-accent transition-colors mb-6 group"
@@ -188,7 +188,7 @@ export default function ThreadsPage() {
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
             {t('nav.home')}
           </Link>
-          <h1 className="text-3xl md:text-4xl font-black font-serif text-foreground mb-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black font-serif text-foreground mb-2">
             {t('community.title')}
           </h1>
           <p className="text-sm text-zinc-500 max-w-xl leading-relaxed">

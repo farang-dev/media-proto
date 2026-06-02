@@ -39,13 +39,13 @@ export const ClubsSection: React.FC = () => {
   if (!loading && groups.length === 0) return null;
 
   return (
-    <section id="clubs" className="py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+    <section id="clubs" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
       <div className="text-center mb-12">
         <motion.h2
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-3xl md:text-4xl font-black font-serif text-foreground mb-3"
+          className="text-2xl sm:text-3xl md:text-4xl font-black font-serif text-foreground mb-3"
         >
           {t('clubs.title')}
         </motion.h2>
@@ -78,7 +78,7 @@ export const ClubsSection: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.08 }}
-                className="relative block rounded-2xl overflow-hidden bg-card-bg border border-card-border hover:border-accent/40 transition-all duration-300 group h-40 sm:h-48"
+                className="relative block rounded-2xl overflow-hidden bg-card-bg border border-card-border hover:border-accent/40 transition-all duration-300 group min-h-[14rem] sm:h-48 grid"
               >
                 {coverImage ? (
                   <img
@@ -89,9 +89,9 @@ export const ClubsSection: React.FC = () => {
                 ) : null}
                 <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-black/20" />
 
-                <div className="relative z-10 h-full flex items-center px-6 sm:px-8">
+                <div className="relative z-10 flex items-center px-5 sm:px-8">
                   <div className="max-w-2xl">
-                    <h3 className="text-xl sm:text-2xl font-bold font-serif text-white mb-1 drop-shadow-lg">
+                    <h3 className="text-lg sm:text-2xl font-bold font-serif text-white mb-1 drop-shadow-lg">
                       {name}
                     </h3>
                     <div className="flex items-center gap-4 text-xs text-white/60 mb-2">
@@ -105,7 +105,7 @@ export const ClubsSection: React.FC = () => {
                       </span>
                     </div>
                     {description && (
-                      <p className="text-sm text-white/80 leading-relaxed drop-shadow max-w-xl">
+                      <p className="text-xs sm:text-sm text-white/80 leading-relaxed drop-shadow max-w-xl line-clamp-3 sm:line-clamp-none">
                         {description}
                       </p>
                     )}

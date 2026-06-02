@@ -94,7 +94,7 @@ export default function FavoritesPage() {
           {language === 'ja' ? 'トップに戻る' : 'Back'}
         </Link>
 
-        <h1 className="text-3xl sm:text-4xl font-black font-serif text-foreground mb-8 flex items-center gap-3">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-black font-serif text-foreground mb-6 sm:mb-8 flex items-center gap-3">
           <Bookmark className="w-7 h-7 text-accent" />
           {language === 'ja' ? 'お気に入り' : 'My Favorites'}
         </h1>

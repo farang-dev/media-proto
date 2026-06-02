@@ -50,17 +50,17 @@ export default function HosTvPage() {
   const { t, language } = useLanguage();
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="mb-10">
+    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+        <div className="mb-6 sm:mb-10">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-accent transition-colors mb-6 group"
+            className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-accent transition-colors mb-4 sm:mb-6 group"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
             {t('nav.home')}
           </Link>
-          <h1 className="text-3xl md:text-4xl font-black font-serif text-foreground mb-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black font-serif text-foreground mb-2">
             {language === 'ja' ? 'ホスTV' : 'Hos-TV'}
           </h1>
           <p className="text-sm text-zinc-500 max-w-xl leading-relaxed">
@@ -113,7 +113,7 @@ export default function HosTvPage() {
               </div>
 
               {channel.videos.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                   {channel.videos.map((video) => (
                     <div
                       key={video.id}

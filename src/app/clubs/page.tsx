@@ -34,7 +34,7 @@ function ShopCard({ shop, gradient }: { shop: GroupClub['shops'][0]; gradient: s
     <Link
       key={shop.id}
       href={`/clubs/${shop.id}`}
-      className="relative rounded-2xl overflow-hidden bg-card-bg border border-card-border hover:border-accent/40 transition-all duration-300 group block aspect-[3/4] sm:aspect-[1/1]"
+      className="relative rounded-2xl overflow-hidden bg-card-bg border border-card-border hover:border-accent/40 transition-all duration-300 group block aspect-[4/5] sm:aspect-[1/1] min-h-[18rem] sm:min-h-0"
     >
       {/* Background image */}
       {shop.logo_url ? (
@@ -58,11 +58,11 @@ function ShopCard({ shop, gradient }: { shop: GroupClub['shops'][0]; gradient: s
 
       {/* Host avatar row */}
       {shop.hosts_sample.length > 0 && (
-        <div className="absolute top-4 right-4 flex -space-x-1.5">
+        <div className="absolute top-3 right-3 sm:top-4 sm:right-4 flex -space-x-1 sm:-space-x-1.5">
           {shop.hosts_sample.slice(0, 3).map((host) => (
             <div
               key={host.id}
-              className="w-7 h-7 rounded-full overflow-hidden ring-2 ring-black/30 shrink-0"
+              className="w-6 h-6 sm:w-7 sm:h-7 rounded-full overflow-hidden ring-2 ring-black/30 shrink-0"
             >
               <img
                 src={host.image_urls?.[0] || ''}
@@ -75,16 +75,16 @@ function ShopCard({ shop, gradient }: { shop: GroupClub['shops'][0]; gradient: s
       )}
 
       {/* Bottom content */}
-      <div className="absolute bottom-0 left-0 right-0 p-5">
-        <h3 className="text-lg font-bold text-white font-serif leading-tight drop-shadow-lg group-hover:text-accent transition-colors">
+      <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
+        <h3 className="text-base sm:text-lg font-bold text-white font-serif leading-tight drop-shadow-lg group-hover:text-accent transition-colors">
           {shopName}
         </h3>
         {shopDesc && (
-          <p className="text-sm text-white/80 leading-relaxed mt-1.5">
+          <p className="text-xs sm:text-sm text-white/80 leading-relaxed mt-1 line-clamp-2 sm:line-clamp-none">
             {shopDesc}
           </p>
         )}
-        <div className="flex items-center gap-2 text-sm text-white/50 mt-2">
+        <div className="flex items-center gap-2 text-xs sm:text-sm text-white/50 mt-1.5 sm:mt-2">
           <span className="flex items-center gap-1">
             <Users className="w-3 h-3" />
             {shop.hosts_count} hosts
@@ -105,7 +105,7 @@ function GroupSection({ group }: { group: GroupClub }) {
   return (
     <section>
       {/* Group hero card */}
-      <div className="relative rounded-2xl overflow-hidden mb-6 h-64 sm:h-72">
+      <div className="relative rounded-2xl overflow-hidden mb-4 sm:mb-6 min-h-[14rem] sm:h-72">
         {heroImage ? (
           <img
             src={heroImage}
@@ -125,8 +125,8 @@ function GroupSection({ group }: { group: GroupClub }) {
           />
         )}
 
-        <div className="absolute bottom-0 left-0 right-0 z-10 p-5 sm:p-6">
-          <h2 className="text-xl md:text-2xl font-bold font-serif text-white mb-1 drop-shadow-lg">
+        <div className="absolute bottom-0 left-0 right-0 z-10 p-4 sm:p-6">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold font-serif text-white mb-1 drop-shadow-lg">
             {groupName}
           </h2>
           <div className="flex items-center gap-4 text-xs text-white/60 mb-2">
@@ -140,7 +140,7 @@ function GroupSection({ group }: { group: GroupClub }) {
             </span>
           </div>
           {groupDesc && (
-            <p className="text-sm text-white/70 leading-relaxed max-w-2xl">
+            <p className="text-xs sm:text-sm text-white/70 leading-relaxed max-w-2xl line-clamp-2 sm:line-clamp-none">
               {groupDesc}
             </p>
           )}
@@ -148,7 +148,7 @@ function GroupSection({ group }: { group: GroupClub }) {
       </div>
 
       {/* Shop cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {group.shops.map((shop) => (
           <ShopCard key={shop.id} shop={shop} gradient={gradient} />
         ))}
@@ -190,8 +190,8 @@ async function ClubsContent() {
 export default async function ClubsPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="mb-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+        <div className="mb-6 sm:mb-10">
           <h1 className="text-3xl md:text-4xl font-black font-serif text-foreground mb-2">
             Clubs
           </h1>

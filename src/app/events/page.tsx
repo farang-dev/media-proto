@@ -56,13 +56,13 @@ export default function EventsPage() {
   const dateKeys = Object.keys(byDate).sort();
 
   return (
-    <main className="min-h-screen pt-24 pb-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+    <main className="min-h-screen pt-16 sm:pt-24 pb-16 sm:pb-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-12"
+        className="text-center mb-8 sm:mb-12"
       >
-        <h1 className="text-3xl md:text-4xl font-black font-serif text-foreground mb-3">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-black font-serif text-foreground mb-3">
           {t('events.title')}
         </h1>
         <p className="text-sm text-zinc-400 max-w-lg mx-auto leading-relaxed">

@@ -177,7 +177,7 @@ export const CommunitySection: React.FC = () => {
   };
 
   return (
-    <section id="community" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <section id="community" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* Section header */}
       <div className="text-center mb-12">
         <motion.h2
@@ -185,7 +185,7 @@ export const CommunitySection: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="text-4xl md:text-5xl font-black font-serif text-foreground mb-3"
+          className="text-3xl sm:text-4xl md:text-5xl font-black font-serif text-foreground mb-3"
         >
           {t('community.title')}
         </motion.h2>

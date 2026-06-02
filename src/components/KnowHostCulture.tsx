@@ -73,14 +73,14 @@ export const KnowHostCulture: React.FC = () => {
   }
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         className="text-center mb-12"
       >
-        <h2 className="text-4xl md:text-5xl font-black font-serif text-foreground mb-3">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-black font-serif text-foreground mb-3">
           {t('culture.title')}
         </h2>
         <p className="text-zinc-400 max-w-xl mx-auto text-sm leading-relaxed">

@@ -97,6 +97,7 @@ export interface GroupClub extends Group {
     id: string;
     name_ja: string;
     name_en: string;
+    logo_url?: string;
     hosts_count: number;
     hosts_sample: { id: string; name_ja: string; name_en: string; image_urls: string[] }[];
   }[];
@@ -118,7 +119,7 @@ export async function getGroupClubs(): Promise<GroupClub[]> {
 
   const { data: shopsData, error: shopsError } = await supabase
     .from('shops')
-    .select('id, name_ja, name_en, group_id');
+    .select('id, name_ja, name_en, logo_url, group_id');
 
   if (shopsError) {
     console.error('getGroupClubs: failed to fetch shops', shopsError.message);
@@ -161,11 +162,11 @@ export async function getGroupClubs(): Promise<GroupClub[]> {
     console.error('getGroupClubs: failed to fetch hosts', hostsError);
   }
 
-  const shopMap: Record<string, { id: string; name_ja: string; name_en: string }[]> = {};
+  const shopMap: Record<string, { id: string; name_ja: string; name_en: string; logo_url?: string }[]> = {};
   for (const s of shopsData || []) {
     const gid = s.group_id || '';
     if (!shopMap[gid]) shopMap[gid] = [];
-    shopMap[gid].push({ id: s.id, name_ja: s.name_ja, name_en: s.name_en });
+    shopMap[gid].push({ id: s.id, name_ja: s.name_ja, name_en: s.name_en, logo_url: s.logo_url });
   }
 
   return groupsData.map((g) => {
@@ -174,6 +175,7 @@ export async function getGroupClubs(): Promise<GroupClub[]> {
       id: s.id,
       name_ja: s.name_ja,
       name_en: s.name_en,
+      logo_url: s.logo_url,
       hosts_count: hostCountMap[s.id] || 0,
       hosts_sample: hostSampleMap[s.id] || [],
     }));
@@ -586,6 +588,82 @@ export async function addFavorite(hostId: string): Promise<boolean> {
     return false;
   }
   return true;
+}
+
+// ── Host / Shop Comments (Reviews) ──
+
+export interface HostComment {
+  id: string;
+  host_id: string;
+  user_id: string;
+  display_name: string;
+  content: string;
+  created_at: string;
+}
+
+export interface ShopComment {
+  id: string;
+  shop_id: string;
+  user_id: string;
+  display_name: string;
+  content: string;
+  created_at: string;
+}
+
+export async function getHostComments(hostId: string): Promise<HostComment[]> {
+  const { data, error } = await supabase
+    .from('host_comments')
+    .select('*')
+    .eq('host_id', hostId)
+    .order('created_at', { ascending: false });
+  if (error) { console.error('getHostComments:', error.message); return []; }
+  return data || [];
+}
+
+export async function addHostComment(hostId: string, content: string): Promise<HostComment | null> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return null;
+  const displayName = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Anonymous';
+  const { data, error } = await supabase
+    .from('host_comments')
+    .insert([{ host_id: hostId, user_id: user.id, content, display_name: displayName }])
+    .select()
+    .single();
+  if (error) { console.error('addHostComment:', error.message); return null; }
+  return data;
+}
+
+export async function deleteHostComment(id: string): Promise<boolean> {
+  const { error } = await supabase.from('host_comments').delete().eq('id', id);
+  return !error;
+}
+
+export async function getShopComments(shopId: string): Promise<ShopComment[]> {
+  const { data, error } = await supabase
+    .from('shop_comments')
+    .select('*')
+    .eq('shop_id', shopId)
+    .order('created_at', { ascending: false });
+  if (error) { console.error('getShopComments:', error.message); return []; }
+  return data || [];
+}
+
+export async function addShopComment(shopId: string, content: string): Promise<ShopComment | null> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return null;
+  const displayName = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Anonymous';
+  const { data, error } = await supabase
+    .from('shop_comments')
+    .insert([{ shop_id: shopId, user_id: user.id, content, display_name: displayName }])
+    .select()
+    .single();
+  if (error) { console.error('addShopComment:', error.message); return null; }
+  return data;
+}
+
+export async function deleteShopComment(id: string): Promise<boolean> {
+  const { error } = await supabase.from('shop_comments').delete().eq('id', id);
+  return !error;
 }
 
 export async function removeFavorite(hostId: string): Promise<boolean> {

@@ -11,6 +11,7 @@ import { useAuth } from '@/lib/AuthContext';
 import { AuthPromptModal } from '@/components/AuthPromptModal';
 import { getEnglishName, looksLikeDate } from '@/lib/japanese';
 import TikTokEmbed from '@/components/TikTokEmbed';
+import CommentSection from '@/components/CommentSection';
 
 const formatDate = (iso: string) => {
   const d = new Date(iso);
@@ -398,6 +399,11 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
             <TikTokEmbed tiktokUrl={host.tiktok_url} />
           </div>
         )}
+
+        {/* Comments */}
+        <div className="mt-16 max-w-xl">
+          <CommentSection type="host" targetId={id} />
+        </div>
 
         {/* Same-shop hosts */}
         {relatedHosts.length > 0 && (

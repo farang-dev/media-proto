@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ArrowLeft, Store, Users, Heart } from 'lucide-react';
 import { getShopWithHosts, Host } from '@/lib/db';
 import { getEnglishName, looksLikeDate } from '@/lib/japanese';
+import CommentSection from '@/components/CommentSection';
 
 export const dynamic = 'force-dynamic';
 
@@ -126,6 +127,10 @@ export default async function ShopPage(props: { params: Promise<{ id: string }> 
             ))}
           </div>
         )}
+
+        <div className="mt-16 max-w-xl">
+          <CommentSection type="shop" targetId={id} />
+        </div>
       </div>
     </div>
   );

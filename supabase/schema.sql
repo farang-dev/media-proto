@@ -168,6 +168,48 @@ CREATE POLICY "Users can delete their own favorites"
 -- SQL Editor to add columns that may be missing.
 -- ============================================================
 /*
+-- Host reviews/comments
+CREATE TABLE host_comments (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  host_id UUID REFERENCES hosts(id) ON DELETE CASCADE NOT NULL,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  display_name TEXT,
+  content TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE host_comments ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Host comments viewable by everyone"
+  ON host_comments FOR SELECT USING (true);
+CREATE POLICY "Authenticated users can insert host comments"
+  ON host_comments FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "Users can update own host comments"
+  ON host_comments FOR UPDATE USING (auth.uid() = user_id);
+CREATE POLICY "Users can delete own host comments"
+  ON host_comments FOR DELETE USING (auth.uid() = user_id);
+
+-- Shop reviews/comments
+CREATE TABLE shop_comments (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  shop_id UUID REFERENCES shops(id) ON DELETE CASCADE NOT NULL,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  display_name TEXT,
+  content TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE shop_comments ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Shop comments viewable by everyone"
+  ON shop_comments FOR SELECT USING (true);
+CREATE POLICY "Authenticated users can insert shop comments"
+  ON shop_comments FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "Users can update own shop comments"
+  ON shop_comments FOR UPDATE USING (auth.uid() = user_id);
+CREATE POLICY "Users can delete own shop comments"
+  ON shop_comments FOR DELETE USING (auth.uid() = user_id);
+*/
 -- Shops: add missing columns
 ALTER TABLE shops ADD COLUMN IF NOT EXISTS description_ja TEXT;
 ALTER TABLE shops ADD COLUMN IF NOT EXISTS description_en TEXT;

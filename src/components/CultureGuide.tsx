@@ -104,7 +104,7 @@ export const CultureGuide: React.FC = () => {
           <div>
             <p className="text-sm font-bold text-emerald-300 mb-0.5">2026 Safety Certified</p>
             <p className="text-xs text-zinc-500 leading-relaxed max-w-2xl">
-              All clubs listed on OshiHost follow the 2026 Clean Payment Regulations. No urikake (credit billing), no hidden charges. Enjoy safely with transparent, on-site card payments.
+              All clubs listed on OshiHos follow the 2026 Clean Payment Regulations. No urikake (credit billing), no hidden charges. Enjoy safely with transparent, on-site card payments.
             </p>
           </div>
         </motion.div>

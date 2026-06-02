@@ -14,7 +14,7 @@ export const translations: Translations = {
     'nav.guide': 'Culture Guide',
     'nav.community': 'Oshi Talks',
     'nav.about': 'About Host Culture',
-    'hero.title': 'OshiHost Kabukicho',
+    'hero.title': 'OshiHos KABUKICHO HOST',
     'hero.subtitle': 'Discover Kabukicho\'s top host stars. Browse real-time rankings, explore profiles, and find your perfect host.',
     'hero.cta': 'Browse All Stars',
     'hero.guide_cta': 'Explore Culture Guide',
@@ -47,8 +47,8 @@ export const translations: Translations = {
     'guide.subtitle': 'A beginner-friendly guide to understanding the host club entertainment culture, safety, and etiquette.',
 
     // Clubs
-    'clubs.title': 'Browse by Club',
-    'clubs.subtitle': 'Discover host clubs in Kabukicho. Each group has unique venues and star hosts.',
+    'clubs.title': 'Brose Host Clubs',
+    'clubs.subtitle': 'The 6 major host club groups featured in Oshihost. Browse their top-ranked hosts and find the best clubs in Kabukicho.',
     'clubs.view_hosts': 'Browse Hosts',
     'clubs.shops': 'venues',
     'clubs.hosts': 'hosts',
@@ -80,6 +80,13 @@ export const translations: Translations = {
     'match.likes_left': 'likes left to save',
     
     // Ads
+    // Events
+    'events.title': 'Kabukicho Events',
+    'events.subtitle': 'Weekly schedule of host club events in Kabukicho. Parties, special days, and more!',
+    'events.no_events': 'No events scheduled this week.',
+    'events.this_week': 'This Week\'s Events',
+    'events.at': 'at',
+
     'ads.hiring': 'Discover Shinjuku nightlife. Leading clubs offer premium VIP reservations and safety-guided access for international guests.',
     'ads.vip_booking': 'Want a safe, guided tour of Kabukicho\'s top host clubs? Contact our bilingual booking assistants.',
   },
@@ -123,8 +130,8 @@ export const translations: Translations = {
     'guide.subtitle': '外国人観光客やビギナー向けに、ホストクラブのシステム、マナー、安全ルールを分かりやすく解説。',
 
     // Clubs
-    'clubs.title': 'グループから探す',
-    'clubs.subtitle': '歌舞伎町のホストクラブをグループごとに探索。各グループには個性的な店舗とスターが在籍。',
+    'clubs.title': 'Brose Host Clubs',
+    'clubs.subtitle': 'オシホスト掲載の大手ホストクラブグループ6店。トップホストを探して、歌舞伎町で最高のクラブを見つけよう。',
     'clubs.view_hosts': 'ホストを見る',
     'clubs.shops': '店舗',
     'clubs.hosts': '名在籍',
@@ -156,6 +163,13 @@ export const translations: Translations = {
     'match.likes_left': 'あとのいいねで保存可能',
     
     // Ads
+    // Events
+    'events.title': '歌舞伎町イベント',
+    'events.subtitle': '歌舞伎町ホストクラブの今週のイベントスケジュール。パーティー、感謝デーなど盛りだくさん！',
+    'events.no_events': '今週予定されているイベントはありません。',
+    'events.this_week': '今週のイベント',
+    'events.at': '開催',
+
     'ads.hiring': '新宿歌舞伎町のナイトカルチャーを体験。大手グループがインバウンド向けに安全な予約プランとVIPシートを提供中。',
     'ads.vip_booking': '外国人観光客向け：歌舞伎町ホストクラブの安全なガイドツアーとバイリンガル予約はこちら。',
   }

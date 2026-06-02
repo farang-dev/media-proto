@@ -90,6 +90,9 @@ export default async function ShopPage(props: { params: Promise<{ id: string }> 
   const shopName = getEnglishName(shop.name_ja, shop.name_en);
   const groupName = shop.group ? getEnglishName(shop.group.name_ja, shop.group.name_en) : '';
 
+  const heroImage = shop.image_urls?.[0] || shop.logo_url || '';
+  const descriptionEn = shop.description_en || '';
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -101,19 +104,51 @@ export default async function ShopPage(props: { params: Promise<{ id: string }> 
           Back to clubs
         </Link>
 
-        <div className="mb-10">
-          {groupName && (
-            <p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">
-              {groupName}
+        {heroImage && (
+          <div className="relative rounded-2xl overflow-hidden mb-10 h-56 sm:h-72 md:h-80">
+            <img
+              src={heroImage}
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
+              {groupName && (
+                <p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">
+                  {groupName}
+                </p>
+              )}
+              <h1 className="text-3xl md:text-4xl font-black font-serif text-white mb-2 drop-shadow-lg">
+                {shopName}
+              </h1>
+              <p className="text-sm text-white/60">
+                {hosts.length} hosts in service
+              </p>
+            </div>
+          </div>
+        )}
+
+        {!heroImage && (
+          <div className="mb-10">
+            {groupName && (
+              <p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">
+                {groupName}
+              </p>
+            )}
+            <h1 className="text-3xl md:text-4xl font-black font-serif text-foreground mb-2">
+              {shopName}
+            </h1>
+            <p className="text-sm text-zinc-400">
+              {hosts.length} hosts in service
             </p>
-          )}
-          <h1 className="text-3xl md:text-4xl font-black font-serif text-foreground mb-2">
-            {shopName}
-          </h1>
-          <p className="text-sm text-zinc-400">
-            {hosts.length} hosts in service
+          </div>
+        )}
+
+        {descriptionEn && (
+          <p className="text-sm text-foreground leading-relaxed max-w-3xl mb-10">
+            {descriptionEn}
           </p>
-        </div>
+        )}
 
         {hosts.length === 0 ? (
           <div className="text-center py-20">

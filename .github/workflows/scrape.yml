@@ -14,7 +14,8 @@ on:
         options:
           - groups        # Groups + shops + hosts (fullest data)
           - rankings      # Ranking data only (lightweight)
-          - all           # Rankings + groups
+          - events        # Weekly events only (lightweight)
+          - all           # Rankings + groups + events
 
 jobs:
   scrape-and-seed:

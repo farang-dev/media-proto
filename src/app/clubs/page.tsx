@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Store, Users, ArrowRight } from 'lucide-react';
+import { Store, Users } from 'lucide-react';
 import { getGroupClubs, GroupClub } from '@/lib/db';
 import { getEnglishName } from '@/lib/japanese';
 import groupsExtra from '@/data/groups-extra.json';
@@ -28,12 +28,13 @@ function getGroupGradient(name: string): string {
 
 function ShopCard({ shop, gradient }: { shop: GroupClub['shops'][0]; gradient: string }) {
   const shopName = getEnglishName(shop.name_ja, shop.name_en);
+  const shopDesc = shop.description_en || '';
 
   return (
     <Link
       key={shop.id}
       href={`/clubs/${shop.id}`}
-      className="relative rounded-2xl overflow-hidden bg-card-bg border border-card-border hover:border-accent/40 transition-all duration-300 group block aspect-[4/3]"
+      className="relative rounded-2xl overflow-hidden bg-card-bg border border-card-border hover:border-accent/40 transition-all duration-300 group block aspect-[1/1]"
     >
       {/* Background image */}
       {shop.logo_url ? (
@@ -52,21 +53,8 @@ function ShopCard({ shop, gradient }: { shop: GroupClub['shops'][0]; gradient: s
         <div className={`absolute inset-0 bg-gradient-to-br ${gradient}`} />
       )}
 
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
-
-      {/* Content */}
-      <div className="absolute bottom-0 left-0 right-0 p-5">
-        <h3 className="text-lg font-bold text-white font-serif leading-tight drop-shadow-lg group-hover:text-accent transition-colors">
-          {shopName}
-        </h3>
-        <div className="flex items-center gap-2 text-xs text-white/60 mt-1">
-          <span className="flex items-center gap-1">
-            <Users className="w-3 h-3" />
-            {shop.hosts_count} hosts
-          </span>
-        </div>
-      </div>
+      {/* Tall gradient overlay — dark bottom area for readable text */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 from-35% via-black/40 to-transparent" />
 
       {/* Host avatar row */}
       {shop.hosts_sample.length > 0 && (
@@ -85,6 +73,24 @@ function ShopCard({ shop, gradient }: { shop: GroupClub['shops'][0]; gradient: s
           ))}
         </div>
       )}
+
+      {/* Bottom content */}
+      <div className="absolute bottom-0 left-0 right-0 p-5">
+        <h3 className="text-lg font-bold text-white font-serif leading-tight drop-shadow-lg group-hover:text-accent transition-colors">
+          {shopName}
+        </h3>
+        {shopDesc && (
+          <p className="text-sm text-white/80 leading-relaxed mt-1.5">
+            {shopDesc}
+          </p>
+        )}
+        <div className="flex items-center gap-2 text-sm text-white/50 mt-2">
+          <span className="flex items-center gap-1">
+            <Users className="w-3 h-3" />
+            {shop.hosts_count} hosts
+          </span>
+        </div>
+      </div>
     </Link>
   );
 }
@@ -92,24 +98,19 @@ function ShopCard({ shop, gradient }: { shop: GroupClub['shops'][0]; gradient: s
 function GroupSection({ group }: { group: GroupClub }) {
   const groupName = getEnglishName(group.name_ja, group.name_en);
   const gradient = getGroupGradient(group.name_ja);
-  const extra = (groupsExtra as ExtraMap)[group.name_ja] || {};
-  const heroImage = group.image_urls?.[0] || extra.image_urls?.find(u => u.includes('pr_img')) || extra.image_urls?.[0] || group.logo_url || '';
-  const descEn = extra.description_en || '';
-  const descJa = group.description_ja || extra.description_ja || '';
-  const description = descEn || descJa;
+  const extra = (groupsExtra as ExtraMap)[group.id] || {};
+  const heroImage = extra.image_urls?.find(u => u.includes('pr_img')) || extra.image_urls?.[0] || group.image_urls?.[0] || group.logo_url || '';
+  const groupDesc = group.description_en || '';
 
   return (
     <section>
       {/* Group hero card */}
-      <Link
-        href="/clubs"
-        className="relative rounded-2xl overflow-hidden mb-6 block group h-64 sm:h-72"
-      >
+      <div className="relative rounded-2xl overflow-hidden mb-6 h-64 sm:h-72">
         {heroImage ? (
           <img
             src={heroImage}
             alt=""
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            className="absolute inset-0 w-full h-full object-cover"
           />
         ) : (
           <div className={`absolute inset-0 bg-gradient-to-br ${gradient}`} />
@@ -120,15 +121,15 @@ function GroupSection({ group }: { group: GroupClub }) {
           <img
             src={group.logo_url}
             alt=""
-            className="absolute top-4 right-4 w-16 h-16 object-contain opacity-60"
+            className="absolute top-4 right-4 w-14 h-14 object-contain opacity-40"
           />
         )}
 
-        <div className="absolute bottom-0 left-0 right-0 z-10 p-6 sm:p-8">
-          <h2 className="text-2xl md:text-3xl font-bold font-serif text-white mb-1 drop-shadow-lg">
+        <div className="absolute bottom-0 left-0 right-0 z-10 p-5 sm:p-6">
+          <h2 className="text-xl md:text-2xl font-bold font-serif text-white mb-1 drop-shadow-lg">
             {groupName}
           </h2>
-          <div className="flex items-center gap-4 text-xs text-white/60 mb-3">
+          <div className="flex items-center gap-4 text-xs text-white/60 mb-2">
             <span className="flex items-center gap-1">
               <Store className="w-3 h-3" />
               {group.shops_count} shops
@@ -138,18 +139,13 @@ function GroupSection({ group }: { group: GroupClub }) {
               {group.hosts_count} hosts
             </span>
           </div>
-          {description && (
-            <p className="text-sm text-white/80 leading-relaxed max-w-2xl line-clamp-2 drop-shadow">
-              {description}
+          {groupDesc && (
+            <p className="text-sm text-white/70 leading-relaxed max-w-2xl">
+              {groupDesc}
             </p>
           )}
         </div>
-
-        <div className="absolute top-4 left-4 z-10 hidden sm:flex items-center gap-1 text-xs text-white/50 group-hover:text-white transition-colors">
-          <span>View all</span>
-          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-        </div>
-      </Link>
+      </div>
 
       {/* Shop cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -164,7 +160,13 @@ function GroupSection({ group }: { group: GroupClub }) {
 async function ClubsContent() {
   const groups: GroupClub[] = await getGroupClubs();
 
-  if (groups.length === 0) {
+  // Shuffle to avoid positional bias — every load shows a different first group
+  const shuffled = groups
+    .map((g) => ({ g, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ g }) => g);
+
+  if (shuffled.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-32 text-center">
         <Store className="w-16 h-16 text-zinc-300 mb-6" />
@@ -178,7 +180,7 @@ async function ClubsContent() {
 
   return (
     <div className="space-y-12">
-      {groups.map((group) => (
+      {shuffled.map((group) => (
         <GroupSection key={group.id} group={group} />
       ))}
     </div>
@@ -194,7 +196,7 @@ export default async function ClubsPage() {
             Clubs
           </h1>
           <p className="text-sm text-zinc-400">
-            Browse host clubs by group
+            Brose Host Clubs
           </p>
         </div>
 

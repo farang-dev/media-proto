@@ -44,7 +44,7 @@ export default function AuthPage() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold font-serif text-foreground">
-            {mode === 'login' ? 'Welcome back' : 'Join OshiHost'}
+            {mode === 'login' ? 'Welcome back' : 'Join OshiHos'}
           </h1>
           <p className="text-zinc-400 text-sm mt-2">
             {mode === 'login'

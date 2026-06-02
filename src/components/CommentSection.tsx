@@ -68,7 +68,7 @@ export default function CommentSection({ type, targetId }: Props) {
     <div>
       <h2 className="text-xl font-bold font-serif text-foreground mb-6 flex items-center gap-2">
         <MessageSquare className="w-5 h-5 text-accent" />
-        {language === 'ja' ? 'コメント' : 'Comments'}
+        {language === 'ja' ? 'レビュー' : 'Reviews'}
         {!loading && <span className="text-sm font-normal text-zinc-400">({comments.length})</span>}
       </h2>
 
@@ -83,7 +83,7 @@ export default function CommentSection({ type, targetId }: Props) {
             <textarea
               value={text}
               onChange={(e) => setText(e.target.value)}
-              placeholder={language === 'ja' ? 'コメントを書く…' : 'Write a comment…'}
+              placeholder={language === 'ja' ? 'レビューを書く…' : 'Write a review…'}
               rows={3}
               className="w-full bg-card-bg border border-card-border rounded-xl p-3 text-sm text-foreground placeholder-zinc-500 resize-none outline-none focus:border-accent/50 transition-colors"
             />
@@ -100,12 +100,18 @@ export default function CommentSection({ type, targetId }: Props) {
           </div>
         </div>
       ) : (
-        <div className="mb-8 p-4 rounded-xl bg-card-bg border border-card-border text-center">
+        <div className="mb-8 p-6 rounded-xl bg-card-bg border border-card-border text-center space-y-3">
           <p className="text-sm text-zinc-400">
             {language === 'ja'
-              ? 'コメントするにはサインインしてください'
-              : 'Sign in to leave a comment'}
+              ? 'レビューを書くにはアカウントが必要です'
+              : 'Create an account to leave a review'}
           </p>
+          <a
+            href="/auth"
+            className="inline-flex items-center gap-1.5 px-5 py-2 rounded-lg bg-accent text-background text-xs font-semibold hover:bg-accent/90 transition-colors"
+          >
+            {language === 'ja' ? 'アカウント作成' : 'Sign Up'}
+          </a>
         </div>
       )}
 
@@ -123,7 +129,7 @@ export default function CommentSection({ type, targetId }: Props) {
         </div>
       ) : comments.length === 0 ? (
         <p className="text-sm text-zinc-500 text-center py-8">
-          {language === 'ja' ? 'まだコメントはありません' : 'No comments yet'}
+          {language === 'ja' ? 'まだレビューはありません' : 'No reviews yet'}
         </p>
       ) : (
         <div className="space-y-4">

@@ -13,6 +13,27 @@
 
   --font-inter: 'Inter', 'Noto Sans JP', sans-serif;
   --font-playfair: 'Playfair Display', serif;
+
+  --zinc-300: #52525B;
+  --zinc-400: #71717A;
+  --zinc-500: #A1A1AA;
+  --zinc-600: #D4D4D8;
+}
+
+.dark {
+  --background: #0D0D0D;
+  --foreground: #E8E0F0;
+  --card-bg: #1A181C;
+  --card-border: #2A2030;
+
+  --accent: #B892D4;
+  --accent-light: #D0B0E8;
+  --accent-gold: #C88A9C;
+
+  --zinc-300: #D4D4D8;
+  --zinc-400: #A1A1AA;
+  --zinc-500: #71717A;
+  --zinc-600: #3A3040;
 }
 
 @theme {
@@ -28,10 +49,10 @@
   --font-sans: var(--font-inter);
   --font-serif: var(--font-playfair);
 
-  --color-zinc-300: #52525B;
-  --color-zinc-400: #71717A;
-  --color-zinc-500: #A1A1AA;
-  --color-zinc-600: #D4D4D8;
+  --color-zinc-300: var(--zinc-300);
+  --color-zinc-400: var(--zinc-400);
+  --color-zinc-500: var(--zinc-500);
+  --color-zinc-600: var(--zinc-600);
 }
 
 body {
@@ -39,19 +60,32 @@ body {
   color: var(--foreground);
   font-family: var(--font-inter);
   overflow-x: hidden;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .glass {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(0, 0, 0, 0.06);
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.dark .glass {
+  background: rgba(26, 26, 26, 0.8);
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .glass-premium {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(248, 246, 243, 0.9) 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(254, 246, 245, 0.9) 100%);
   backdrop-filter: blur(20px);
   border: 1px solid var(--accent-light);
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+}
+
+.dark .glass-premium {
+  background: linear-gradient(135deg, rgba(26, 24, 28, 0.8) 0%, rgba(20, 15, 18, 0.9) 100%);
+  border-color: var(--accent);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
 }
 
 .host-img {
@@ -63,4 +97,9 @@ body {
 ::-webkit-scrollbar-thumb { background: #D4CFC8; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent-gold); }
 
+.dark ::-webkit-scrollbar-track { background: #1A1A1A; }
+.dark ::-webkit-scrollbar-thumb { background: #3A3A40; }
+.dark ::-webkit-scrollbar-thumb:hover { background: var(--accent-gold); }
+
 ::placeholder, input::placeholder, textarea::placeholder { color: #B0B0B8; }
+.dark ::placeholder, .dark input::placeholder, .dark textarea::placeholder { color: #555058; }

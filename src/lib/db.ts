@@ -22,6 +22,9 @@ export interface Shop {
   area: string;
   address_ja: string;
   address_en: string;
+  description_ja?: string;
+  description_en?: string;
+  image_urls?: string[];
   system_info_ja: string;
   system_info_en: string;
   logo_url: string;
@@ -97,6 +100,7 @@ export interface GroupClub extends Group {
     id: string;
     name_ja: string;
     name_en: string;
+    description_en?: string;
     logo_url?: string;
     hosts_count: number;
     hosts_sample: { id: string; name_ja: string; name_en: string; image_urls: string[] }[];
@@ -119,7 +123,7 @@ export async function getGroupClubs(): Promise<GroupClub[]> {
 
   const { data: shopsData, error: shopsError } = await supabase
     .from('shops')
-    .select('id, name_ja, name_en, logo_url, group_id');
+    .select('id, name_ja, name_en, description_en, logo_url, group_id');
 
   if (shopsError) {
     console.error('getGroupClubs: failed to fetch shops', shopsError.message);
@@ -162,11 +166,11 @@ export async function getGroupClubs(): Promise<GroupClub[]> {
     console.error('getGroupClubs: failed to fetch hosts', hostsError);
   }
 
-  const shopMap: Record<string, { id: string; name_ja: string; name_en: string; logo_url?: string }[]> = {};
+  const shopMap: Record<string, { id: string; name_ja: string; name_en: string; description_en?: string; logo_url?: string }[]> = {};
   for (const s of shopsData || []) {
     const gid = s.group_id || '';
     if (!shopMap[gid]) shopMap[gid] = [];
-    shopMap[gid].push({ id: s.id, name_ja: s.name_ja, name_en: s.name_en, logo_url: s.logo_url });
+    shopMap[gid].push({ id: s.id, name_ja: s.name_ja, name_en: s.name_en, description_en: s.description_en, logo_url: s.logo_url });
   }
 
   return groupsData.map((g) => {
@@ -175,6 +179,7 @@ export async function getGroupClubs(): Promise<GroupClub[]> {
       id: s.id,
       name_ja: s.name_ja,
       name_en: s.name_en,
+      description_en: s.description_en,
       logo_url: s.logo_url,
       hosts_count: hostCountMap[s.id] || 0,
       hosts_sample: hostSampleMap[s.id] || [],
@@ -664,6 +669,41 @@ export async function addShopComment(shopId: string, content: string): Promise<S
 export async function deleteShopComment(id: string): Promise<boolean> {
   const { error } = await supabase.from('shop_comments').delete().eq('id', id);
   return !error;
+}
+
+export interface EventItem {
+  id: string;
+  title_ja: string;
+  title_en?: string;
+  description_ja?: string;
+  description_en?: string;
+  shop_name: string;
+  shop_url?: string;
+  shop_id?: string;
+  group_id?: string;
+  event_date: string;
+  group?: Group;
+}
+
+export async function getEvents(): Promise<EventItem[]> {
+  const now = new Date();
+  const jstOffset = 9 * 60 * 60 * 1000;
+  const jstNow = new Date(now.getTime() + jstOffset);
+  const today = jstNow.toISOString().slice(0, 10);
+  const weekLater = new Date(jstNow.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+
+  const { data, error } = await supabase
+    .from('events')
+    .select('*, group:groups(*)')
+    .gte('event_date', today)
+    .lte('event_date', weekLater)
+    .order('event_date', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching events:', error.message);
+    return [];
+  }
+  return data || [];
 }
 
 export async function removeFavorite(hostId: string): Promise<boolean> {

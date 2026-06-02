@@ -56,7 +56,7 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
   const handleShare = useCallback(async () => {
     const url = window.location.href;
     if (navigator.share) {
-      await navigator.share({ title: host?.name_ja || 'OshiHost', url });
+      await navigator.share({ title: host?.name_ja || 'OshiHos', url });
     } else {
       await navigator.clipboard.writeText(url);
       setShareMsg(language === 'ja' ? 'リンクをコピーしました' : 'Link copied');

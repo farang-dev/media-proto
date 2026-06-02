@@ -76,7 +76,7 @@ export const HeroSection: React.FC = () => {
           transition={{ duration: 1.5, delay: 0.5 }}
           className="text-[18vw] sm:text-[14vw] font-black font-serif text-foreground/[0.04] tracking-tight leading-none"
         >
-          OshiHost
+          OshiHos
         </motion.span>
       </div>
 

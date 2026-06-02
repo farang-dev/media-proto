@@ -20,7 +20,8 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
 const projectRef = supabaseUrl.match(/https:\/\/([^.]+)\.supabase\.co/)?.[1];
 const NEW_SHOP_COLUMNS = ['description_ja','description_en','phone','hours','regular_holiday','logo_url','image_urls','system_info_ja','system_info_en'];
 const NEW_HOST_COLUMNS = ['line_id','type_tags','ratings','qa_data','qa_data_en','image_urls','instagram_url','twitter_url','tiktok_url'];
-const availableColumns = { shops: new Set(['id','name_ja','name_en','source_url','area','group_id','score','rank','created_at']), hosts: new Set(['id','shop_id','name_ja','name_en','birthday','height','blood_type','bio_ja','bio_en','source_url','daily_rank','weekly_rank','monthly_rank','rank_in_shop','created_at']) };
+const NEW_GROUP_COLUMNS = ['description_en','image_urls'];
+const availableColumns = { shops: new Set(['id','name_ja','name_en','source_url','area','group_id','score','rank','created_at']), hosts: new Set(['id','shop_id','name_ja','name_en','birthday','height','blood_type','bio_ja','bio_en','source_url','daily_rank','weekly_rank','monthly_rank','rank_in_shop','created_at']), groups: new Set(['id','name_ja','name_en','name_kana','description_ja','logo_url','source_url','created_at']) };
 
 async function probeColumn(table, col) {
   const { error } = await supabase.from(table).select(col).limit(1);
@@ -30,8 +31,10 @@ async function probeColumn(table, col) {
 async function detectColumns() {
   for (const col of NEW_SHOP_COLUMNS) if (await probeColumn('shops', col)) availableColumns.shops.add(col);
   for (const col of NEW_HOST_COLUMNS) if (await probeColumn('hosts', col)) availableColumns.hosts.add(col);
+  for (const col of NEW_GROUP_COLUMNS) if (await probeColumn('groups', col)) availableColumns.groups.add(col);
   console.log(`  Shops columns: ${[...availableColumns.shops].filter(c => c !== 'id').join(', ')}`);
   console.log(`  Hosts columns: ${[...availableColumns.hosts].filter(c => c !== 'id').join(', ')}`);
+  console.log(`  Groups columns: ${[...availableColumns.groups].filter(c => c !== 'id').join(', ')}`);
 }
 
 const RANKING_URLS = {
@@ -523,16 +526,20 @@ async function upsertGroups(groups) {
     // Use index page description as fallback for ja, detail page is richer
     const finalDescJa = detail.description_ja || g.description;
 
+    const groupRow = {
+      name_ja: g.nameJa,
+      name_en: '',
+      name_kana: g.nameKana,
+      description_ja: finalDescJa,
+      logo_url: g.logoUrl,
+      source_url: g.sourceUrl
+    };
+    if (availableColumns.groups.has('description_en')) groupRow.description_en = descriptionEn;
+    if (availableColumns.groups.has('image_urls')) groupRow.image_urls = detail.image_urls;
+
     const { data, error } = await supabase
       .from('groups')
-      .upsert({
-        name_ja: g.nameJa,
-        name_en: '',
-        name_kana: g.nameKana,
-        description_ja: finalDescJa,
-        logo_url: g.logoUrl,
-        source_url: g.sourceUrl
-      }, { onConflict: 'source_url', ignoreDuplicates: false })
+      .upsert(groupRow, { onConflict: 'source_url', ignoreDuplicates: false })
       .select();
 
     if (error) {
@@ -823,6 +830,162 @@ async function scrapeGroups() {
   }
 }
 
+async function parseEvents() {
+  console.log('\n=== Phase: Events ===\n');
+
+  const url = 'https://www.host2.jp/event/14.html';
+  console.log(`Fetching events: ${url}`);
+  const html = await fetchHtml(url);
+  const $ = cheerio.load(html);
+
+  const events = [];
+
+  // Each day block is tr.w or tr.w1 in the list
+  $('.list-event .cts > ul > li.cell table tr').each((_, tr) => {
+    const $tr = $(tr);
+    const $ti = $tr.find('.ti');
+    const anchorName = $ti.find('a').attr('name');
+
+    if (!anchorName) return; // skip rows without date anchor
+
+    // Parse date from anchor (e.g., "20260602" → 2026-06-02)
+    const year = anchorName.slice(0, 4);
+    const month = anchorName.slice(4, 6);
+    const day = anchorName.slice(6, 8);
+    const dateStr = `${year}-${month}-${day}`;
+
+    // Day of week in Japanese
+    const dowText = $ti.text().trim();
+
+    // Parse each event item
+    $tr.find('.bd .link').each((_, el) => {
+      const $el = $(el);
+      const shopUrl = $el.attr('data-href') || '';
+      const titleJa = $el.find('.cmt').first().text().trim();
+      const subDesc = $el.find('.cmt_s').text().trim();
+      const shopName = $el.find('.shop a').text().trim();
+      const shopReading = $el.find('.kana').text().trim().replace(/[()（）]/g, '');
+
+      if (!titleJa) return;
+
+      events.push({
+        title_ja: titleJa,
+        description_ja: subDesc || null,
+        shop_name: shopName,
+        shop_reading: shopReading,
+        shop_url: shopUrl || null,
+        event_date: dateStr,
+        source_url: shopUrl ? `${shopUrl}#${anchorName}` : `event-${anchorName}-${events.length}`,
+      });
+    });
+  });
+
+  console.log(`Found ${events.length} events this week (歌舞伎町)\n`);
+
+  // Print summary
+  const byDate = {};
+  for (const ev of events) {
+    if (!byDate[ev.event_date]) byDate[ev.event_date] = [];
+    byDate[ev.event_date].push(ev);
+  }
+  for (const [d, evs] of Object.entries(byDate)) {
+    console.log(`  ${d}:`);
+    for (const ev of evs) {
+      console.log(`    - ${ev.title_ja} @ ${ev.shop_name}`);
+    }
+  }
+
+  // Translate and match shop links
+  for (const ev of events) {
+    // Translate title to English
+    if (ev.title_ja) {
+      try {
+        ev.title_en = await translateText(ev.title_ja);
+        await new Promise(r => setTimeout(r, 200));
+      } catch {
+        ev.title_en = '';
+      }
+    }
+    // Translate description
+    if (ev.description_ja) {
+      try {
+        ev.description_en = await translateText(ev.description_ja);
+        await new Promise(r => setTimeout(r, 200));
+      } catch {
+        ev.description_en = '';
+      }
+    }
+
+    // Match shop by URL
+    if (ev.shop_url) {
+      const fullUrl = ev.shop_url.startsWith('http') ? ev.shop_url : `https://www.host2.jp${ev.shop_url.startsWith('/') ? '' : '/'}${ev.shop_url}`;
+      const { data: shop } = await supabase
+        .from('shops')
+        .select('id, group_id, name_ja')
+        .eq('source_url', fullUrl)
+        .maybeSingle();
+      if (shop) {
+        ev.shop_id = shop.id;
+        ev.group_id = shop.group_id;
+      }
+    }
+  }
+
+  return events;
+}
+
+async function upsertEvents(events) {
+  console.log('\n=== Upserting events ===\n');
+
+  // Delete old events for this week to avoid duplicates
+  const dates = [...new Set(events.map(e => e.event_date))].sort();
+  if (dates.length > 0) {
+    const { error: delErr } = await supabase
+      .from('events')
+      .delete()
+      .gte('event_date', dates[0])
+      .lte('event_date', dates[dates.length - 1]);
+    if (delErr) console.warn(`  Delete old events warning: ${delErr.message}`);
+  }
+
+  let count = 0;
+  for (const ev of events) {
+    const row = {
+      title_ja: ev.title_ja,
+      title_en: ev.title_en || null,
+      description_ja: ev.description_ja,
+      description_en: ev.description_en || null,
+      shop_name: ev.shop_name,
+      shop_url: ev.shop_url,
+      shop_id: ev.shop_id || null,
+      group_id: ev.group_id || null,
+      event_date: ev.event_date,
+      source_url: ev.source_url,
+    };
+
+    const { error } = await supabase
+      .from('events')
+      .upsert(row, { onConflict: 'source_url', ignoreDuplicates: false });
+
+    if (error) {
+      console.error(`  ✗ Event upsert error: ${error.message}`);
+    } else {
+      count++;
+    }
+  }
+
+  console.log(`  Upserted ${count}/${events.length} events\n`);
+}
+
+async function scrapeEvents() {
+  const events = await parseEvents();
+  if (events.length === 0) {
+    console.log('No events found.\n');
+    return;
+  }
+  await upsertEvents(events);
+}
+
 async function migrateViaPostgrest() {
   // Try RPC exec_sql (works if user created the function in Supabase)
   try {
@@ -863,7 +1026,8 @@ async function migrateViaPostgrest() {
 async function scrape() {
   const args = process.argv.slice(2);
   const mode = args.includes('--groups-only') ? 'groups' :
-               args.includes('--rankings-only') ? 'rankings' : 'all';
+               args.includes('--rankings-only') ? 'rankings' :
+               args.includes('--events-only') ? 'events' : 'all';
 
   console.log('=== Schema check ===');
   await migrateViaPostgrest();
@@ -875,6 +1039,10 @@ async function scrape() {
 
   if (mode === 'all' || mode === 'groups') {
     await scrapeGroups();
+  }
+
+  if (mode === 'all' || mode === 'events') {
+    await scrapeEvents();
   }
 
   console.log('\nScraping complete!');

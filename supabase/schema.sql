@@ -138,8 +138,8 @@ CREATE POLICY "Threads can be created by everyone" ON threads FOR INSERT WITH CH
 CREATE POLICY "Comments are viewable by everyone" ON comments FOR SELECT USING (true);
 CREATE POLICY "Comments can be created by everyone" ON comments FOR INSERT WITH CHECK (true);
 
--- 6. お気に入り (Favorites / Bookmarks)
-CREATE TABLE favorites (
+-- 7. お気に入り (Favorites / Bookmarks)
+CREATE TABLE IF NOT EXISTS favorites (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   host_id UUID NOT NULL REFERENCES hosts(id) ON DELETE CASCADE,
@@ -149,17 +149,23 @@ CREATE TABLE favorites (
 
 ALTER TABLE favorites ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Users can view their own favorites"
-  ON favorites FOR SELECT
-  USING (auth.uid() = user_id);
-
-CREATE POLICY "Users can create their own favorites"
-  ON favorites FOR INSERT
-  WITH CHECK (auth.uid() = user_id);
-
-CREATE POLICY "Users can delete their own favorites"
-  ON favorites FOR DELETE
-  USING (auth.uid() = user_id);
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Users can view their own favorites') THEN
+    CREATE POLICY "Users can view their own favorites"
+      ON favorites FOR SELECT
+      USING (auth.uid() = user_id);
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Users can create their own favorites') THEN
+    CREATE POLICY "Users can create their own favorites"
+      ON favorites FOR INSERT
+      WITH CHECK (auth.uid() = user_id);
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Users can delete their own favorites') THEN
+    CREATE POLICY "Users can delete their own favorites"
+      ON favorites FOR DELETE
+      USING (auth.uid() = user_id);
+  END IF;
+END $$;
 
 -- ============================================================
 -- 🚨 MIGRATION: Run this in Supabase SQL Editor for existing DBs
@@ -210,6 +216,34 @@ CREATE POLICY "Users can update own shop comments"
 CREATE POLICY "Users can delete own shop comments"
   ON shop_comments FOR DELETE USING (auth.uid() = user_id);
 */
+-- Events table (safe migration)
+CREATE TABLE IF NOT EXISTS events (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title_ja TEXT NOT NULL,
+  title_en TEXT,
+  description_ja TEXT,
+  description_en TEXT,
+  shop_name TEXT,
+  shop_url TEXT,
+  shop_id UUID REFERENCES shops(id) ON DELETE SET NULL,
+  group_id UUID REFERENCES groups(id) ON DELETE SET NULL,
+  event_date DATE NOT NULL,
+  source_url TEXT UNIQUE,
+  scraped_at TIMESTAMPTZ DEFAULT NOW()
+);
+ALTER TABLE events ENABLE ROW LEVEL SECURITY;
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Events are viewable by everyone') THEN
+    CREATE POLICY "Events are viewable by everyone" ON events FOR SELECT USING (true);
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Events are insertable by service_role') THEN
+    CREATE POLICY "Events are insertable by service_role" ON events FOR INSERT WITH CHECK (true);
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Events are updatable by service_role') THEN
+    CREATE POLICY "Events are updatable by service_role" ON events FOR UPDATE USING (true);
+  END IF;
+END $$;
+
 -- Shops: add missing columns
 ALTER TABLE shops ADD COLUMN IF NOT EXISTS description_ja TEXT;
 ALTER TABLE shops ADD COLUMN IF NOT EXISTS description_en TEXT;

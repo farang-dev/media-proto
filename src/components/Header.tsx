@@ -4,12 +4,14 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '../lib/LanguageContext';
 import { useAuth } from '../lib/AuthContext';
+import { useTheme } from '../lib/ThemeContext';
 import { signOut } from '../lib/auth';
-import { Sparkles, Globe, Store, Award, User, LogOut, BookOpen, Bookmark, Heart } from 'lucide-react';
+import { Globe, Store, Award, User, LogOut, BookOpen, Bookmark, Heart, Moon, Sun, PartyPopper } from 'lucide-react';
 
 export const Header: React.FC = () => {
   const { language, setLanguage, t } = useLanguage();
   const { user, loading } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -18,15 +20,15 @@ export const Header: React.FC = () => {
         
         {/* Logo */}
         <a href="/" className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center shadow-lg shadow-accent/20">
-            <Sparkles className="w-5 h-5 text-background" />
+          <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center shadow-lg shadow-accent/20 text-lg">
+            🥂
           </div>
           <div>
             <h1 className="text-xl font-bold tracking-wider font-serif text-foreground">
-              {language === 'ja' ? '推しホス' : 'OshiHost'}
+              {language === 'ja' ? '推しホス' : 'OshiHos'}
             </h1>
             <p className="text-[10px] text-zinc-500 uppercase tracking-widest -mt-1 font-sans">
-              Kabukicho Edition
+              KABUKICHO HOST
             </p>
           </div>
         </a>
@@ -45,6 +47,10 @@ export const Header: React.FC = () => {
             <Heart className="w-4 h-4" />
             {language === 'ja' ? 'ホスマッチ' : 'Hos-Match'}
           </a>
+          <a href="/events" className="text-sm font-medium text-zinc-300 hover:text-accent transition-colors flex items-center gap-2">
+            <PartyPopper className="w-4 h-4" />
+            {language === 'ja' ? 'イベント' : 'Events'}
+          </a>
           <Link href="/ranking" className="text-sm font-medium text-zinc-300 hover:text-accent transition-colors flex items-center gap-2">
             <Award className="w-4 h-4" />
             {t('nav.rankings')}
@@ -53,6 +59,19 @@ export const Header: React.FC = () => {
 
         {/* Controls */}
         <div className="flex items-center gap-4">
+          {/* Theme Toggle */}
+          <button
+            onClick={toggleTheme}
+            className="flex items-center justify-center w-9 h-9 rounded-lg border border-card-border hover:border-accent/50 bg-card-bg/50 transition-all cursor-pointer"
+            aria-label="Toggle theme"
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-4 h-4 text-accent" />
+            ) : (
+              <Moon className="w-4 h-4 text-accent" />
+            )}
+          </button>
+
           {/* Language Toggle */}
           <button
             onClick={() => setLanguage(language === 'en' ? 'ja' : 'en')}

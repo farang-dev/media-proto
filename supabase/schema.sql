@@ -103,7 +103,6 @@ ALTER TABLE votes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE threads ENABLE ROW LEVEL SECURITY;
 ALTER TABLE comments ENABLE ROW LEVEL SECURITY;
 
--- 0. Groups Policies
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Groups are viewable by everyone') THEN
     CREATE POLICY "Groups are viewable by everyone" ON groups FOR SELECT USING (true);
@@ -116,7 +115,6 @@ DO $$ BEGIN
   END IF;
 END $$;
 
--- 1. Shops Policies
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Shops are viewable by everyone') THEN
     CREATE POLICY "Shops are viewable by everyone" ON shops FOR SELECT USING (true);
@@ -129,7 +127,6 @@ DO $$ BEGIN
   END IF;
 END $$;
 
--- 2. Hosts Policies
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Hosts are viewable by everyone') THEN
     CREATE POLICY "Hosts are viewable by everyone" ON hosts FOR SELECT USING (true);
@@ -142,7 +139,6 @@ DO $$ BEGIN
   END IF;
 END $$;
 
--- 3. Votes Policies
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Votes are viewable by everyone') THEN
     CREATE POLICY "Votes are viewable by everyone" ON votes FOR SELECT USING (true);
@@ -152,7 +148,6 @@ DO $$ BEGIN
   END IF;
 END $$;
 
--- 4. Threads Policies
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Threads are viewable by everyone') THEN
     CREATE POLICY "Threads are viewable by everyone" ON threads FOR SELECT USING (true);
@@ -162,7 +157,6 @@ DO $$ BEGIN
   END IF;
 END $$;
 
--- 5. Comments Policies
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Comments are viewable by everyone') THEN
     CREATE POLICY "Comments are viewable by everyone" ON comments FOR SELECT USING (true);
@@ -299,3 +293,4 @@ ALTER TABLE hosts ADD COLUMN IF NOT EXISTS image_urls TEXT[] DEFAULT '{}';
 ALTER TABLE hosts ADD COLUMN IF NOT EXISTS instagram_url TEXT;
 ALTER TABLE hosts ADD COLUMN IF NOT EXISTS twitter_url TEXT;
 ALTER TABLE hosts ADD COLUMN IF NOT EXISTS tiktok_url TEXT;
+*/

@@ -5,10 +5,11 @@ import { use } from 'react';
 import { motion } from 'framer-motion';
 import {
   ArrowLeft, Heart, Ruler, Droplets, Calendar,
-  Share2, Bookmark, ChevronLeft, ChevronRight, Music2, MapPin
+  Share2, Bookmark, ChevronLeft, ChevronRight, Music2
 } from 'lucide-react';
 import Link from 'next/link';
 import { Host, getHost, getHostsByShop, castVote, addFavorite, removeFavorite, getFavoriteIds } from '@/lib/db';
+import { Store } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { useAuth } from '@/lib/AuthContext';
 import { AuthPromptModal } from '@/components/AuthPromptModal';
@@ -83,14 +84,10 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
   }, [id]);
 
   const handleVote = async () => {
+    if (!user) { setShowAuth(true); return; }
     if (voted || voteLoading) return;
     setVoteLoading(true);
-    let sessionId = sessionStorage.getItem('oshihost_session');
-    if (!sessionId) {
-      sessionId = Math.random().toString(36).slice(2) + Date.now();
-      sessionStorage.setItem('oshihost_session', sessionId);
-    }
-    const result = await castVote(id, sessionId);
+    const result = await castVote(id, user.id);
     setVoteLoading(false);
     if (result.success) {
       setVoted(true);
@@ -235,11 +232,14 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
                   {groupName}
                 </p>
               )}
-              {shopName && (
-                <p className="text-sm text-accent font-semibold mb-1 flex items-center gap-1.5">
-                  <MapPin className="w-3 h-3" />
+              {shopName && host.shop_id && (
+                <Link
+                  href={`/clubs/${host.shop_id}`}
+                  className="text-sm text-accent font-semibold mb-1 flex items-center gap-1.5 hover:text-accent-light transition-colors"
+                >
+                  <Store className="w-3 h-3" />
                   {shopName}
-                </p>
+                </Link>
               )}
               <h1 className="text-4xl sm:text-5xl font-black font-serif text-foreground leading-tight">
                 {name}

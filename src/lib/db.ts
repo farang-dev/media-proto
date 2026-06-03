@@ -293,8 +293,8 @@ export async function getKabukichoRanking(type: 'daily' | 'weekly' | 'monthly'):
   } as unknown as Host));
 }
 
-// Cast a vote for a host
-export async function castVote(hostId: string, ipOrId: string): Promise<{ success: boolean; message: string }> {
+// Cast a vote for a host (login required)
+export async function castVote(hostId: string, userId: string): Promise<{ success: boolean; message: string }> {
   const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
   // Fairness check 1: already voted for this host in 24h
@@ -302,7 +302,7 @@ export async function castVote(hostId: string, ipOrId: string): Promise<{ succes
     .from('votes')
     .select('id')
     .eq('host_id', hostId)
-    .eq('user_ip_or_id', ipOrId)
+    .eq('user_ip_or_id', userId)
     .gt('created_at', twentyFourHoursAgo);
 
   if (checkError) {
@@ -313,11 +313,11 @@ export async function castVote(hostId: string, ipOrId: string): Promise<{ succes
     return { success: false, message: 'already_voted' };
   }
 
-  // Fairness check 2: max 10 votes per 24h per session (anti-bot)
+  // Fairness check 2: max 10 votes per 24h per user (anti-bot)
   const { data: recentVotes, error: countError } = await supabase
     .from('votes')
     .select('id', { count: 'exact' })
-    .eq('user_ip_or_id', ipOrId)
+    .eq('user_ip_or_id', userId)
     .gt('created_at', twentyFourHoursAgo);
 
   if (countError) {
@@ -331,7 +331,7 @@ export async function castVote(hostId: string, ipOrId: string): Promise<{ succes
   // Insert vote
   const { error: insertError } = await supabase
     .from('votes')
-    .insert([{ host_id: hostId, user_ip_or_id: ipOrId }]);
+    .insert([{ host_id: hostId, user_ip_or_id: userId }]);
 
   if (insertError) {
     return { success: false, message: insertError.message };

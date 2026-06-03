@@ -1,0 +1,45 @@
+name: 🎬 Weekly hos-tv Update
+
+on:
+  schedule:
+    - cron: '0 2 * * 0'  # every Sunday at 02:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-hos-tv:
+    name: Fetch latest YouTube videos
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ⬇️ Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🎬 Fetch hos-tv videos
+        run: node scripts/fetch-hos-tv.js
+
+      - name: 📤 Commit updated hos-tv data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/hos-tv.ts
+          if git diff --cached --quiet; then
+            echo "No changes to hos-tv.ts"
+          else
+            git commit -m "chore: auto-update hos-tv video data [skip ci]"
+            git push
+          fi
+
+      - name: 📊 Report completion
+        run: echo "✅ hos-tv update complete"

@@ -72,19 +72,14 @@ export const HostCard: React.FC<HostCardProps> = ({ host, rank, onVote, isFeatur
 
   const handleVote = async (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (!user) { setShowAuth(true); return; }
     if (voted || loading) {
       setShake(true);
       setTimeout(() => setShake(false), 500);
       return;
     }
     setLoading(true);
-    // Use a stable fingerprint (date + random session id)
-    let sessionId = sessionStorage.getItem('oshihost_session');
-    if (!sessionId) {
-      sessionId = Math.random().toString(36).slice(2) + Date.now();
-      sessionStorage.setItem('oshihost_session', sessionId);
-    }
-    const result = await castVote(host.id, sessionId);
+    const result = await castVote(host.id, user.id);
     setLoading(false);
     if (result.success) {
       setVoted(true);

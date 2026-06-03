@@ -1,21 +1,21 @@
-name: 🕷️ Scrape & Seed Host Data
+name: 🕷️ Scrape & Seed Host Data (manual)
 
 on:
-  schedule:
-    # Run daily at 02:00 UTC (11:00 JST)
-    - cron: '0 2 * * *'
   workflow_dispatch:
     inputs:
       mode:
         description: 'Scrape mode'
         type: choice
         required: true
-        default: 'groups'
+        default: 'all'
         options:
+          - all           # Rankings + groups + events
           - groups        # Groups + shops + hosts (fullest data)
           - rankings      # Ranking data only (lightweight)
           - events        # Weekly events only (lightweight)
-          - all           # Rankings + groups + events
+
+permissions:
+  contents: write
 
 jobs:
   scrape-and-seed:
@@ -35,12 +35,12 @@ jobs:
       - name: 📦 Install dependencies
         run: npm ci
 
-      - name: 🕷️ Run scraping & seeding pipeline
+      - name: 🕷️ Run scraping pipeline
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-        run: node scripts/scrape.js --${{ github.event.inputs.mode || 'all' }}-only
+        run: node scripts/scrape.js --${{ github.event.inputs.mode }}-only
 
       - name: 🎬 Fetch latest hos-tv YouTube videos
         run: node scripts/fetch-hos-tv.js

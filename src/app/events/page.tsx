@@ -102,7 +102,7 @@ export default function EventsPage() {
                     const gName = ev.group ? getEnglishName(ev.group.name_ja, ev.group.name_en) : '';
                     const gradient = getGroupGradient(ev.group?.name_ja || '');
 
-                    const shopHref = ev.shop_id ? `/shops/${ev.shop_id}` : ev.shop_url || '';
+                    const shopHref = ev.shop_id ? `/clubs/${ev.shop_id}` : ev.shop_url || '';
 
                     return (
                       <motion.div
@@ -154,13 +154,6 @@ export default function EventsPage() {
         </div>
       )}
 
-      <div className="text-center mt-12">
-        <p className="text-xs text-zinc-400">
-          {language === 'ja'
-            ? 'データ提供: ホスホス (host2.jp) — 毎日自動更新'
-            : 'Data source: ホスホス (host2.jp) — Updated daily'}
-        </p>
-      </div>
     </main>
   );
 }

@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/auth', '/api/'],
       },
     ],
-    sitemap: 'https://www.oshi-hos.xyz/sitemap.xml',
+    sitemap: 'https://oshi-hos.xyz/sitemap.xml',
   };
 }

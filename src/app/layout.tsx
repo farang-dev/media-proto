@@ -3,7 +3,7 @@ import Script from "next/script";
 import { Providers } from "../lib/Providers";
 import "./globals.css";
 
-const SITE_URL = "https://oshihos.com";
+const SITE_URL = "https://www.oshi-hos.xyz";
 const SITE_NAME = "OshiHos - KABUKICHO HOST";
 const JA_NAME = "推しホス 歌舞伎町";
 
@@ -133,14 +133,14 @@ export default function RootLayout({
               "@type": "WebSite",
               "name": "OshiHos - KABUKICHO HOST",
               "alternateName": "推しホス",
-              "url": "https://oshihos.com",
+              "url": "https://www.oshi-hos.xyz",
               "description": "Kabukicho host club guide — discover, rate, and match with hosts in Tokyo's legendary nightlife district.",
               "inLanguage": ["en", "ja"],
               "potentialAction": {
                 "@type": "SearchAction",
                 "target": {
                   "@type": "EntryPoint",
-                  "urlTemplate": "https://oshihos.com/search?q={search_term_string}",
+                  "urlTemplate": "https://www.oshi-hos.xyz/search?q={search_term_string}",
                 },
                 "query-input": "required name=search_term_string",
               },

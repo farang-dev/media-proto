@@ -5,15 +5,14 @@ import "./globals.css";
 
 const SITE_URL = "https://www.oshi-hos.xyz";
 const SITE_NAME = "OshiHos - KABUKICHO HOST";
-const JA_NAME = "推しホス 歌舞伎町";
 
 export const metadata: Metadata = {
   title: {
-    default: `${SITE_NAME} | ${JA_NAME}`,
+    default: SITE_NAME,
     template: `%s | ${SITE_NAME}`,
   },
   description:
-    "Kabukicho host club guide — discover, rate, and match with hosts in Tokyo's legendary nightlife district. Real-time rankings, bilingual profiles, and culture guides for international visitors.",
+    "The first international guide to Kabukicho host clubs. Discover, rate, and match with Tokyo's top hosts. Real-time rankings, bilingual profiles, and English-friendly culture guides for foreign visitors.",
   keywords: [
     "host club", "kabukicho", "shinjuku", "tokyo nightlife", "oshi hos",
     "host ranking", "japanese host club", "歌舞伎町", "ホストクラブ",
@@ -28,11 +27,11 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: {
-      default: `${SITE_NAME} | ${JA_NAME}`,
+      default: SITE_NAME,
       template: `%s | ${SITE_NAME}`,
     },
     description:
-      "Real-time host club rankings & bilingual culture guide for Tokyo's Kabukicho. Discover your favorite host today.",
+      "The first international guide to Kabukicho host clubs. Real-time rankings, bilingual profiles, and English-friendly culture guides for foreign visitors.",
     url: SITE_URL,
     siteName: SITE_NAME,
     locale: "en_US",
@@ -49,9 +48,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE_NAME} | ${JA_NAME}`,
+    title: SITE_NAME,
     description:
-      "Discover, rate, and match with top hosts in Tokyo's Kabukicho district. Real-time rankings & culture guide.",
+      "The first international guide to Kabukicho host clubs. Discover, rate, and match with Tokyo's top hosts.",
     images: ["/opengraph-image"],
   },
   robots: {

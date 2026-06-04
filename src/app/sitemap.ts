@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 
-const SITE = 'https://oshi-hos.xyz';
+const SITE = 'https://www.oshi-hos.xyz';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

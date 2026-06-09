@@ -114,6 +114,24 @@ function decodeEntities(str) {
     .replace(/&#x27;/g, "'");
 }
 
+function translateText(text) {
+  return new Promise((resolve) => {
+    const q = encodeURIComponent(text);
+    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=ja&tl=en&dt=t&q=${q}`;
+    https.get(url, { timeout: 8000 }, (res) => {
+      let data = '';
+      res.on('data', (c) => data += c);
+      res.on('end', () => {
+        try {
+          const json = JSON.parse(data);
+          const translated = json[0]?.map(p => p[0]).filter(Boolean).join('') || '';
+          resolve(translated);
+        } catch { resolve(''); }
+      });
+    }).on('error', () => resolve(''));
+  });
+}
+
 function generateTS(channelsWithVideos) {
   let out = '';
   out += 'export interface HosTvVideo {\n';
@@ -134,7 +152,6 @@ function generateTS(channelsWithVideos) {
   out += '  videos: HosTvVideo[];\n';
   out += '}\n\n';
   out += 'export const channels: HosTvChannel[] = [\n';
-
   for (const ch of channelsWithVideos) {
     out += `  {\n`;
     out += `    id: '${ch.id}',\n`;
@@ -148,12 +165,12 @@ function generateTS(channelsWithVideos) {
     out += `    channelId: '${ch.channelId}',\n`;
     out += `    videos: [\n`;
     for (const v of ch.videos) {
-      out += `      { id: '${v.id}', title_ja: '${escape(v.title)}', title_en: null },\n`;
+      const titleEn = v.title_en ? `'${escape(v.title_en)}'` : 'null';
+      out += `      { id: '${v.id}', title_ja: '${escape(v.title)}', title_en: ${titleEn} },\n`;
     }
     out += `    ],\n`;
     out += `  },\n`;
   }
-
   out += '];\n';
   return out;
 }
@@ -162,6 +179,7 @@ async function main() {
   console.log('🎬 Fetching hos-tv RSS feeds...\n');
 
   const results = [];
+  const BATCH_DELAY = 300;
 
   for (const ch of CHANNELS) {
     try {
@@ -175,10 +193,18 @@ async function main() {
       const shorts = entries.filter(e => e.isShort).slice(0, 4);
       const videos = [...full, ...shorts].slice(0, 10);
 
-      results.push({ ...ch, videos });
+      // Translate titles
+      const translated = [];
+      for (const v of videos) {
+        const en = await translateText(v.title);
+        translated.push({ ...v, title_en: en || null });
+        console.log(`       [${en ? 'EN' : '  '}] ${v.title.substring(0, 40)}...`);
+        await new Promise(r => setTimeout(r, BATCH_DELAY));
+      }
+
+      results.push({ ...ch, videos: translated });
     } catch (err) {
       console.error(`  ❌ ${ch.name_ja}: ${err.message}`);
-      // Fall back to empty list so the file stays valid
       results.push({ ...ch, videos: [] });
     }
   }

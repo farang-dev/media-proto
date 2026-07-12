@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Crown, Star, ArrowLeft, Store } from 'lucide-react';
+import { Crown, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Host, getNo1Hosts } from '@/lib/db';
 import { HostCard } from '@/components/HostCard';
@@ -16,13 +16,6 @@ export default function No1HostPage() {
   useEffect(() => {
     getNo1Hosts().then(data => { setHosts(data); setLoading(false); });
   }, []);
-
-  const groupedByShop = hosts.reduce<Record<string, Host[]>>((acc, host) => {
-    const shopName = host.shop?.name_ja || '不明';
-    if (!acc[shopName]) acc[shopName] = [];
-    acc[shopName].push(host);
-    return acc;
-  }, {});
 
   return (
     <div className="min-h-screen bg-background">
@@ -85,9 +78,8 @@ export default function No1HostPage() {
         )}
 
         {!loading && hosts.length > 0 && (
-          <div className="space-y-12">
-            {/* Header */}
-            <div className="flex items-center gap-3">
+          <>
+            <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-xl bg-yellow-500/10 flex items-center justify-center">
                 <Crown className="w-5 h-5 text-yellow-400" />
               </div>
@@ -96,43 +88,25 @@ export default function No1HostPage() {
                   {language === 'ja' ? '全店舗 No.1 ホスト一覧' : 'All Shop No.1 Hosts'}
                 </h2>
                 <p className="text-xs text-zinc-500">
-                  {language === 'ja' ? `${Object.keys(groupedByShop).length} 店舗の1位ホスト` : `#1 hosts from ${Object.keys(groupedByShop).length} shops`}
+                  {language === 'ja' ? `${hosts.length} 店舗の1位ホスト` : `#1 hosts from ${hosts.length} shops`}
                 </p>
               </div>
             </div>
-
-            {/* Grouped by shop */}
-            {Object.entries(groupedByShop).map(([shopName, shopHosts]) => (
-              <div key={shopName}>
-                {/* Shop name header - prominent */}
-                <div className="flex items-center gap-3 mb-5 pb-3 border-b border-card-border">
-                  <div className="w-9 h-9 rounded-lg bg-yellow-500/10 flex items-center justify-center">
-                    <Store className="w-4.5 h-4.5 text-yellow-400" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-black font-serif text-foreground">{shopName}</h3>
-                    {shopHosts[0]?.shop?.group_name && (
-                      <p className="text-xs text-zinc-500 uppercase tracking-wider">{shopHosts[0].shop.group_name}</p>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-1.5 text-yellow-400">
-                    <Crown className="w-4 h-4" />
-                    <span className="text-xs font-bold">{shopHosts.length}</span>
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {shopHosts.map((host) => (
-                    <HostCard
-                      key={host.id}
-                      host={host}
-                      rank={1}
-                      isFeatured
-                    />
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+            <motion.div
+              layout
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            >
+              {hosts.map((host, index) => (
+                <HostCard
+                  key={host.id}
+                  host={host}
+                  rank={index + 1}
+                  isFeatured={index === 0}
+                  showShopName
+                />
+              ))}
+            </motion.div>
+          </>
         )}
       </section>
     </div>

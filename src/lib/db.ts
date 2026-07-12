@@ -29,6 +29,8 @@ export interface Shop {
   system_info_en: string;
   logo_url: string;
   website_url: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface QaItem {
@@ -799,4 +801,22 @@ export async function recordHostView(hostId: string): Promise<void> {
   } catch (e) {
     console.error('Failed to record host view:', e);
   }
+}
+
+// ── Map: Shops with coordinates ──
+
+export async function getShopsWithCoordinates(): Promise<Shop[]> {
+  const { data, error } = await supabase
+    .from('shops')
+    .select('*, group:groups(*)')
+    .not('latitude', 'is', null)
+    .not('longitude', 'is', null)
+    .order('name_ja');
+
+  if (error) {
+    console.error('Error fetching shops with coordinates:', error.message);
+    return [];
+  }
+
+  return (data || []) as Shop[];
 }

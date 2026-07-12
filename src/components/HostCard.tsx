@@ -15,6 +15,7 @@ interface HostCardProps {
   rank: number;
   onVote?: (hostId: string, newCount: number) => void;
   isFeatured?: boolean;
+  showShopName?: boolean;
 }
 
 const rankColors: { [key: number]: string } = {
@@ -29,7 +30,7 @@ const rankBorderColors: { [key: number]: string } = {
   3: 'shadow-amber-600/20',
 };
 
-export const HostCard: React.FC<HostCardProps> = ({ host, rank, onVote, isFeatured }) => {
+export const HostCard: React.FC<HostCardProps> = ({ host, rank, onVote, isFeatured, showShopName }) => {
   const { language, t } = useLanguage();
   const { user } = useAuth();
   const router = useRouter();
@@ -146,7 +147,12 @@ export const HostCard: React.FC<HostCardProps> = ({ host, rank, onVote, isFeatur
           <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/5 to-transparent" />
 
           <div className="absolute bottom-4 left-4 right-4">
-            <p className="text-[10px] font-semibold text-accent uppercase tracking-widest mb-0.5">{shopName}</p>
+            {showShopName && (
+              <div className="inline-flex items-center gap-1 bg-black/60 backdrop-blur-sm rounded-md px-2 py-0.5 mb-1.5">
+                <p className="text-[11px] font-bold text-accent tracking-wide">{shopName}</p>
+              </div>
+            )}
+            {!showShopName && <p className="text-[10px] font-semibold text-accent uppercase tracking-widest mb-0.5">{shopName}</p>}
             <h3 className="text-xl font-bold text-white font-serif leading-tight">{name}</h3>
             {host.rank_in_shop && (
               <div className="flex items-center gap-1 mt-1">

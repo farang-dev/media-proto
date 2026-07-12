@@ -18,7 +18,7 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
 });
 
 const projectRef = supabaseUrl.match(/https:\/\/([^.]+)\.supabase\.co/)?.[1];
-const NEW_SHOP_COLUMNS = ['description_ja','description_en','phone','hours','regular_holiday','logo_url','image_urls','system_info_ja','system_info_en'];
+const NEW_SHOP_COLUMNS = ['description_ja','description_en','phone','hours','regular_holiday','logo_url','image_urls','system_info_ja','system_info_en','address_ja','latitude','longitude'];
 const NEW_HOST_COLUMNS = ['line_id','type_tags','ratings','qa_data','qa_data_en','image_urls','instagram_url','twitter_url','tiktok_url'];
 const NEW_GROUP_COLUMNS = ['description_en','image_urls'];
 const availableColumns = { shops: new Set(['id','name_ja','name_en','source_url','area','group_id','score','rank','created_at']), hosts: new Set(['id','shop_id','name_ja','name_en','birthday','height','blood_type','bio_ja','bio_en','source_url','daily_rank','weekly_rank','monthly_rank','rank_in_shop','created_at']), groups: new Set(['id','name_ja','name_en','name_kana','description_ja','logo_url','source_url','created_at']) };
@@ -87,6 +87,24 @@ async function translateText(text, targetLang = 'en') {
   }
 }
 
+async function geocodeAddress(address) {
+  if (!address) return null;
+  try {
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1`;
+    const resp = await fetch(url, {
+      headers: { 'User-Agent': 'KabukiScraper/1.0 (contact@example.com)' }
+    });
+    const data = await resp.json();
+    if (data && data.length > 0) {
+      return { latitude: parseFloat(data[0].lat), longitude: parseFloat(data[0].lon) };
+    }
+    return null;
+  } catch (err) {
+    console.warn(`  Geocoding failed: ${err.message}`);
+    return null;
+  }
+}
+
 async function upsertShop(nameJa, sourceUrl, groupId, extra = {}) {
   const cacheKey = sourceUrl || nameJa;
   if (shopCache[cacheKey]) return shopCache[cacheKey];
@@ -103,6 +121,9 @@ async function upsertShop(nameJa, sourceUrl, groupId, extra = {}) {
   if (extra.logo_url && availableColumns.shops.has('logo_url')) shopData.logo_url = extra.logo_url;
   if (extra.image_urls && extra.image_urls.length > 0 && availableColumns.shops.has('image_urls')) shopData.image_urls = extra.image_urls;
   if (extra.system_info_ja && availableColumns.shops.has('system_info_ja')) shopData.system_info_ja = extra.system_info_ja;
+  if (extra.address_ja && availableColumns.shops.has('address_ja')) shopData.address_ja = extra.address_ja;
+  if (extra.latitude && availableColumns.shops.has('latitude')) shopData.latitude = extra.latitude;
+  if (extra.longitude && availableColumns.shops.has('longitude')) shopData.longitude = extra.longitude;
   if (groupId) shopData.group_id = groupId;
 
   const { data, error } = await supabase
@@ -783,6 +804,21 @@ async function scrapeGroups() {
         ...systemGallery
       ])];
 
+      // Geocode address to lat/lng
+      let latLng = null;
+      if (shopDetail.address) {
+        console.log(`  Geocoding: ${shopDetail.address}`);
+        latLng = await geocodeAddress(shopDetail.address);
+        if (latLng) {
+          console.log(`  → lat: ${latLng.latitude}, lng: ${latLng.longitude}`);
+        } else {
+          console.log(`  → Geocoding failed, will retry with shop name`);
+          latLng = await geocodeAddress(`${shop.name} 歌舞伎町`);
+          if (latLng) console.log(`  → lat: ${latLng.latitude}, lng: ${latLng.longitude}`);
+        }
+        await new Promise(r => setTimeout(r, 1100));
+      }
+
       const shopId = await upsertShop(shop.name, shop.url, groupId, {
         description_ja: shopDetail.description,
         phone: shopDetail.phone,
@@ -791,6 +827,9 @@ async function scrapeGroups() {
         logo_url: shopDetail.logo,
         image_urls: allImages,
         system_info_ja: systemInfoJa,
+        address_ja: shopDetail.address || null,
+        latitude: latLng?.latitude || null,
+        longitude: latLng?.longitude || null,
       });
       if (!shopId) {
         console.warn(`  Skipping — could not upsert shop`);
@@ -1002,6 +1041,9 @@ async function migrateViaPostgrest() {
         `ALTER TABLE shops ADD COLUMN IF NOT EXISTS image_urls TEXT[] DEFAULT '{}'`,
         `ALTER TABLE shops ADD COLUMN IF NOT EXISTS system_info_ja TEXT`,
         `ALTER TABLE shops ADD COLUMN IF NOT EXISTS system_info_en TEXT`,
+        `ALTER TABLE shops ADD COLUMN IF NOT EXISTS address_ja TEXT`,
+        `ALTER TABLE shops ADD COLUMN IF NOT EXISTS latitude DOUBLE PRECISION`,
+        `ALTER TABLE shops ADD COLUMN IF NOT EXISTS longitude DOUBLE PRECISION`,
         `ALTER TABLE hosts ADD COLUMN IF NOT EXISTS qa_data JSONB`,
         `ALTER TABLE hosts ADD COLUMN IF NOT EXISTS qa_data_en JSONB`,
         `ALTER TABLE hosts ADD COLUMN IF NOT EXISTS line_id TEXT`,

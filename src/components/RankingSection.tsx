@@ -3,13 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { Trophy, Flame, Calendar, RefreshCw, Filter, TrendingUp } from 'lucide-react';
-import { Host, getHosts, getKabukichoRanking } from '../lib/db';
+import { Trophy, Flame, Calendar, RefreshCw, Filter, TrendingUp, Crown, Eye } from 'lucide-react';
+import { Host, getHosts, getKabukichoRanking, getNo1Hosts, getAccessRanking } from '../lib/db';
 import { HostCard } from './HostCard';
 import { useLanguage } from '../lib/LanguageContext';
 
 type RankTab = 'daily' | 'weekly' | 'monthly';
-type DataSource = 'votes' | 'kabukicho';
+type DataSource = 'votes' | 'kabukicho' | 'no1' | 'access';
 
 export const RankingSection: React.FC = () => {
   const { t, language } = useLanguage();
@@ -23,9 +23,23 @@ export const RankingSection: React.FC = () => {
     let cancelled = false;
     (async () => {
       setLoading(true);
-      const data = source === 'kabukicho'
-        ? await getKabukichoRanking(tab)
-        : await getHosts();
+      let data: Host[];
+      switch (source) {
+        case 'kabukicho':
+          data = await getKabukichoRanking(tab);
+          break;
+        case 'votes':
+          data = await getHosts();
+          break;
+        case 'no1':
+          data = await getNo1Hosts();
+          break;
+        case 'access':
+          data = await getAccessRanking();
+          break;
+        default:
+          data = [];
+      }
       if (!cancelled) {
         setHosts(data);
         setLoading(false);
@@ -52,12 +66,26 @@ export const RankingSection: React.FC = () => {
 
   const refetch = () => {
     setLoading(true);
-    const promise = source === 'kabukicho' ? getKabukichoRanking(tab) : getHosts();
+    let promise: Promise<Host[]>;
+    switch (source) {
+      case 'kabukicho': promise = getKabukichoRanking(tab); break;
+      case 'votes': promise = getHosts(); break;
+      case 'no1': promise = getNo1Hosts(); break;
+      case 'access': promise = getAccessRanking(); break;
+      default: promise = Promise.resolve([]);
+    }
     promise.then(data => { setHosts(data); setLoading(false); });
   };
 
   const groups = ['all', ...Array.from(new Set(hosts.map(h => h.shop?.group_name).filter(Boolean) as string[]))];
   const filteredHosts = filter === 'all' ? hosts : hosts.filter(h => h.shop?.group_name === filter);
+
+  const sourceButtons: { key: DataSource; label: string; labelShort: string; icon: React.ReactNode; color: string }[] = [
+    { key: 'kabukicho', label: language === 'ja' ? 'ホスホス' : 'HosHos', labelShort: 'Hos', icon: <TrendingUp className="w-3 sm:w-3.5 h-3 sm:h-3.5" />, color: 'bg-accent text-background' },
+    { key: 'votes', label: language === 'ja' ? '推し活' : 'Oshi Vote', labelShort: language === 'ja' ? '推し' : 'Vote', icon: <Trophy className="w-3 sm:w-3.5 h-3 sm:h-3.5" />, color: 'bg-accent-gold text-background' },
+    { key: 'no1', label: 'No.1 Host', labelShort: 'No.1', icon: <Crown className="w-3 sm:w-3.5 h-3 sm:h-3.5" />, color: 'bg-yellow-500 text-background' },
+    { key: 'access', label: language === 'ja' ? 'アクセス' : 'Access', labelShort: language === 'ja' ? 'Access' : 'Access', icon: <Eye className="w-3 sm:w-3.5 h-3 sm:h-3.5" />, color: 'bg-cyan-500 text-background' },
+  ];
 
   return (
     <section id="rankings" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -97,26 +125,19 @@ export const RankingSection: React.FC = () => {
         <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
           {/* Source switch */}
           <div className="flex items-center bg-card-bg border border-card-border rounded-xl p-0.5 sm:p-1 gap-0.5 sm:gap-1">
-            <button
-              onClick={() => setSource('kabukicho')}
-              className={`flex items-center gap-1 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg text-[11px] sm:text-xs font-semibold transition-all cursor-pointer ${
-                source === 'kabukicho' ? 'bg-accent text-background shadow-md' : 'text-zinc-400 hover:text-foreground'
-              }`}
-            >
-              <TrendingUp className="w-3 sm:w-3.5 h-3 sm:h-3.5" />
-              <span className="hidden sm:inline">{language === 'ja' ? 'ホスホス' : 'HosHos'}</span>
-              <span className="sm:hidden">{language === 'ja' ? 'Hos' : 'Hos'}</span>
-            </button>
-            <button
-              onClick={() => setSource('votes')}
-              className={`flex items-center gap-1 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg text-[11px] sm:text-xs font-semibold transition-all cursor-pointer ${
-                source === 'votes' ? 'bg-accent-gold text-background shadow-md' : 'text-zinc-400 hover:text-foreground'
-              }`}
-            >
-              <Trophy className="w-3 sm:w-3.5 h-3 sm:h-3.5" />
-              <span className="hidden sm:inline">{language === 'ja' ? '推し活' : 'Oshi Vote'}</span>
-              <span className="sm:hidden">{language === 'ja' ? '推し' : 'Vote'}</span>
-            </button>
+            {sourceButtons.map((btn) => (
+              <button
+                key={btn.key}
+                onClick={() => setSource(btn.key)}
+                className={`flex items-center gap-1 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg text-[11px] sm:text-xs font-semibold transition-all cursor-pointer ${
+                  source === btn.key ? `${btn.color} shadow-md` : 'text-zinc-400 hover:text-foreground'
+                }`}
+              >
+                {btn.icon}
+                <span className="hidden sm:inline">{btn.label}</span>
+                <span className="sm:hidden">{btn.labelShort}</span>
+              </button>
+            ))}
           </div>
 
           {/* Period tabs (only for kabukicho source) */}

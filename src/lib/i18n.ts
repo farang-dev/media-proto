@@ -34,6 +34,8 @@ export const translations: Translations = {
     'rank.daily': 'Daily Trending',
     'rank.monthly': 'Monthly Stars',
     'rank.featured': 'Featured Host Star',
+    'rank.no1': 'No.1 Host',
+    'rank.access': 'Access Ranking',
     
     // Detail Page
     'host.birthday': 'Birthday',
@@ -121,6 +123,8 @@ export const translations: Translations = {
     'rank.daily': 'デイリー急上昇',
     'rank.monthly': 'マンスリースター',
     'rank.featured': '注目ホストスター',
+    'rank.no1': 'No.1 ホスト',
+    'rank.access': 'アクセスランキング',
     
     // Detail Page
     'host.birthday': '誕生日',

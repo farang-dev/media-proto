@@ -8,7 +8,7 @@ import {
   Share2, Bookmark, ChevronLeft, ChevronRight, Music2
 } from 'lucide-react';
 import Link from 'next/link';
-import { Host, getHost, getHostsByShop, castVote, addFavorite, removeFavorite, getFavoriteIds } from '@/lib/db';
+import { Host, getHost, getHostsByShop, castVote, addFavorite, removeFavorite, getFavoriteIds, recordHostView } from '@/lib/db';
 import { Store } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { useAuth } from '@/lib/AuthContext';
@@ -78,6 +78,7 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
           const related = await getHostsByShop(data.shop_id, id);
           setRelatedHosts(related);
         }
+        recordHostView(id);
       }
       setLoading(false);
     })();

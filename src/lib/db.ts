@@ -61,6 +61,7 @@ export interface Host {
   weekly_rank?: number;
   monthly_rank?: number;
   is_active: boolean;
+  view_count?: number;
   votes_count?: number;
   shop?: Shop;
 }
@@ -721,4 +722,81 @@ export async function removeFavorite(hostId: string): Promise<boolean> {
     return false;
   }
   return true;
+}
+
+// ── No.1 Host (rank_in_shop = 1 per shop) ──
+
+export async function getNo1Hosts(): Promise<Host[]> {
+  const { data: hostsData, error: hostsError } = await supabase
+    .from('hosts')
+    .select('*, shop:shops(*, group:groups(*))')
+    .eq('rank_in_shop', 1)
+    .eq('is_active', true);
+
+  if (hostsError) {
+    console.error('Error fetching No.1 hosts:', hostsError.message);
+    return [];
+  }
+
+  const { data: votesData } = await supabase
+    .from('votes')
+    .select('host_id');
+
+  const voteCounts: { [key: string]: number } = {};
+  if (votesData) {
+    votesData.forEach((v) => {
+      voteCounts[v.host_id] = (voteCounts[v.host_id] || 0) + 1;
+    });
+  }
+
+  return (hostsData || []).map((h: Record<string, unknown>) => ({
+    ...h,
+    votes_count: voteCounts[h.id as string] || 0,
+  } as unknown as Host));
+}
+
+// ── Access Ranking (by view_count) ──
+
+export async function getAccessRanking(limit: number = 50): Promise<Host[]> {
+  const { data: hostsData, error: hostsError } = await supabase
+    .from('hosts')
+    .select('*, shop:shops(*, group:groups(*))')
+    .eq('is_active', true)
+    .order('view_count', { ascending: false })
+    .limit(limit);
+
+  if (hostsError) {
+    console.error('Error fetching access ranking:', hostsError.message);
+    return [];
+  }
+
+  const { data: votesData } = await supabase
+    .from('votes')
+    .select('host_id');
+
+  const voteCounts: { [key: string]: number } = {};
+  if (votesData) {
+    votesData.forEach((v) => {
+      voteCounts[v.host_id] = (voteCounts[v.host_id] || 0) + 1;
+    });
+  }
+
+  return (hostsData || []).map((h: Record<string, unknown>) => ({
+    ...h,
+    votes_count: voteCounts[h.id as string] || 0,
+  } as unknown as Host));
+}
+
+// ── Record a host page view ──
+
+export async function recordHostView(hostId: string): Promise<void> {
+  try {
+    await fetch('/api/host-views', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ hostId }),
+    });
+  } catch (e) {
+    console.error('Failed to record host view:', e);
+  }
 }

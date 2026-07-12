@@ -18,6 +18,7 @@ export const Header: React.FC = () => {
   const navLinks = [
     { href: '/blog', label: language === 'ja' ? 'ガイド' : 'Guides' },
     { href: '/clubs', label: language === 'ja' ? 'グループ' : 'Clubs' },
+    { href: '/no1-host', label: language === 'ja' ? 'No.1ホスト' : 'No.1 Host', accent: true },
     { href: '/hos-match', label: language === 'ja' ? 'ホスマッチ' : 'Hos-Match', accent: true },
     { href: '/hos-tv', label: t('nav.hostv') },
     { href: '/events', label: language === 'ja' ? 'イベント' : 'Events' },

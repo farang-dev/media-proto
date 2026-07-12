@@ -64,6 +64,7 @@ CREATE TABLE IF NOT EXISTS hosts (
   weekly_rank INT, -- 歌舞伎町全体ウィークリーランキング
   monthly_rank INT, -- 歌舞伎町全体マンスリーランキング
   is_active BOOLEAN DEFAULT TRUE,
+  view_count INT DEFAULT 0, -- ページアクセス数（アクセスランキング用）
   qa_data JSONB, -- Q&A data (e.g. {"前職":"営業職","出身地":"北海道"})
   qa_data_en JSONB, -- English translation of Q&A data
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
@@ -293,4 +294,5 @@ ALTER TABLE hosts ADD COLUMN IF NOT EXISTS image_urls TEXT[] DEFAULT '{}';
 ALTER TABLE hosts ADD COLUMN IF NOT EXISTS instagram_url TEXT;
 ALTER TABLE hosts ADD COLUMN IF NOT EXISTS twitter_url TEXT;
 ALTER TABLE hosts ADD COLUMN IF NOT EXISTS tiktok_url TEXT;
+ALTER TABLE hosts ADD COLUMN IF NOT EXISTS view_count INT DEFAULT 0;
 */

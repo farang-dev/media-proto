@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, Heart, Camera, MessageSquareShare, Ruler, Droplets, Cake, Award, Music2 } from 'lucide-react';
 import { getHost, getHostsByShop } from '@/lib/db';
+import { supabase } from '@/lib/supabase';
 import type { Host } from '@/lib/db';
 import { getEnglishName, looksLikeDate } from '@/lib/japanese';
 import TikTokEmbed from '@/components/TikTokEmbed';
@@ -37,6 +38,12 @@ export default async function HostPage(props: { params: Promise<{ id: string }> 
   const host = await getHost(id);
 
   if (!host) notFound();
+
+  // Increment view count (fire and forget)
+  const { data: viewData } = await supabase.from('hosts').select('view_count').eq('id', id).single();
+  if (viewData) {
+    await supabase.from('hosts').update({ view_count: (viewData.view_count || 0) + 1 }).eq('id', id);
+  }
 
   const shop = host.shop;
   const mainImage = host.image_urls?.[0] || 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=600&auto=format&fit=crop';

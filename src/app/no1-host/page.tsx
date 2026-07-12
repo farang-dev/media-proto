@@ -2,12 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Crown, Star, ArrowLeft, Store, ChevronRight } from 'lucide-react';
+import { Crown, Star, ArrowLeft, Store } from 'lucide-react';
 import Link from 'next/link';
 import { Host, getNo1Hosts } from '@/lib/db';
 import { HostCard } from '@/components/HostCard';
 import { useLanguage } from '@/lib/LanguageContext';
-import { getEnglishName } from '@/lib/japanese';
 
 export default function No1HostPage() {
   const { language } = useLanguage();
@@ -18,14 +17,12 @@ export default function No1HostPage() {
     getNo1Hosts().then(data => { setHosts(data); setLoading(false); });
   }, []);
 
-  const groupedByShop = hosts.reduce<Record<string, { shop: Host['shop']; hosts: Host[] }>>((acc, host) => {
-    const shopId = host.shop_id;
-    if (!acc[shopId]) acc[shopId] = { shop: host.shop, hosts: [] };
-    acc[shopId].hosts.push(host);
+  const groupedByShop = hosts.reduce<Record<string, Host[]>>((acc, host) => {
+    const shopName = host.shop?.name_ja || '不明';
+    if (!acc[shopName]) acc[shopName] = [];
+    acc[shopName].push(host);
     return acc;
   }, {});
-
-  const shopEntries = Object.entries(groupedByShop);
 
   return (
     <div className="min-h-screen bg-background">
@@ -65,16 +62,13 @@ export default function No1HostPage() {
       {/* Content */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {loading && (
-          <div className="space-y-8">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="rounded-2xl bg-card-bg border border-card-border p-6 animate-pulse">
-                <div className="h-6 bg-black/5 rounded-full w-48 mb-4" />
-                <div className="flex gap-4">
-                  <div className="w-20 h-20 rounded-xl bg-black/5" />
-                  <div className="flex-1 space-y-2">
-                    <div className="h-4 bg-black/5 rounded-full w-32" />
-                    <div className="h-3 bg-black/5 rounded-full w-24" />
-                  </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="rounded-2xl bg-card-bg border border-card-border overflow-hidden animate-pulse">
+                <div className="aspect-[3/4] bg-black/5" />
+                <div className="p-4 space-y-3">
+                  <div className="h-3 bg-black/5 rounded-full w-3/4" />
+                  <div className="h-3 bg-black/5 rounded-full w-1/2" />
                 </div>
               </div>
             ))}
@@ -91,101 +85,54 @@ export default function No1HostPage() {
         )}
 
         {!loading && hosts.length > 0 && (
-          <>
-            {/* Stats bar */}
-            <div className="flex items-center justify-between mb-8">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-yellow-500/10 flex items-center justify-center">
-                  <Crown className="w-5 h-5 text-yellow-400" />
-                </div>
-                <div>
-                  <h2 className="text-lg font-bold font-serif text-foreground">
-                    {language === 'ja' ? '全店舗 No.1 ホスト' : 'All Shop No.1 Hosts'}
-                  </h2>
-                  <p className="text-xs text-zinc-500">
-                    {language === 'ja' ? `${shopEntries.length} 店舗` : `${shopEntries.length} shops`}
-                  </p>
-                </div>
+          <div className="space-y-12">
+            {/* Header */}
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-yellow-500/10 flex items-center justify-center">
+                <Crown className="w-5 h-5 text-yellow-400" />
+              </div>
+              <div>
+                <h2 className="text-lg font-bold font-serif text-foreground">
+                  {language === 'ja' ? '全店舗 No.1 ホスト一覧' : 'All Shop No.1 Hosts'}
+                </h2>
+                <p className="text-xs text-zinc-500">
+                  {language === 'ja' ? `${Object.keys(groupedByShop).length} 店舗の1位ホスト` : `#1 hosts from ${Object.keys(groupedByShop).length} shops`}
+                </p>
               </div>
             </div>
 
-            {/* Shop sections */}
-            <div className="space-y-6">
-              {shopEntries.map(([shopId, { shop, hosts: shopHosts }], shopIndex) => {
-                const shopName = language === 'ja'
-                  ? (shop?.name_ja || '不明')
-                  : getEnglishName(shop?.name_ja || '', shop?.name_en);
-                const groupName = shop?.group_name || '';
-                const host = shopHosts[0];
-
-                return (
-                  <motion.div
-                    key={shopId}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: shopIndex * 0.03 }}
-                  >
-                    <Link
-                      href={`/host/${host.id}`}
-                      className="block rounded-2xl bg-card-bg border border-card-border hover:border-yellow-500/30 transition-all group overflow-hidden"
-                    >
-                      {/* Shop name header */}
-                      <div className="flex items-center justify-between px-5 py-3 border-b border-card-border bg-yellow-500/[0.03]">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-lg bg-yellow-500/10 flex items-center justify-center">
-                            <Store className="w-4 h-4 text-yellow-400" />
-                          </div>
-                          <div>
-                            <h3 className="text-base font-black font-serif text-foreground group-hover:text-yellow-400 transition-colors">
-                              {shopName}
-                            </h3>
-                            {groupName && (
-                              <p className="text-[10px] text-zinc-500 uppercase tracking-wider">{groupName}</p>
-                            )}
-                          </div>
-                        </div>
-                        <ChevronRight className="w-4 h-4 text-zinc-600 group-hover:text-yellow-400 group-hover:translate-x-1 transition-all" />
-                      </div>
-
-                      {/* Host info */}
-                      <div className="flex items-center gap-4 p-5">
-                        <div className="relative w-20 h-20 rounded-xl overflow-hidden shrink-0">
-                          <img
-                            src={host.image_urls?.[0] || 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=600&auto=format&fit=crop'}
-                            alt={host.name_ja}
-                            className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 host-img"
-                          />
-                          <div className="absolute top-1 right-1 w-6 h-6 rounded-full bg-gradient-to-br from-yellow-400 via-amber-300 to-yellow-500 flex items-center justify-center shadow-lg">
-                            <Crown className="w-3.5 h-3.5 text-background" />
-                          </div>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="text-[10px] font-bold text-yellow-400 uppercase tracking-widest">No.1</span>
-                            <div className="h-px flex-1 bg-yellow-500/20" />
-                          </div>
-                          <p className="text-lg font-bold text-foreground font-serif truncate group-hover:text-yellow-400 transition-colors">
-                            {host.name_ja}
-                          </p>
-                          {host.name_en && host.name_en !== host.name_ja && (
-                            <p className="text-xs text-zinc-500 truncate">{host.name_en}</p>
-                          )}
-                          <div className="flex items-center gap-1.5 mt-1.5">
-                            {host.rank_in_shop && Array.from({ length: Math.min(5, 6 - host.rank_in_shop) }).map((_, i) => (
-                              <Star key={i} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                            ))}
-                            {host.height && (
-                              <span className="text-[10px] text-zinc-500 ml-1">{host.height}</span>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </>
+            {/* Grouped by shop */}
+            {Object.entries(groupedByShop).map(([shopName, shopHosts]) => (
+              <div key={shopName}>
+                {/* Shop name header - prominent */}
+                <div className="flex items-center gap-3 mb-5 pb-3 border-b border-card-border">
+                  <div className="w-9 h-9 rounded-lg bg-yellow-500/10 flex items-center justify-center">
+                    <Store className="w-4.5 h-4.5 text-yellow-400" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-black font-serif text-foreground">{shopName}</h3>
+                    {shopHosts[0]?.shop?.group_name && (
+                      <p className="text-xs text-zinc-500 uppercase tracking-wider">{shopHosts[0].shop.group_name}</p>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-1.5 text-yellow-400">
+                    <Crown className="w-4 h-4" />
+                    <span className="text-xs font-bold">{shopHosts.length}</span>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {shopHosts.map((host) => (
+                    <HostCard
+                      key={host.id}
+                      host={host}
+                      rank={1}
+                      isFeatured
+                    />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
         )}
       </section>
     </div>

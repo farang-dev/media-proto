@@ -19,18 +19,29 @@ export const ClubsSection: React.FC = () => {
   const [extra, setExtra] = useState<Record<string, ExtraGroup>>({});
   const [loading, setLoading] = useState(true);
 
+  const MAJOR_GROUP_IDS = new Set([
+    '49fb9a03-1362-47a9-a685-87f5105760f8', // groupdandy
+    '5f502c89-2c4b-473c-a0d5-2b6df8c7e8e1', // Smappa! Group
+    '98759d0c-7fec-4f66-ba0b-93d687e7047d', // AIR GROUP
+    'ab7cfe18-8b14-445f-95e4-bde8d4444511', // ACQUA Group
+    '9d6d388b-dcf2-47e7-b3b8-8052d6cac956', // L's collection
+    'b9574b92-90ee-4d71-b7f5-637692fc5b83', // 冬月グループHOLDINGS
+  ]);
+
   useEffect(() => {
     Promise.all([
       getGroupClubs(),
       fetch('/api/groups-extra').then(r => r.json()).catch(() => ({})),
     ]).then(([groupData, extraData]) => {
-      // Sort: Fuyutsuki (冬月グループHOLDINGS) first, then rest by name
-      const sorted = [...groupData].sort((a, b) => {
-        if (a.name_ja === '冬月グループHOLDINGS') return -1;
-        if (b.name_ja === '冬月グループHOLDINGS') return 1;
-        return a.name_ja.localeCompare(b.name_ja, 'ja');
-      });
-      setGroups(sorted);
+      // Only show major groups on homepage
+      const majorGroups = groupData
+        .filter(g => MAJOR_GROUP_IDS.has(g.id))
+        .sort((a, b) => {
+          if (a.name_ja === '冬月グループHOLDINGS') return -1;
+          if (b.name_ja === '冬月グループHOLDINGS') return 1;
+          return a.name_ja.localeCompare(b.name_ja, 'ja');
+        });
+      setGroups(majorGroups);
       setExtra(extraData);
       setLoading(false);
     });

@@ -1,44 +1,667 @@
 {
-  "c75ddaac-d44f-45cc-aede-c546a76b784b": {
-    "description_en": "ACQUA Group head office ``ACQUA''.  A truly extraordinary luxury space with overwhelming scale and sophisticated design.  As soon as you step inside, the sparkling chandelier lights up and you enter a world of luxury.",
+  "49fb9a03-1362-47a9-a685-87f5105760f8": {
+    "description_en": "\"TOP DANDY\" has produced numerous dramas since its founding.  A distinctive circular floor.  Overhead is an oversized chandelier -- why not see for yourself why it's a \"long-established store\" backed by its popularity?",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/groupdandy/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/groupdandy/logo.jpg"
+    ]
+  },
+  "5f502c89-2c4b-473c-a0d5-2b6df8c7e8e1": {
+    "description_en": "``SMAPPA!HANS AXEL VON FERSEN -Smappa! Group main store-'' is impressive with its gorgeous interior inspired by the Palace of Versailles and large chandeliers ♪ Many of the staff are certified sommeliers, and you can enjoy choosing drinks ☆",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/smappa/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/smappa/logo.jpg"
+    ]
+  },
+  "98759d0c-7fec-4f66-ba0b-93d687e7047d": {
+    "description_en": "The revolution of Kabukicho's largest brand AIR GROUP is unstoppable...  Produced by a famous designer, this super large store of 120 tsubo has an overwhelming scale that is unrivaled by any other store!The total construction cost of this gorgeous store is definitely one of the highest in the industry!!",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/air/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/air/logo.jpg"
+    ]
+  },
+  "4703d781-7d39-4828-8042-e387206f8167": {
+    "description_en": "Deep Group's \"IR\" includes \"Shiten Saeki\" & \"Tenshi Roy\" who are active on TikTok \"Shima-san Roy-kun\"!  It has a reputation for being a relaxing and fun place to spend time in a modern and stylish interior.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/deep/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/deep/logo.jpg"
+    ]
+  },
+  "24fc3a73-cfa4-4b4c-a4e2-60806d6851c6": {
+    "description_en": "The spectacular chandeliers and precisely designed laser effects envelop the store in a magnificent glow, and you won't want to miss every moment of it!",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/one/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/one/logo.jpg"
+    ]
+  },
+  "941ff80c-2a16-4b5e-a593-4481f2712baf": {
+    "description_en": "``Club -DNA-'' features an interior unified with black and blue ♪ It offers a chic and calm space ☆",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/isk/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/isk/logo.jpg"
+    ]
+  },
+  "60d87e32-5763-49f2-bcee-2a30f1888144": {
+    "description_en": "SYG's Shinsuyu main store aims to be \"the most fun in Japan.\"  Fully renovated 150 tsubo large box!  In a futuristic space with sparkling LED lights, you can enjoy customer service from a wide range of customers, from the traditional to the unique.  This is a classic host club that can be called SYG quality.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/sinceyou/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/sinceyou/logo.jpg"
+    ]
+  },
+  "b44a9096-3ef1-49b9-b5fe-386682f8eb44": {
+    "description_en": "``MERRY GO ROUND -Main Store-'' is a famous store that has been covered by the media and that everyone has heard of.  When you go down the stairs, you will find yourself in a paradise of light.  A luxurious floor illuminated by countless chandeliers!!",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/tripleeight/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/tripleeight/logo.jpg"
+    ]
+  },
+  "848e6339-fe4b-47b5-a463-42f6a0ff2abd": {
+    "description_en": "A super large host club boasting an area of ​​160 tsubo, one of the largest in western Japan.  The stylish interior designed by a famous designer is worth seeing! Why not spend a special night at Group M's main store, \"club ADAM\"?",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/groupm/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/groupm/logo.jpg"
+    ]
+  },
+  "2961dc21-fd02-4fe1-bc9a-3a8786a48ae5": {
+    "description_en": "BCG Holdings brings you the \"origin\" and the challenge to the forefront!! Our serious hosts will welcome you with passion from the ground up.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/bcgholdings/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/bcgholdings/logo.jpg"
+    ]
+  },
+  "2d5a4ac9-dd03-4c9e-8459-08d469b86b61": {
+    "description_en": "Ikebukuro's entertainment group \"Lilian\" is born!! Colorful lasers on the large LED decorating the entire wall create a dazzling space ♪",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/eternityrose/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/eternityrose/logo.jpg"
+    ]
+  },
+  "95bc7462-1821-4de8-9b43-7b21ee82919d": {
+    "description_en": "The main branch of Kyushu's Pure Group! At rhy",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/puregroup/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/puregroup/logo.jpg"
+    ]
+  },
+  "bfc6f372-b8c5-4d88-bb9a-581ae11c49f8": {
+    "description_en": "Created by overflowing imagination.  It transcends all preconceptions and common sense.  Yes...this place is definitely Kabukicho territory.  A top-class stage will be created.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/kgproduce/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/kgproduce/logo.jpg"
+    ]
+  },
+  "a9f885e2-7fae-4d11-a7d0-06357bf09ce9": {
+    "description_en": "group BJ CLUB DARLIN/Kabukicho A calm, adult atmosphere that will make you forget the hustle and bustle of the city.  Look for your own prince──────.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/groupbj/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/groupbj/logo.jpg"
+    ]
+  },
+  "1e365f74-ea62-46b5-8bd0-b914d5c00fad": {
+    "description_en": "We value \"genuine comfort\" and \"trust.\"  There is a sense of adult elegance and relaxation♪Enjoy a relaxing night of conversation and spontaneous laughter that will touch your heart.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/starprojectlinx/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/starprojectlinx/logo.jpg"
+    ]
+  },
+  "01b4ce6f-7e8c-4ae8-ba85-06e0f5dc4210": {
+    "description_en": "The legendary \"club Drop\" was famous in Susukino, Hokkaido.  The second chapter is now quietly and passionately opening.  A new project led by the young talent \"Shizuku\".  The next stage is Kabukicho, the city that never sleeps.  CRAZY GROUP's new whirlwind will rewrite the conventional wisdom of the night.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/crazygroup/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/crazygroup/logo.jpg"
+    ]
+  },
+  "3de321d3-d71a-4cdf-b16a-f791af11e2a8": {
+    "description_en": "``Club THE STINGER -SECOND-'' is a super famous store that offers morning activities, morning hospitality, and no explanation needed!  140 tsubo × total construction cost of 200 million yen × one of Japan's largest super-large stores decorated with luxury and splendor × high level suitable for this monster store × star players are waiting for the princesses to visit us from early morning!",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/sgroup/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/sgroup/logo.jpg"
+    ]
+  },
+  "ab7cfe18-8b14-445f-95e4-bde8d4444511": {
+    "description_en": "``alpha by ACQUA -Main Store-'' has been awarded the best store for 4 consecutive years among all 60 stores of ACQUA GROUP.  With a total construction cost of 200 million yen, a large-scale host club boasting an overwhelming scale of over 110 tsubo has been born! Experience even more legendary moments on this evolved stage.",
     "image_urls": [
       "https://www.host2.jp/shop_grp/acquagroup/pr_img2.jpg",
       "https://www.host2.jp/shop_grp/acquagroup/logo.jpg"
     ]
   },
-  "b3b2a402-e500-443a-a54a-aaa8d65d7ef1": {
-    "description_en": "FUYUTSUKI -DeZon-, a super large store with 120 tsubo, total of 200 million yen, and 50 tables, has finally opened in Furin Kaikan with the next generation of Fuyutsuki Group on its shoulders!  !",
+  "b9574b92-90ee-4d71-b7f5-637692fc5b83": {
+    "description_en": "``FUYUTSUKI -DeZon-'', a super large store with 50 tables and a total of 200 million yen, measuring 120 tsubo, has finally opened in Furin Kaikan, carrying the next generation of the Fuyutsuki Group on its shoulders!  !",
     "image_urls": [
       "https://www.host2.jp/shop_grp/fg/pr_img2.jpg",
       "https://www.host2.jp/shop_grp/fg/logo.jpg"
     ]
   },
-  "96615588-b6b9-4e72-ad1e-2371881b517f": {
+  "da1abb8d-2c5c-4779-8317-0f6f93727ccd": {
+    "description_en": "Osaka Minami's super famous store \"REGOLITH\" has expanded and relocated!  The talented hosts of the group's main store will be active in the stylish interior space created by a famous designer!",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/regolithgroup/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/regolithgroup/logo.jpg"
+    ]
+  },
+  "bad2a85e-cbfa-457a-bbd9-3a753b2f9bf2": {
+    "description_en": "\"MONSTAR -Main Store-\" is a large store produced by MONSTAR GROUP.  The designed space, with a total construction cost of 400 million yen and 230 tsubo, is packed with uncompromising beauty and attention to detail.  Please take a look.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/all/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/all/logo.jpg"
+    ]
+  },
+  "ed0c39e1-eb06-4f93-bae8-4dafcb3d8b84": {
+    "description_en": "``MAJESTY -Main Store-'' is a collection of staff who share the idea of ​​``We want to create a store where people can truly enjoy themselves.''  Why not spend a wonderful night in Kabukicho with a stylish interior design based on white?",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/newgenerationgroup/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/newgenerationgroup/logo.jpg"
+    ]
+  },
+  "77824491-1df0-41a6-a776-5871d2eea695": {
+    "description_en": "Hokuriku's largest!? Finest!? Furthermore, the interior design that captures the latest trends is a sight to behold!  Our talented and handsome hosts will create a dream-like experience for you!! Please come and see for yourself the beginning of a new era of Kanazawa hosts...",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/ksg/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/ksg/logo.jpg"
+    ]
+  },
+  "c719a948-ba31-4877-ac71-000fecfcd817": {
+    "description_en": "RAIN GROUP Main Store The name is \"ROMEO & JULIET\" We are proud to be the flagship store.  Spend a romantic night with you.  A luxurious cast will welcome you with the highest level of hospitality.  Have a wonderful time together...",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/rain/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/rain/logo.jpg"
+    ]
+  },
+  "23b2d113-60c5-42a6-82b0-1471f7e0e93f": {
+    "description_en": "“Empire” is set in the downtown area of ​​West Tokyo, “Machida”!  Veteran hosts will welcome you at the cool and shining \"Empire\" ♪",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/mdsgroup/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/mdsgroup/logo.jpg"
+    ]
+  },
+  "583800b9-84db-4aa8-895c-653daca31956": {
+    "description_en": "``The highest quality luxury club''...CLG's main store ``HEAVEN'' is based on the concept of ``the highest quality'' and ``first class.''  It is a host club with a high-quality interior and ``a special space created by the customer service of the cast that will soothe the princess.''",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/chanceland01/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/chanceland01/logo.jpg"
+    ]
+  },
+  "02e159e1-b4b0-4a0c-a724-fc4bf1a1fdb1": {
+    "description_en": "``Dewl'' is a luxurious space with a gold-based interior and a sense of unity throughout ★ ``Dewl'', where various handsome men gather, including ``Ryoma Echizen'' and ``TAKUYA∞'', is waiting for you!",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/dewl/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/dewl/logo.jpg"
+    ]
+  },
+  "2b4f286a-da93-44ff-b1ed-a49f372fbbb5": {
+    "description_en": "Prince Kouya, also known as the world's \"Pri-Kou\", who achieved great feats in the world rankings of TikTok live streaming, is finally making a move!  He has researched new ideas for host clubs and has implemented some very interesting methods at his store.  Please go and see for yourself...",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/princejapan/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/princejapan/logo.jpg"
+    ]
+  },
+  "e37f2132-ba35-4fdf-bf84-2511562adcf3": {
+    "description_en": "``WORLD -Osaka main store-'' is a super large store in Minami, Osaka.  It is a celebrity host club that is famous for its huge billboard in Soemon-cho as the head office of GRAMMY GROUP, and is staffed by highly skilled and experienced staff.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/grammy/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/grammy/logo.jpg"
+    ]
+  },
+  "1adc6b8d-833f-4c91-ac98-d87f5314c630": {
+    "description_en": "KING, located in the center of Osaka Minami, is an elegant space reminiscent of a royal palace.  A carefully selected cast member will warmly welcome your visit and provide you with a luxurious time that will remain in your heart.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/kinggroup/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/kinggroup/logo.jpg"
+    ]
+  },
+  "5f86e2c9-09be-4d67-a6b3-9b4d9bbbecab": {
+    "description_en": "Fully produced by Rikkun, rumored to be the top-class YouTuber in the host industry, “Hoschiru”!! Kabukicho’s best-class “Hakooshi” store [CLUB FANCY]",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/mizuki/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/mizuki/logo.jpg"
+    ]
+  },
+  "1301f52a-829c-434b-b92f-ec5893adc619": {
+    "description_en": "Customer service that has accumulated experience in Kabukicho, a unique cast, and a buzzing SNS.  Please visit ``HANGOVER'', which is worthy of attention no matter how you look at it, and try it for yourself.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/goo/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/goo/logo.jpg"
+    ]
+  },
+  "1632d97c-3730-4065-8827-e7296687187c": {
+    "description_en": "\"KiJiMUNA\" has finally powered up and returned to Minami...  Many young staff!  Yet it feels like home!  Our energetic and cheerful staff will liven things up!!",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/kijimunagroup/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/kijimunagroup/logo.jpg"
+    ]
+  },
+  "f96872a0-67e0-447b-bd4c-7a8ccd955543": {
+    "description_en": "\"SEXY\" is home to handsome men with overwhelmingly high facial expressions ☆ Why not experience the highest level of customer service and a drama-like dream moment created in a sophisticated store?",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/stardam/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/stardam/logo.jpg"
+    ]
+  },
+  "c71fae68-a492-4ec2-9b42-1ab9186138b5": {
+    "description_en": "ATOM GROUP main store ``ATOM'' is located in the famous host building ``Soemoncho Crystal Building'' in Minami, Osaka.  It is a super large store boasting a spacious interior of 130 tsubo and has many talented hosts within the group.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/atom/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/atom/logo.jpg"
+    ]
+  },
+  "d25cf589-0e52-4d8d-af2c-ef42620d8dd5": {
+    "description_en": "P'CE Group main store ``COLLECTION'' has been praised for its sincere customer service based on the theme of gratitude and excitement.  Please spend an unforgettable time at the store, which has a diverse cast of people including a certain magazine model.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/pcegroup2/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/pcegroup2/logo.jpg"
+    ]
+  },
+  "f6a7e66a-89a2-4618-b573-278cedd9722a": {
+    "description_en": "It's glamorous, but somehow classy and quiet.  \"CINDERELLA GROUP -Main store-\" might be the perfect space to start a quiet and deep night★",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/cinderellagurupu/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/cinderellagurupu/logo.jpg"
+    ]
+  },
+  "de05c989-8286-43bc-8b31-a2d4f1ea5e8a": {
+    "description_en": "Flagship store of \"J-GROUP\".  -EST [Superlative] PRINCE [Prince] - \"ESPRINCE\" has a very high-quality space with shining LEDs and neon lights, and the VIP room has an even higher quality...  Please have a wonderful time at the store, which is full of unique personalities ☆",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/jgroup/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/jgroup/logo.jpg"
+    ]
+  },
+  "69617732-a44c-45b0-a0cc-a0d6310a0ba6": {
+    "description_en": "YGD Headquarters!! “YGGDRASILL” acquires a super large 200 tsubo store stage and begins further evolution.  In addition to many famous hosts, over 100 staff members are waiting for you...",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/fgyggdrasill/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/fgyggdrasill/logo.jpg"
+    ]
+  },
+  "718a3528-a265-41c1-a9a3-2a141ba46590": {
+    "description_en": "The second chapter of \"SIX TOKYO -HONTEN-\", the main store of \"SIX GROUP\", begins!! The interior is designed by cutting-edge overseas designers, and handsome men ranging from cool to cute are waiting for you!",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/clansix/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/clansix/logo.jpg"
+    ]
+  },
+  "a07443d4-d71c-4a62-94a5-f71ebc2545ae": {
+    "description_en": "RUNWAY produce main store ``Ai'' is a talented store located in ``Soemoncho Crystal Building'', which is attracting attention in Minami, Osaka.  An unexpected \"discovery\" may be waiting for you at this place where the personalities of the diverse cast intersect.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/ace/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/ace/logo.jpg"
+    ]
+  },
+  "ae19f645-035a-4c0e-85bb-91283d314833": {
+    "description_en": "LUPINUS, led by Hitoshi Kaminari, has further evolved with the reopening.  A luxurious interior decorated entirely with LED lights, a luxurious VIP room, and a high-quality space with attention to detail, creating a special night.  This is a host club that is recommended for first-timers, as it values ​​a sense of coziness despite its glamor.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/willgroup/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/willgroup/logo.jpg"
+    ]
+  },
+  "943d8c90-f04f-4434-b7f5-531dbdd52d91": {
+    "description_en": "\"4 EVER GROUP\" has finally started in the Chiba area!! Why not spend a wonderful night in a cozy space with a handsome cast ☆ Have a blissful moment here at \"Ark Royal\"...",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/tdec/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/tdec/logo.jpg"
+    ]
+  },
+  "76a1a138-cd05-434c-a75f-4d5f06fe65d9": {
+    "description_en": "``UNIVERSE'' boasts one of the best presence and name recognition in Kansai.  A must-see luxury space that will captivate everyone!",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/universe/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/universe/logo.jpg"
+    ]
+  },
+  "015e52b6-c294-401c-b926-6e2975c8f162": {
+    "description_en": "``GG Honten'', which has become famous at night in Nakasu, will further excite the group!  The ``famous performance'' performed by the veteran cast is worth seeing ☆ If you come to Nakasu to enjoy the wonderful interior and space...",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/gg/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/gg/logo.jpg"
+    ]
+  },
+  "404bc414-125e-4e31-b006-73532d8f294b": {
+    "description_en": "The diverse cast members will welcome you with hospitality while making the most of their individual charms.  The interior of the store has a chic design with black colors, and the LED lighting and ceiling design are a must-see♪",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/square/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/square/logo.jpg"
+    ]
+  },
+  "fe723a49-c89c-415b-ada0-00f10e2701ec": {
+    "description_en": "\"GRAN\" in Osaka Kita has expanded its business hours with the concept of \"enjoying you from day to night.\"  Our hosts, who are known for their Osaka atmosphere and friendliness, will create a special time for you.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/diamond/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/diamond/logo.jpg"
+    ]
+  },
+  "9d6d388b-dcf2-47e7-b3b8-8052d6cac956": {
     "description_en": "\"Leo\" is characterized by its solid stone wall staircase!  Why not enjoy a space that is a little different from your everyday life with carefully selected decorations and lighting?",
     "image_urls": [
       "https://www.host2.jp/shop_grp/lcolle/pr_img2.jpg",
       "https://www.host2.jp/shop_grp/lcolle/logo.jpg"
     ]
   },
-  "da1aee40-75a4-4a3b-9496-0acd4154d64d": {
-    "description_en": "\"TOP DANDY\" has produced numerous dramas since its founding.  A distinctive circular floor.  Overhead is an oversized chandelier - Why not see for yourself why it's a \"long-established store\" backed by its popularity?",
+  "dc5fb421-141f-4308-a5bf-01e48ad1c96e": {
+    "description_en": "Young people gather together to establish a new style.  With this momentum... you can't help but get excited about \"STADIUM\"!?",
     "image_urls": [
-      "https://www.host2.jp/shop_grp/groupdandy/pr_img2.jpg",
-      "https://www.host2.jp/shop_grp/groupdandy/logo.jpg"
+      "https://www.host2.jp/shop_grp/stadium/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/stadium/logo.jpg"
     ]
   },
-  "a2572f31-e4b6-40d6-a5af-8504a0c7d96f": {
-    "description_en": "\"SMAPPA! HANS AXEL VON FERSEN -Smappa! Group main store-\" is impressive with its gorgeous interior inspired by the Palace of Versailles and large chandeliers ♪ Many of the staff are certified sommeliers, and you can enjoy choosing drinks ☆",
+  "365a525b-46ba-4f4a-9e44-125b3f08401c": {
+    "description_en": "AHEAD is the host club that started RISE GROUP.  The spacious store, which is one of the largest in Umeda at over 100 tsubo, has two floors with different atmospheres.  It is attracting attention for its open space and courteous customer service.",
     "image_urls": [
-      "https://www.host2.jp/shop_grp/smappa/pr_img2.jpg",
-      "https://www.host2.jp/shop_grp/smappa/logo.jpg"
+      "https://www.host2.jp/shop_grp/rizeosaka/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/rizeosaka/logo.jpg"
     ]
   },
-  "6bfc3815-cd61-41ac-b1a1-511da813759c": {
-    "description_en": "The revolution of Kabukicho's largest brand AIR GROUP is unstoppable...  Produced by a famous designer, this super large store of 120 tsubo has an overwhelming scale that is unrivaled by any other store!The total construction cost of this gorgeous store is definitely one of the highest in the industry!!",
+  "a585bfd5-8f5c-43a1-b3dd-43f67bd24449": {
+    "description_en": "PYRAMID brings more than just luxury.  There is a ``tranquil immersive feeling'' that quietly fills your heart and sensibilities.  Please forget about time and relax.",
     "image_urls": [
-      "https://www.host2.jp/shop_grp/air/pr_img2.jpg",
-      "https://www.host2.jp/shop_grp/air/logo.jpg"
+      "https://www.host2.jp/shop_grp/pyramid/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/pyramid/logo.jpg"
+    ]
+  },
+  "2425e81d-3534-4ff5-bb0f-0fdfcec0abc3": {
+    "description_en": "A cast with diverse personalities and personalities is assembled!  What kind of night it will be is something to look forward to that day★",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/diareve/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/diareve/logo.jpg"
+    ]
+  },
+  "6d450e4f-fcfc-4b3a-9014-7cc11af50da4": {
+    "description_en": "A severe earthquake hits Okayama Chuo Town!  Its name is \"GENESIS\".  With our highly entertaining staff, we will deliver the finest night to those of you seeking solace!",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/oa/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/oa/logo.jpg"
+    ]
+  },
+  "a0929f24-265d-4443-9c33-ba869a8ad6d5": {
+    "description_en": "``LINK-ACE'' is now available from the popular store ``LINK'' that is lively in Omiya ☆♪ We are sure that it will provide you with the fun, excitement, and joy you desire!! Why not try it for yourself!?",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/link/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/link/logo.jpg"
+    ]
+  },
+  "73b2506a-7f6e-4e92-a7e2-8d36b768bd8e": {
+    "description_en": "Friendly staff gather in a fashionable store supervised by a designer!  We will deliver an exciting and exciting time in an atmosphere full of smiles ♪ Come experience the fun that can only be experienced here!",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/enuwan/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/enuwan/logo.jpg"
+    ]
+  },
+  "075e8f02-6948-4225-bfbf-e92c58a9f3af": {
+    "description_en": "[Eyes Group] is gaining momentum mainly in Gunma!  ``Eyes -Main Store-'' is famous as its headquarters!  Why don't you try out their sophisticated customer service skills?",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/eyes/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/eyes/logo.jpg"
+    ]
+  },
+  "92a6973b-527a-4e0d-9d56-e4e60b066565": {
+    "description_en": "“REY -Main Branch-” continues to lead the host scene in Gunma Prefecture.  Take a look at the reason why we continue to achieve top-level results!",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/reypro/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/reypro/logo.jpg"
+    ]
+  },
+  "1237eac1-9c76-494d-9954-d8c7dd4ab2bb": {
+    "description_en": "\"AXLRIZE\" is now available to further accelerate Koshigaya's nightlife! In addition to the playful interior, the unique customer service is sure to touch your heart♪",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/axlrizegroup/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/axlrizegroup/logo.jpg"
+    ]
+  },
+  "50678009-5b0d-49fc-b620-0f6be13304bd": {
+    "description_en": "\"EL DORADO -Main Branch-\" has talented hosts from a wide range of age groups.  The restaurant is known for its reliable customer service backed by experience, and has earned a reputation as a restaurant that offers a variety of ways to enjoy the restaurant to suit the needs of its customers.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/eldpradp/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/eldpradp/logo.jpg"
+    ]
+  },
+  "e5066ea5-419b-486d-aeb8-75b6eed77eaf": {
+    "description_en": "The long-awaited first branch of \"PARADISE\" has opened! Please enjoy the enchanting world created by the stylish interior and sophisticated handsome men ♪ You might find your favorite here!",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/paradise/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/paradise/logo.jpg"
+    ]
+  },
+  "074832fa-1fda-4ce8-9e61-ca7a170b562e": {
+    "description_en": "\"ARROWS -CHIBA-\" from \"ALLSTER GROUP\" is now available in the Chiba area ☆ Your heart will be blown away by the professional customer service skills of high-level handsome men ♪ Why not visit this enchanting space?",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/allster/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/allster/logo.jpg"
+    ]
+  },
+  "7a831d48-c7a5-4804-9c8b-e21112f87c06": {
+    "description_en": "``Alice'' has an outstanding atmosphere and comfort created by an attractive cast.  The talented host club, which includes famous hosts, has expanded and moved to a new stage.  This is a hidden host club in Kabukicho.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/luminous/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/luminous/logo.jpg"
+    ]
+  },
+  "535ff9ab-f584-4f93-bf6b-12e470c37f70": {
+    "description_en": "It's been 17 years since our first store opened! One of the largest classic host clubs in Kansai, with a total construction cost of over 200 million yen and a store area of ​​over 170 tsubo!",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/gurupuoj/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/gurupuoj/logo.jpg"
+    ]
+  },
+  "2605e3da-e9b6-46b6-975f-63cec7c94296": {
+    "description_en": "You'll definitely find your type at the handsome group \"BLACK\".  The unique ``interior'' and ``entertainment'' will take you to a moment that you cannot experience at other stores.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/colors2/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/colors2/logo.jpg"
+    ]
+  },
+  "78046dcf-c233-4731-8b3e-61b35817337f": {
+    "description_en": "Spending time in a chic and elegant space based on the concept of \"high quality\" in everything is truly a quality time ☆ Once you step inside, you will feel that Kokubuncho is a little different from your everyday life ☆",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/ardentgroup/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/ardentgroup/logo.jpg"
+    ]
+  },
+  "89fbcab6-9c78-42d5-84f6-11a5287878a7": {
+    "description_en": "``There are only two types of stores in Kabukicho.  THE CLUB or something else.  ― by ROLAND” The legend begins now.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/rolandgroup/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/rolandgroup/logo.jpg"
+    ]
+  },
+  "d4f8752c-a492-41d0-8152-2e070246d149": {
+    "description_en": "``CANDY'' has neon lights and colored lights that gently decorate the store.  The energetic response of the young staff and the courteous service of the veterans go well together, making it a great choice for those looking for a casual stay.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/ots/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/ots/logo.jpg"
+    ]
+  },
+  "9bdd5fa3-7478-48af-a9da-824bd7fe150d": {
+    "description_en": "\"Daichi\" who retired from active duty at a young age has finally started his own host club!! Daichi World is open at full throttle with the theme of \"I can only be satisfied\"!  Come experience the atmosphere and the fun!",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/hero/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/hero/logo.jpg"
+    ]
+  },
+  "6aef3efc-2d63-469d-987b-b50fb30e7c1a": {
+    "description_en": "Kabukicho Inishie's hosts ``Menkyabao Yukihiro'' and ``Tenno Haruka'' have teamed up to become an icon of Kabukicho!  A diverse and unconventional cast will welcome you.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/happywide/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/happywide/logo.jpg"
+    ]
+  },
+  "7fc231c3-d667-44c5-aaae-4742168d9b8e": {
+    "description_en": "[Narukami Nagi] Produced store \"G.O.A.T -TOKYO-\"...!! We invite you to a wonderful night that will satisfy your soul in a chic and calming interior decorated in black.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/x8group/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/x8group/logo.jpg"
+    ]
+  },
+  "c203ae6b-fcca-4bf1-bf43-7f0809349ca0": {
+    "description_en": "``Ace'' delivers space, service, and atmosphere in a new form.  This is the beginning of a “time just for you” that focuses on all of these things.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/ace1/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/ace1/logo.jpg"
+    ]
+  },
+  "df491f55-db66-48e2-b98b-3b4e0ee022c1": {
+    "description_en": "``WHITE'' is a spacious space where you can enjoy without hesitation ☆ Perfect for those who want to enjoy conversation in a calm atmosphere!  The comfort is also one of its charms.  Why not come and find your own way of having fun?",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/reazygroup/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/reazygroup/logo.jpg"
+    ]
+  },
+  "253c81a1-2fe2-43bf-b160-f72999e42399": {
+    "description_en": "\"RIII\" in Utsunomiya has started a new 1st division business.  The store provides services centered on customer service, and is characterized by business development that responds to a variety of needs.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/rconnectgroup/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/rconnectgroup/logo.jpg"
+    ]
+  },
+  "cdeb4331-6351-4845-9da0-f429b2be8635": {
+    "description_en": "The stylish cast members create a comfortable space.  One of the attractions is the interior, which is based on a \"Japanese\" theme, which is rare among host clubs.  Why not pay attention to “Unfair”, which has a unique worldview?",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/ununun/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/ununun/logo.jpg"
+    ]
+  },
+  "9d9f0a04-b422-4428-bdbe-ca2f5a537fb7": {
+    "description_en": "``Club Dewor'' is supervised by a famous designer and has a stylish, cyber-like interior that stands out! In a futuristic space, unique and lively hosts have gathered to entertain everyone♪",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/sg/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/sg/logo.jpg"
+    ]
+  },
+  "aab0febf-f39b-4773-92bf-cf2b2aed751c": {
+    "description_en": "``AOI'' is one of the most popular stores in Kabukicho.  We welcome princesses with smiles, leveraging the strength of each person and the sense of unity of the store. Why not come and visit us?",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/fiore/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/fiore/logo.jpg"
+    ]
+  },
+  "a393ab58-7c66-4ef8-8d41-c6e49f54c31f": {
+    "description_en": "The selected \"Pirates\" gather on a magnificent stage of 170 tsubo!! Your unique story with handsome men begins now in Minami, Osaka.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/league/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/league/logo.jpg"
+    ]
+  },
+  "19b04edb-41fc-449f-ba4c-1ea4b183ca30": {
+    "description_en": "``UNITED Dear's -Main Store-'' is extremely popular as the representative store of the Rio Group.  This group operates nationwide, centered around Kabukicho.  The restaurant is characterized by a spacious interior with a good view, and you can enjoy conversations with various types of hosts.  Please come and experience the seriousness of Lioglu ☆",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/rio/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/rio/logo.jpg"
+    ]
+  },
+  "7b16d761-c329-4b79-b951-7006652147a4": {
+    "description_en": "Our cast members have experience and serve customers in a calm atmosphere.  Would you like to spend some time with peace of mind?",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/gcollection/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/gcollection/logo.jpg"
+    ]
+  },
+  "e5a0ec16-f133-4d39-b49f-ac91017f1792": {
+    "description_en": "A large store that is one of the largest in Japan.  The total construction cost was over 200 million yen, and the interior, which measures over 150 tsubo (150 tsubo) in total, has a palace-like space.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/prince1/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/prince1/logo.jpg"
+    ]
+  },
+  "130ef814-c258-460c-b5d4-0c70204a0c43": {
+    "description_en": "Please spend quality time at ``GENTLEMAN'S CLUB GENTLE'' where famous hosts such as ``Dikapurio'' and ``Natsuon Yuzu'' gather.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/gentelemansg/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/gentelemansg/logo.jpg"
+    ]
+  },
+  "d8aff2d1-4c1a-4303-827b-ebfa75f20484": {
+    "description_en": "This is where SWAMP started, and has achieved a number of achievements as its main store, building a solid position in western Japan.  A cast with high popularity and ability gathers, and in a clean environment that eliminates both the permanent nomination system and the non-accrual system, their individuality is dynamic in order to change the values ​​of the host club.  #black shock",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/swamp/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/swamp/logo.jpg"
+    ]
+  },
+  "ffb1889a-2bc2-4844-9660-0cf0cfcf7687": {
+    "description_en": "I won't let you say, \"Oh! There's a host club in Kinshicho?\"  \"I's One\" is a top-class entertainment group in this city ☆ A popular store in Kinshicho that boasts \"high-class customer service\" is worth checking out... ☆",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/0ne/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/0ne/logo.jpg"
+    ]
+  },
+  "90d6538a-e344-4dae-ab07-72d42a7b7425": {
+    "description_en": "Ota ``L2'' is now available from Learu group, which operates stores in Gunma! Utilizing the group's management experience, we are conducting business with unique customer service and store creation.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/learugroup/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/learugroup/logo.jpg"
+    ]
+  },
+  "a3cb7832-72ae-4f3c-9cec-d736c6f17197": {
+    "description_en": "\"Youth Nagoya -Main Branch-\" has expanded to the women's university area!  Our young and energetic staff members are working hard to make the most of their individual strengths.  It is a place where you can enjoy the current atmosphere as it is.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/youth/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/youth/logo.jpg"
+    ]
+  },
+  "266c0c9d-d82e-48c6-82b7-429f52a5cfb7": {
+    "description_en": "A grand opening in Isesaki, Gunma!! The spacious interior is based on black, with flashy interiors, and a variety of cast members welcome you!  Feel the glittering moment like a Suzaku★",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/kyogroup/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/kyogroup/logo.jpg"
+    ]
+  },
+  "771794bc-ce80-4694-9897-e19a44012df1": {
+    "description_en": "EDEN, presented by [Produce by JUBILEE], is characterized by a interior that is made up of colorful and sparkling lights!!Would you like to experience a paradise-like atmosphere?",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/producebyjubilee/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/producebyjubilee/logo.jpg"
+    ]
+  },
+  "f96dbe69-54a3-41a9-864b-969f419ec18f": {
+    "description_en": "\"OCEAN\" is a new addition to Nagoya's host scene! The inside of the store is rich in color and has a balance that is not too flashy ♪ Please spend your precious time!",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/groupocean/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/groupocean/logo.jpg"
+    ]
+  },
+  "0fd1c2af-1436-4dfe-9554-298c5acdc267": {
+    "description_en": "“LUKE” proposes new value to the industry based on the concept of “host x idol.”  There is no doubt that you will be excited by the gorgeous, idol-like cast.  Your recommendation is waiting inside the store.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/luke/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/luke/logo.jpg"
+    ]
+  },
+  "6fe14e87-5c15-4d59-8dfe-58ad1d704943": {
+    "description_en": "Shizuoka Prefecture Fuji \"ARTEMIS\" is now available!! We have a solid follow-up system so that even customers who have never experienced a host club can enjoy it!  We promise a polite and safe time!",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/groupnext/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/groupnext/logo.jpg"
+    ]
+  },
+  "23dc8433-d68d-46fd-9950-dfd58231818a": {
+    "description_en": "“Enrich your life through dreams” The real drawn by DREAMLIKE PROJECT is now released in Tatehana Building!  ``REAL'' starts proudly.",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/dreamlikeproject/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/dreamlikeproject/logo.jpg"
+    ]
+  },
+  "119aa293-92e8-42f6-a819-7f5d54b355f6": {
+    "description_en": "\"E-JAN GROUP\" continues to grow!! One of the largest street-level stores in Yokohama, \"EVE-Main Store-\" is now open☆We are waiting for you in a luxurious space♪",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/ejan/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/ejan/logo.jpg"
+    ]
+  },
+  "1d1dad06-4adf-471f-a637-3d0da319bf4f": {
+    "description_en": "\"Ragnus\", a fully produced store by Kanon, which has a proven track record in Kabukicho's famous host group, offers a time that will keep you smiling in its spacious one-floor store!  Please come and try out the “Ragnus” space once!",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/polarisgroup/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/polarisgroup/logo.jpg"
+    ]
+  },
+  "06b6f2f4-a230-438f-bd68-b62437e72b7c": {
+    "description_en": "Please enjoy the lively and fun atmosphere that can only be created at \"SIGNAL\" where young people gather!",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/shinegp/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/shinegp/logo.jpg"
+    ]
+  },
+  "57321942-6a6b-40e7-8cb5-7b763c8cfc1a": {
+    "description_en": "A carefully selected interior and a variety of handsome men are waiting for you ♪ Be a witness to a new era in which they \"CREATE\" with the theme of \"Changing the future\"!!",
+    "image_urls": [
+      "https://www.host2.jp/shop_grp/creategpnagoya/pr_img2.jpg",
+      "https://www.host2.jp/shop_grp/creategpnagoya/logo.jpg"
     ]
   }
 }

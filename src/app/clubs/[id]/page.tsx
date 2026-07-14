@@ -1,8 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Store, Users, Heart } from 'lucide-react';
+import { ArrowLeft, Store, Users, Heart, MapPin, Navigation } from 'lucide-react';
 import { getShopWithHosts, Host } from '@/lib/db';
-import { getEnglishName, looksLikeDate } from '@/lib/japanese';
+import { getEnglishName, looksLikeDate, getEnglishAddress, getGoogleMapsUrl } from '@/lib/japanese';
 import CommentSection from '@/components/CommentSection';
 
 export const dynamic = 'force-dynamic';
@@ -73,7 +73,7 @@ export default async function ShopPage(props: { params: Promise<{ id: string }> 
   const { id } = await props.params;
   const { shop, hosts } = await getShopWithHosts(id);
 
-  if (!shop) {
+  if (!shop || (shop.address_ja && !shop.address_ja.includes('歌舞伎町'))) {
     return (
       <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
         <div className="text-center">
@@ -148,6 +148,25 @@ export default async function ShopPage(props: { params: Promise<{ id: string }> 
           <p className="text-sm text-foreground leading-relaxed max-w-3xl mb-10">
             {descriptionEn}
           </p>
+        )}
+
+        {shop.address_ja && (
+          <div className="flex flex-wrap items-center gap-3 mb-10 p-4 rounded-xl bg-card-bg border border-card-border">
+            <MapPin className="w-4 h-4 text-accent shrink-0" />
+            <div className="flex-1 min-w-0">
+              <p className="text-sm text-foreground">{getEnglishAddress(shop.address_ja)}</p>
+              <p className="text-xs text-zinc-500 mt-0.5">{shop.address_ja.replace(/\(地図\)/g, '').trim()}</p>
+            </div>
+            <a
+              href={getGoogleMapsUrl(shop.name_ja, shop.address_ja)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 bg-accent text-background px-4 py-2 rounded-lg text-xs font-bold hover:bg-accent-light transition-colors shrink-0"
+            >
+              <Navigation className="w-3.5 h-3.5" />
+              Navigate
+            </a>
+          </div>
         )}
 
         {hosts.length === 0 ? (

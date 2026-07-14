@@ -45,9 +45,8 @@ const RANKING_URLS = {
 
 const GROUPS_INDEX_URL = 'https://www.host2.jp/shop_grp/index.html';
 
-const TARGET_GROUP_SLUGS = new Set([
-  'groupdandy', 'smappa', 'air', 'acquagroup', 'lcolle', 'fg'
-]);
+// All groups are now scraped; Kabukicho filtering happens per-shop via address check
+const TARGET_GROUP_SLUGS = null; // null = scrape all groups
 
 const RANKING_HOST_LIMIT = 30;
 
@@ -112,7 +111,7 @@ async function upsertShop(nameJa, sourceUrl, groupId, extra = {}) {
   const shopData = {
     name_ja: nameJa,
     source_url: sourceUrl,
-    area: 'Kabukicho',
+    area: extra.area || 'Kabukicho',
   };
   if (extra.description_ja && availableColumns.shops.has('description_ja')) shopData.description_ja = extra.description_ja;
   if (extra.phone && availableColumns.shops.has('phone')) shopData.phone = extra.phone;
@@ -492,7 +491,7 @@ async function parseGroupIndex() {
     const href = $el.attr('data-href') || '';
     const slug = href.replace('/index.html', '');
 
-    if (!TARGET_GROUP_SLUGS.has(slug)) return;
+    if (TARGET_GROUP_SLUGS && !TARGET_GROUP_SLUGS.has(slug)) return;
 
     const nameJa = $el.find('.tit a').text().trim();
     const nameKana = $el.find('.tit .kana').text().trim().replace(/[()（）]/g, '');
@@ -772,6 +771,12 @@ async function scrapeGroups() {
       console.log(`  Fetching shop detail...`);
       const shopDetail = await parseShopDetail(shop.url);
       await new Promise(r => setTimeout(r, 400));
+
+      // Only include Kabukicho shops
+      if (shopDetail.address && !shopDetail.address.includes('歌舞伎町')) {
+        console.log(`  Skipping — not in Kabukicho: ${shopDetail.address}`);
+        continue;
+      }
 
       // Scrape system page for pricing
       const systemUrl = shop.url.replace('index.html', 'system.html');

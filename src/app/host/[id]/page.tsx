@@ -5,7 +5,7 @@ import { use } from 'react';
 import { motion } from 'framer-motion';
 import {
   ArrowLeft, Heart, Ruler, Droplets, Calendar,
-  Share2, Bookmark, ChevronLeft, ChevronRight, Music2
+  Share2, Bookmark, ChevronLeft, ChevronRight, Music2, MapPin, Navigation
 } from 'lucide-react';
 import Link from 'next/link';
 import { Host, getHost, getHostsByShop, castVote, addFavorite, removeFavorite, getFavoriteIds, recordHostView } from '@/lib/db';
@@ -13,7 +13,7 @@ import { Store } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { useAuth } from '@/lib/AuthContext';
 import { AuthPromptModal } from '@/components/AuthPromptModal';
-import { getEnglishName, looksLikeDate } from '@/lib/japanese';
+import { getEnglishName, looksLikeDate, getEnglishAddress, getGoogleMapsUrl } from '@/lib/japanese';
 import TikTokEmbed from '@/components/TikTokEmbed';
 import CommentSection from '@/components/CommentSection';
 
@@ -241,6 +241,23 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
                   <Store className="w-3 h-3" />
                   {shopName}
                 </Link>
+              )}
+              {host.shop?.address_ja && (
+                <div className="flex items-center gap-2 mt-2 mb-2">
+                  <MapPin className="w-3 h-3 text-zinc-500 shrink-0" />
+                  <span className="text-xs text-zinc-500">
+                    {language === 'ja' ? host.shop.address_ja.replace(/\(地図\)/g, '').trim() : getEnglishAddress(host.shop.address_ja)}
+                  </span>
+                  <a
+                    href={getGoogleMapsUrl(host.shop.name_ja, host.shop.address_ja)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 bg-accent/10 text-accent px-2 py-0.5 rounded text-[10px] font-bold hover:bg-accent/20 transition-colors shrink-0"
+                  >
+                    <Navigation className="w-2.5 h-2.5" />
+                    Navigate
+                  </a>
+                </div>
               )}
               <h1 className="text-4xl sm:text-5xl font-black font-serif text-foreground leading-tight">
                 {name}

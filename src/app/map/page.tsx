@@ -6,11 +6,11 @@ import { MapPin, ArrowLeft, Navigation, Store } from 'lucide-react';
 import Link from 'next/link';
 import { Shop, getShopsWithCoordinates } from '@/lib/db';
 import { useLanguage } from '@/lib/LanguageContext';
-import { getEnglishName } from '@/lib/japanese';
+import { getEnglishName, getEnglishAddress, getGoogleMapsUrl } from '@/lib/japanese';
 
 const KABUKICHO_CENTER = { lat: 35.6938, lng: 139.7034 };
 
-function MapView({ shops }: { shops: Shop[] }) {
+function MapView({ shops, language }: { shops: Shop[]; language: string }) {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<unknown>(null);
 
@@ -55,17 +55,17 @@ function MapView({ shops }: { shops: Shop[] }) {
 
         const marker = L.marker([shop.latitude, shop.longitude], { icon: defaultIcon }).addTo(map);
 
-        const shopName = shop.name_ja;
-        const groupName = shop.group?.name_ja || shop.group_name || '';
-        const address = shop.address_ja || '';
-        const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(shopName + ' ' + address)}`;
+        const shopName = language === 'ja' ? shop.name_ja : getEnglishName(shop.name_ja, shop.name_en);
+        const groupName = shop.group ? (language === 'ja' ? (shop.group.name_ja || shop.group_name || '') : getEnglishName(shop.group.name_ja, shop.group.name_en)) : (shop.group_name || '');
+        const address = language === 'ja' ? (shop.address_ja || '') : getEnglishAddress(shop.address_ja);
+        const mapsUrl = getGoogleMapsUrl(shop.name_ja, shop.address_ja);
 
         const popupContent = `
           <div style="min-width: 180px; font-family: sans-serif;">
             <div style="font-weight: 800; font-size: 14px; margin-bottom: 4px; color: #1a1a2e;">${shopName}</div>
             ${groupName ? `<div style="font-size: 11px; color: #888; margin-bottom: 4px;">${groupName}</div>` : ''}
             ${address ? `<div style="font-size: 11px; color: #666; margin-bottom: 8px;">${address}</div>` : ''}
-            <a href="${googleMapsUrl}" target="_blank" rel="noopener noreferrer"
+            <a href="${mapsUrl}" target="_blank" rel="noopener noreferrer"
                style="display: inline-flex; align-items: center; gap: 4px; background: #A868D8; color: white; padding: 6px 12px; border-radius: 8px; text-decoration: none; font-size: 12px; font-weight: 600;">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M3 11l19-9-9 19-2-8-8-2z"/>
@@ -167,7 +167,7 @@ export default function MapPage() {
             animate={{ opacity: 1, y: 0 }}
             className="aspect-[16/10] rounded-2xl overflow-hidden border border-card-border"
           >
-            <MapView shops={shops} />
+            <MapView shops={shops} language={language} />
           </motion.div>
         )}
 
@@ -183,11 +183,12 @@ export default function MapPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {shops.map((shop) => {
                 const name = language === 'ja' ? shop.name_ja : getEnglishName(shop.name_ja, shop.name_en);
-                const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(shop.name_ja + ' ' + (shop.address_ja || ''))}`;
+                const address = language === 'ja' ? (shop.address_ja || '') : getEnglishAddress(shop.address_ja);
+                const mapsUrl = getGoogleMapsUrl(shop.name_ja, shop.address_ja);
                 return (
                   <a
                     key={shop.id}
-                    href={googleMapsUrl}
+                    href={mapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 p-3 rounded-xl bg-card-bg border border-card-border hover:border-accent/30 transition-all group"
@@ -197,8 +198,8 @@ export default function MapPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-bold text-foreground truncate group-hover:text-accent transition-colors">{name}</p>
-                      {shop.address_ja && (
-                        <p className="text-[10px] text-zinc-500 truncate">{shop.address_ja}</p>
+                      {address && (
+                        <p className="text-[10px] text-zinc-500 truncate">{address}</p>
                       )}
                     </div>
                     <Navigation className="w-3.5 h-3.5 text-zinc-600 group-hover:text-accent shrink-0" />

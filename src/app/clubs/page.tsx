@@ -160,8 +160,11 @@ function GroupSection({ group }: { group: GroupClub }) {
 async function ClubsContent() {
   const groups: GroupClub[] = await getGroupClubs();
 
+  // Filter out groups with no shops (defensive, getGroupClubs already filters)
+  const withShops = groups.filter((g) => g.shops_count > 0);
+
   // Shuffle to avoid positional bias — every load shows a different first group
-  const shuffled = groups
+  const shuffled = withShops
     .map((g) => ({ g, sort: Math.random() }))
     .sort((a, b) => a.sort - b.sort)
     .map(({ g }) => g);

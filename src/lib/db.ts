@@ -126,7 +126,7 @@ export async function getGroupClubs(): Promise<GroupClub[]> {
 
   const { data: shopsData, error: shopsError } = await supabase
     .from('shops')
-    .select('id, name_ja, name_en, description_en, logo_url, group_id');
+    .select('id, name_ja, name_en, description_en, logo_url, group_id, address_ja');
 
   if (shopsError) {
     console.error('getGroupClubs: failed to fetch shops', shopsError.message);
@@ -171,6 +171,7 @@ export async function getGroupClubs(): Promise<GroupClub[]> {
 
   const shopMap: Record<string, { id: string; name_ja: string; name_en: string; description_en?: string; logo_url?: string }[]> = {};
   for (const s of shopsData || []) {
+    if (s.address_ja && !s.address_ja.includes('歌舞伎町')) continue;
     const gid = s.group_id || '';
     if (!shopMap[gid]) shopMap[gid] = [];
     shopMap[gid].push({ id: s.id, name_ja: s.name_ja, name_en: s.name_en, description_en: s.description_en, logo_url: s.logo_url });
@@ -193,7 +194,7 @@ export async function getGroupClubs(): Promise<GroupClub[]> {
       shops_count: shopsWithHosts.length,
       hosts_count: shopsWithHosts.reduce((sum, s) => sum + s.hosts_count, 0),
     };
-  });
+  }).filter((g) => g.shops_count > 0);
 }
 
 // Fetch a single shop with all its hosts

@@ -1,7 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, Heart, Camera, MessageSquareShare, Ruler, Droplets, Cake, Award, Music2 } from 'lucide-react';
+import { ArrowLeft, Heart, Camera, MessageSquareShare, Ruler, Droplets, Cake, Award, Music2, Share2 } from 'lucide-react';
+import ShareButton from '@/components/ShareButton';
 import { getHost, getHostsByShop } from '@/lib/db';
 import { supabase } from '@/lib/supabase';
 import type { Host } from '@/lib/db';
@@ -211,6 +212,10 @@ export default async function HostPage(props: { params: Promise<{ id: string }> 
                   YouTube
                 </a>
               )}
+              <ShareButton
+                title={`${host.name_ja} — OshiHos`}
+                url={`https://www.oshi-hos.xyz/hosts/${host.id}`}
+              />
             </div>
           </div>
         </div>

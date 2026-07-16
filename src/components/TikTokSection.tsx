@@ -8,28 +8,33 @@ import { getTopHostsWithTiktok } from '../lib/db';
 import { getEnglishName } from '../lib/japanese';
 import type { Host } from '../lib/db';
 
-export const TikTokSection: React.FC = () => {
+interface TikTokSectionProps {
+  limit?: number;
+  noContainer?: boolean;
+}
+
+export const TikTokSection: React.FC<TikTokSectionProps> = ({ limit = 3, noContainer = false }) => {
   const [allHosts, setAllHosts] = useState<Host[]>([]);
   const [unavailableIds, setUnavailableIds] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getTopHostsWithTiktok(3).then((h) => {
+    getTopHostsWithTiktok(limit).then((h) => {
       setAllHosts(h);
       setLoading(false);
     });
-  }, []);
+  }, [limit]);
 
   const handleUnavailable = useCallback((hostId: string) => {
     setUnavailableIds(prev => new Set(prev).add(hostId));
   }, []);
 
-  const availableHosts = allHosts.filter(h => !unavailableIds.has(h.id)).slice(0, 3);
+  const availableHosts = allHosts.filter(h => !unavailableIds.has(h.id)).slice(0, limit);
 
   if (loading || availableHosts.length === 0) return null;
 
   return (
-    <section className="py-10 sm:py-14 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+    <section className={noContainer ? 'py-6' : 'py-10 sm:py-14 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto'}>
       <div className="text-center mb-10">
         <motion.div
           initial={{ opacity: 0, y: 10 }}

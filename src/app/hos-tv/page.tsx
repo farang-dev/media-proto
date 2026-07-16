@@ -6,6 +6,7 @@ import { ExternalLink, Film, Users, ArrowLeft, Play } from 'lucide-react';
 import Link from 'next/link';
 import { channels, HosTvVideo } from '@/data/hos-tv';
 import { useLanguage } from '@/lib/LanguageContext';
+import { TikTokSection } from '@/components/TikTokSection';
 
 const CC_PARAMS = (lang: string) => `?cc_load_policy=1&cc_lang_pref=en&hl=${lang}&rel=0&autoplay=1`;
 
@@ -141,6 +142,10 @@ export default function HosTvPage() {
               )}
             </motion.section>
           ))}
+        </div>
+
+        <div className="mt-12 sm:mt-16">
+          <TikTokSection limit={5} noContainer />
         </div>
       </div>
     </div>

@@ -17,7 +17,16 @@ export const Footer: React.FC = () => {
           <div className="flex flex-col items-end gap-1">
             <p className="text-[10px] text-zinc-700 uppercase tracking-widest">Compliant with</p>
             <p className="text-xs font-semibold text-emerald-500">2026 Host Club Regulations</p>
-            <p className="text-[10px] text-zinc-700">© {new Date().getFullYear()} OshiHos. All rights reserved.</p>
+            <div className="flex items-center gap-3 mt-1">
+              <a
+                href="/terms"
+                className="text-[10px] text-zinc-500 hover:text-accent transition-colors"
+              >
+                Terms of Service
+              </a>
+              <span className="text-[10px] text-zinc-700">·</span>
+              <p className="text-[10px] text-zinc-700">© {new Date().getFullYear()} OshiHos</p>
+            </div>
           </div>
         </div>
       </div>

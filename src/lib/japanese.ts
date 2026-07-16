@@ -126,6 +126,71 @@ const PREFECTURE_MAP: Record<string, string> = {
   '宮崎県': 'Miyazaki', '鹿児島県': 'Kagoshima', '沖縄県': 'Okinawa',
 };
 
+const DISTRICT_MAP: Record<string, string> = {
+  '歌舞伎町': 'Kabukicho',
+  '新宿': 'Shinjuku',
+  '丁目': '-chome',
+};
+
+const BUILDING_KATAKANA_MAP: Record<string, string> = {
+  'アミューズ': 'Amuse',
+  'ビル': 'Building',
+  'ビルディング': 'Building',
+};
+
+function translateAddressParts(addr: string): string {
+  let result = addr;
+
+  // Translate known district names
+  for (const [ja, en] of Object.entries(DISTRICT_MAP)) {
+    result = result.replace(new RegExp(ja, 'g'), en);
+  }
+
+  // Translate known building katakana
+  for (const [ja, en] of Object.entries(BUILDING_KATAKANA_MAP)) {
+    result = result.replace(new RegExp(ja, 'g'), ' ' + en + ' ');
+  }
+
+  // Convert any remaining katakana to romaji
+  if (containsJapanese(result)) {
+    let out = '';
+    let i = 0;
+    while (i < result.length) {
+      const ch = result[i];
+      // Small tsu
+      if (ch === SMALL_TSU && i + 1 < result.length) {
+        const next = result[i + 1];
+        const nextRomaji = KATAKANA_TO_ROMAJI[next];
+        if (nextRomaji) out += nextRomaji[0];
+        i++;
+        continue;
+      }
+      // Try two-char katakana
+      if (i + 1 < result.length) {
+        const two = result.slice(i, i + 2);
+        if (KATAKANA_TO_ROMAJI[two]) { out += KATAKANA_TO_ROMAJI[two]; i += 2; continue; }
+      }
+      // Try one-char katakana
+      if (KATAKANA_TO_ROMAJI[ch]) { out += KATAKANA_TO_ROMAJI[ch]; i++; continue; }
+      // Keep non-katakana as-is
+      out += ch;
+      i++;
+    }
+    result = out;
+  }
+
+  // Clean up: ensure space between multi-char word and number, but not single-letter codes like B1B2
+  result = result.replace(/([a-zA-Z]{2,})(\d)/g, '$1 $2');
+  result = result.replace(/(\d)([a-zA-Z]{2,})/g, '$1 $2');
+  // Clean up multiple spaces
+  result = result.replace(/\s+/g, ' ').trim();
+
+  // Capitalize each word, then fix -chome suffix
+  result = capitalizeWords(result).replace(/-Chome/g, '-chome');
+
+  return result;
+}
+
 export function getEnglishAddress(addressJa: string | null | undefined): string {
   if (!addressJa) return '';
   let addr = addressJa.replace(/\(地図\)/g, '').replace(/\s+/g, ' ').trim();
@@ -147,10 +212,10 @@ export function getEnglishAddress(addressJa: string | null | undefined): string 
     rest = rest.slice(cityMatch[1].length);
   }
 
-  const district = rest.replace(/\s+/g, ' ').trim();
+  const district = translateAddressParts(rest.replace(/\s+/g, ' ').trim());
 
-  const parts = [district, city, prefecture].filter(Boolean);
-  return parts.join(', ');
+  const resultParts = [district, city, prefecture].filter(Boolean);
+  return resultParts.join(', ');
 }
 
 export function getGoogleMapsUrl(shopName: string, addressJa?: string | null): string {

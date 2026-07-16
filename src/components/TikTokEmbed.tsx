@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 function parseTikTokUrl(url: string): { type: 'video' | 'profile' | 'unknown'; username?: string; videoId?: string } {
   const clean = url.replace(/\/$/, '').split('?')[0];
@@ -11,8 +11,9 @@ function parseTikTokUrl(url: string): { type: 'video' | 'profile' | 'unknown'; u
   return { type: 'unknown' };
 }
 
-export default function TikTokEmbed({ tiktokUrl }: { tiktokUrl?: string }) {
+export default function TikTokEmbed({ tiktokUrl, onUnavailable }: { tiktokUrl?: string; onUnavailable?: () => void }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [unavailable, setUnavailable] = useState(false);
 
   useEffect(() => {
     if (!tiktokUrl || !containerRef.current) return;
@@ -40,9 +41,22 @@ export default function TikTokEmbed({ tiktokUrl }: { tiktokUrl?: string }) {
     } else {
       tryLoad();
     }
-  }, [tiktokUrl]);
 
-  if (!tiktokUrl) return null;
+    // Check for unavailable profile after embed loads
+    const checkTimer = setTimeout(() => {
+      if (containerRef.current) {
+        const text = containerRef.current.textContent || '';
+        if (text.includes('not available') || text.includes('not found') || text.includes('couldn\'t find')) {
+          setUnavailable(true);
+          onUnavailable?.();
+        }
+      }
+    }, 5000);
+
+    return () => clearTimeout(checkTimer);
+  }, [tiktokUrl, onUnavailable]);
+
+  if (!tiktokUrl || unavailable) return null;
 
   const parsed = parseTikTokUrl(tiktokUrl);
 

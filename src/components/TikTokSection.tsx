@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Music2, ExternalLink } from 'lucide-react';
 import TikTokEmbed from './TikTokEmbed';
@@ -9,18 +9,24 @@ import { getEnglishName } from '../lib/japanese';
 import type { Host } from '../lib/db';
 
 export const TikTokSection: React.FC = () => {
-  const [hosts, setHosts] = useState<Host[]>([]);
+  const [allHosts, setAllHosts] = useState<Host[]>([]);
+  const [unavailableIds, setUnavailableIds] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getTopHostsWithTiktok(3).then((h) => {
-      // Filter to ensure only hosts with valid TikTok URLs
-      setHosts(h.filter(host => host.tiktok_url && host.tiktok_url.trim() !== ''));
+      setAllHosts(h);
       setLoading(false);
     });
   }, []);
 
-  if (loading || hosts.length === 0) return null;
+  const handleUnavailable = useCallback((hostId: string) => {
+    setUnavailableIds(prev => new Set(prev).add(hostId));
+  }, []);
+
+  const availableHosts = allHosts.filter(h => !unavailableIds.has(h.id)).slice(0, 3);
+
+  if (loading || availableHosts.length === 0) return null;
 
   return (
     <section className="py-10 sm:py-14 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
@@ -55,7 +61,7 @@ export const TikTokSection: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {hosts.map((host, i) => {
+        {availableHosts.map((host, i) => {
           const hostName = getEnglishName(host.name_ja, host.name_en);
           const shopName = host.shop?.name_ja;
           return (
@@ -68,7 +74,10 @@ export const TikTokSection: React.FC = () => {
               className="space-y-3"
             >
               <div className="rounded-2xl overflow-hidden bg-card-bg border border-card-border">
-                <TikTokEmbed tiktokUrl={host.tiktok_url} />
+                <TikTokEmbed
+                  tiktokUrl={host.tiktok_url}
+                  onUnavailable={() => handleUnavailable(host.id)}
+                />
               </div>
               <div className="text-center">
                 <p className="text-sm font-bold font-serif text-foreground">

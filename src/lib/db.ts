@@ -302,7 +302,7 @@ export async function getTopHostsWithTiktok(limit: number = 3): Promise<Host[]> 
   const hosts: Host[] = [];
 
   for (const rankCol of ['monthly_rank', 'weekly_rank', 'daily_rank']) {
-    if (hosts.length >= limit) break;
+    if (hosts.length >= limit * 2) break;
 
     const { data } = await supabase
       .from('hosts')
@@ -311,11 +311,11 @@ export async function getTopHostsWithTiktok(limit: number = 3): Promise<Host[]> 
       .not('tiktok_url', 'is', null)
       .neq('tiktok_url', '')
       .order(rankCol, { ascending: true })
-      .limit(limit * 3);
+      .limit(limit * 4);
 
     if (data) {
       for (const h of data) {
-        if (hosts.length >= limit) break;
+        if (hosts.length >= limit * 2) break;
         if (!hosts.find(existing => existing.id === h.id)) {
           hosts.push({
             ...h,

@@ -60,8 +60,8 @@ export const TikTokSection: React.FC = () => {
         </motion.p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {availableHosts.map((host, i) => {
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {availableHosts.slice(0, 2).map((host, i) => {
           const hostName = getEnglishName(host.name_ja, host.name_en);
           const shopName = host.shop?.name_ja;
           return (
@@ -80,7 +80,7 @@ export const TikTokSection: React.FC = () => {
                 />
               </div>
               <div className="text-center">
-                <p className="text-sm font-bold font-serif text-foreground">
+                <p className="text-base font-bold font-serif text-foreground">
                   {hostName}
                 </p>
                 {shopName && (
@@ -100,6 +100,42 @@ export const TikTokSection: React.FC = () => {
           );
         })}
       </div>
+
+      {availableHosts.length > 2 && (
+        <div className="mt-8 max-w-md mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="space-y-3"
+          >
+            <div className="rounded-2xl overflow-hidden bg-card-bg border border-card-border">
+              <TikTokEmbed
+                tiktokUrl={availableHosts[2].tiktok_url}
+                onUnavailable={() => handleUnavailable(availableHosts[2].id)}
+              />
+            </div>
+            <div className="text-center">
+              <p className="text-base font-bold font-serif text-foreground">
+                {getEnglishName(availableHosts[2].name_ja, availableHosts[2].name_en)}
+              </p>
+              {availableHosts[2].shop?.name_ja && (
+                <p className="text-xs text-zinc-500">{availableHosts[2].shop.name_ja}</p>
+              )}
+              <a
+                href={availableHosts[2].tiktok_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-xs text-pink-400 hover:text-pink-300 transition-colors font-semibold mt-1"
+              >
+                Follow
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </section>
   );
 };

@@ -110,7 +110,7 @@ export default function TikTokEmbed({ tiktokUrl, onUnavailable }: { tiktokUrl?: 
             cite={`https://www.tiktok.com/@${parsed.username}`}
             data-unique-id={parsed.username}
             data-embed-type="creator"
-            style={{ maxWidth: '100%', width: 780, minWidth: 288 }}
+            style={{ maxWidth: '100%', width: 780, minWidth: 320 }}
           >
             <section>
               <a target="_blank" href={`https://www.tiktok.com/@${parsed.username}`}>

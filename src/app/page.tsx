@@ -14,8 +14,8 @@ export default function HomePage() {
       <HeroSection />
       <RankingSection />
       <TikTokSection />
-      <ClubsSection />
       <KnowHostCulture />
+      <ClubsSection />
       <CommunitySection />
     </>
   );

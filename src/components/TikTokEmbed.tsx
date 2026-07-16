@@ -42,18 +42,38 @@ export default function TikTokEmbed({ tiktokUrl, onUnavailable }: { tiktokUrl?: 
       tryLoad();
     }
 
-    // Check for unavailable profile after embed loads
+    // Use MutationObserver to detect unavailable profile
+    const observer = new MutationObserver(() => {
+      if (containerRef.current) {
+        const text = containerRef.current.textContent || '';
+        if (text.includes('not available') || text.includes('not found') || text.includes("couldn't find")) {
+          setUnavailable(true);
+          onUnavailable?.();
+          observer.disconnect();
+        }
+      }
+    });
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current, { childList: true, subtree: true, characterData: true });
+    }
+
+    // Fallback timeout
     const checkTimer = setTimeout(() => {
       if (containerRef.current) {
         const text = containerRef.current.textContent || '';
-        if (text.includes('not available') || text.includes('not found') || text.includes('couldn\'t find')) {
+        if (text.includes('not available') || text.includes('not found') || text.includes("couldn't find")) {
           setUnavailable(true);
           onUnavailable?.();
         }
       }
-    }, 5000);
+      observer.disconnect();
+    }, 8000);
 
-    return () => clearTimeout(checkTimer);
+    return () => {
+      observer.disconnect();
+      clearTimeout(checkTimer);
+    };
   }, [tiktokUrl, onUnavailable]);
 
   if (!tiktokUrl || unavailable) return null;

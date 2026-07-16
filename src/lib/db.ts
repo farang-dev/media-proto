@@ -297,6 +297,30 @@ export async function getKabukichoRanking(type: 'daily' | 'weekly' | 'monthly'):
   } as unknown as Host));
 }
 
+// Fetch the top-ranked host that has a TikTok URL
+export async function getTopHostWithTiktok(): Promise<Host | null> {
+  // Try monthly ranking first, then weekly, then daily
+  for (const rankCol of ['monthly_rank', 'weekly_rank', 'daily_rank']) {
+    const { data } = await supabase
+      .from('hosts')
+      .select('*, shop:shops(*, group:groups(*))')
+      .not(rankCol, 'is', null)
+      .not('tiktok_url', 'is', null)
+      .neq('tiktok_url', '')
+      .order(rankCol, { ascending: true })
+      .limit(1)
+      .single();
+
+    if (data) {
+      return {
+        ...data,
+        votes_count: 0,
+      } as unknown as Host;
+    }
+  }
+  return null;
+}
+
 // Cast a vote for a host (login required)
 export async function castVote(hostId: string, userId: string): Promise<{ success: boolean; message: string }> {
   const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();

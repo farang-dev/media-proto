@@ -14,7 +14,8 @@ export const TikTokSection: React.FC = () => {
 
   useEffect(() => {
     getTopHostsWithTiktok(3).then((h) => {
-      setHosts(h);
+      // Filter to ensure only hosts with valid TikTok URLs
+      setHosts(h.filter(host => host.tiktok_url && host.tiktok_url.trim() !== ''));
       setLoading(false);
     });
   }, []);
@@ -22,7 +23,7 @@ export const TikTokSection: React.FC = () => {
   if (loading || hosts.length === 0) return null;
 
   return (
-    <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+    <section className="py-10 sm:py-14 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
       <div className="text-center mb-10">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -53,7 +54,7 @@ export const TikTokSection: React.FC = () => {
         </motion.p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {hosts.map((host, i) => {
           const hostName = getEnglishName(host.name_ja, host.name_en);
           const shopName = host.shop?.name_ja;

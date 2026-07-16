@@ -177,7 +177,7 @@ export const CommunitySection: React.FC = () => {
   };
 
   return (
-    <section id="community" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <section id="community" className="py-10 sm:py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* Section header */}
       <div className="text-center mb-12">
         <motion.h2

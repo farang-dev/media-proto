@@ -16,6 +16,7 @@ import { AuthPromptModal } from '@/components/AuthPromptModal';
 import { getEnglishName, looksLikeDate, getEnglishAddress, getGoogleMapsUrl } from '@/lib/japanese';
 import TikTokEmbed from '@/components/TikTokEmbed';
 import CommentSection from '@/components/CommentSection';
+import { KnowHostCulture } from '@/components/KnowHostCulture';
 
 const formatDate = (iso: string) => {
   const d = new Date(iso);
@@ -459,6 +460,9 @@ export default function HostPage({ params }: { params: Promise<{ id: string }> }
             </div>
           </div>
         )}
+
+        {/* Know Host Culture */}
+        <KnowHostCulture />
       </div>
       <AuthPromptModal open={showAuth} onClose={() => setShowAuth(false)} />
     </div>

@@ -12,9 +12,9 @@ export default function HomePage() {
   return (
     <>
       <HeroSection />
-      <ClubsSection />
       <RankingSection />
       <TikTokSection />
+      <ClubsSection />
       <KnowHostCulture />
       <CommunitySection />
     </>

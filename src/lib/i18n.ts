@@ -51,7 +51,7 @@ export const translations: Translations = {
     'guide.subtitle': 'A beginner-friendly guide to understanding the host club entertainment culture, safety, and etiquette.',
 
     // Clubs
-    'clubs.title': 'Brose Host Clubs',
+    'clubs.title': 'Browse Host Clubs',
     'clubs.subtitle': 'The 6 major host club groups featured in Oshihost. Browse their top-ranked hosts and find the best clubs in Kabukicho.',
     'clubs.view_hosts': 'Browse Hosts',
     'clubs.shops': 'venues',
@@ -140,7 +140,7 @@ export const translations: Translations = {
     'guide.subtitle': '外国人観光客やビギナー向けに、ホストクラブのシステム、マナー、安全ルールを分かりやすく解説。',
 
     // Clubs
-    'clubs.title': 'Brose Host Clubs',
+    'clubs.title': 'Browse Host Clubs',
     'clubs.subtitle': 'オシホスト掲載の大手ホストクラブグループ6店。トップホストを探して、歌舞伎町で最高のクラブを見つけよう。',
     'clubs.view_hosts': 'ホストを見る',
     'clubs.shops': '店舗',

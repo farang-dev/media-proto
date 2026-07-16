@@ -297,10 +297,13 @@ export async function getKabukichoRanking(type: 'daily' | 'weekly' | 'monthly'):
   } as unknown as Host));
 }
 
-// Fetch the top-ranked host that has a TikTok URL
-export async function getTopHostWithTiktok(): Promise<Host | null> {
-  // Try monthly ranking first, then weekly, then daily
+// Fetch the top-ranked hosts that have TikTok URLs
+export async function getTopHostsWithTiktok(limit: number = 3): Promise<Host[]> {
+  const hosts: Host[] = [];
+
   for (const rankCol of ['monthly_rank', 'weekly_rank', 'daily_rank']) {
+    if (hosts.length >= limit) break;
+
     const { data } = await supabase
       .from('hosts')
       .select('*, shop:shops(*, group:groups(*))')
@@ -308,17 +311,22 @@ export async function getTopHostWithTiktok(): Promise<Host | null> {
       .not('tiktok_url', 'is', null)
       .neq('tiktok_url', '')
       .order(rankCol, { ascending: true })
-      .limit(1)
-      .single();
+      .limit(limit * 3);
 
     if (data) {
-      return {
-        ...data,
-        votes_count: 0,
-      } as unknown as Host;
+      for (const h of data) {
+        if (hosts.length >= limit) break;
+        if (!hosts.find(existing => existing.id === h.id)) {
+          hosts.push({
+            ...h,
+            votes_count: 0,
+          } as unknown as Host);
+        }
+      }
     }
   }
-  return null;
+
+  return hosts;
 }
 
 // Cast a vote for a host (login required)

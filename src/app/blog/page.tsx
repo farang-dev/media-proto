@@ -2,6 +2,19 @@ import React from 'react';
 import Link from 'next/link';
 import { Clock, BookOpen } from 'lucide-react';
 import { articles } from '@/data/blog';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Host Club Culture Guide',
+  description: 'In-depth guides about Kabukicho host club culture — pricing, etiquette, safety tips, and cultural insights for international visitors.',
+  alternates: { canonical: '/blog' },
+  openGraph: {
+    title: 'Host Club Culture Guide | OshiHos',
+    description: 'In-depth guides about Kabukicho host club culture — pricing, etiquette, safety tips, and cultural insights for international visitors.',
+    url: 'https://www.oshi-hos.xyz/blog',
+    type: 'website',
+  },
+};
 
 export default function BlogIndexPage() {
   const categories = [...new Set(articles.map((a) => a.category))];

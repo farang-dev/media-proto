@@ -1,7 +1,42 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 import { getArticle, getRelatedArticles, articles } from '@/data/blog';
 import { BlogLayout } from '@/components/BlogLayout';
+
+const SITE = 'https://www.oshi-hos.xyz';
+
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await props.params;
+  const article = getArticle(slug);
+  if (!article) return {};
+
+  return {
+    title: article.title,
+    description: article.description,
+    keywords: article.tags,
+    alternates: {
+      canonical: `/blog/${article.slug}`,
+    },
+    openGraph: {
+      title: article.title,
+      description: article.description,
+      url: `${SITE}/blog/${article.slug}`,
+      siteName: 'OshiHos - KABUKICHO HOST',
+      images: [{ url: article.image, width: 1200, height: 630, alt: article.title }],
+      type: 'article',
+      publishedTime: article.date,
+      authors: ['OshiHos'],
+      tags: article.tags,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: article.title,
+      description: article.description,
+      images: [article.image],
+    },
+  };
+}
 
 const articleComponents: Record<string, () => Promise<{ default: React.ComponentType }>> = {
   'host-club-guide-for-foreigners': () => import('@/components/blog/HostClubGuideForForeigners'),
@@ -68,9 +103,42 @@ export default async function BlogArticlePage(props: { params: Promise<{ slug: s
   const Content = mod.default;
   const related = getRelatedArticles(article.relatedSlugs);
 
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.title,
+    description: article.description,
+    image: article.image,
+    datePublished: article.date,
+    dateModified: article.date,
+    author: { '@type': 'Organization', name: 'OshiHos', url: SITE },
+    publisher: {
+      '@type': 'Organization',
+      name: 'OshiHos',
+      url: SITE,
+      logo: { '@type': 'ImageObject', url: `${SITE}/favicon.svg` },
+    },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE}/blog/${article.slug}` },
+    keywords: article.tags.join(', '),
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE}/blog` },
+      { '@type': 'ListItem', position: 3, name: article.title, item: `${SITE}/blog/${article.slug}` },
+    ],
+  };
+
   return (
-    <BlogLayout article={article} relatedArticles={related}>
-      <Content />
-    </BlogLayout>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <BlogLayout article={article} relatedArticles={related}>
+        <Content />
+      </BlogLayout>
+    </>
   );
 }

@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   publisher: "OshiHos",
   metadataBase: new URL(SITE_URL),
   alternates: {
-    canonical: SITE_URL,
+    canonical: '/',
   },
   openGraph: {
     title: {
@@ -139,7 +139,7 @@ export default function RootLayout({
                 "@type": "SearchAction",
                 "target": {
                   "@type": "EntryPoint",
-                  "urlTemplate": "https://www.oshi-hos.xyz/search?q={search_term_string}",
+                  "urlTemplate": "https://www.oshi-hos.xyz/blog?q={search_term_string}",
                 },
                 "query-input": "required name=search_term_string",
               },

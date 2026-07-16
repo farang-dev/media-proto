@@ -1,19 +1,29 @@
 import type { MetadataRoute } from 'next';
+import { articles } from '@/data/blog';
 
 const SITE = 'https://www.oshi-hos.xyz';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
+  const staticPages: MetadataRoute.Sitemap = [
     { url: `${SITE}/`, lastModified: new Date(), changeFrequency: 'daily', priority: 1.0 },
     { url: `${SITE}/clubs`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
     { url: `${SITE}/events`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
     { url: `${SITE}/ranking`, lastModified: new Date(), changeFrequency: 'hourly', priority: 0.9 },
     { url: `${SITE}/no1-host`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.85 },
     { url: `${SITE}/map`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-    { url: `${SITE}/blog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
+    { url: `${SITE}/blog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${SITE}/hos-tv`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.6 },
     { url: `${SITE}/hos-match`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.5 },
     { url: `${SITE}/threads`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.6 },
-    { url: `${SITE}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.3 },
+    { url: `${SITE}/terms`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.2 },
   ];
+
+  const blogPages: MetadataRoute.Sitemap = articles.map((article) => ({
+    url: `${SITE}/blog/${article.slug}`,
+    lastModified: new Date(article.date),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+
+  return [...staticPages, ...blogPages];
 }

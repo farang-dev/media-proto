@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/auth', '/api/'],
+        disallow: ['/auth', '/api/', '/favorites', '/data-test'],
       },
     ],
     sitemap: 'https://www.oshi-hos.xyz/sitemap.xml',

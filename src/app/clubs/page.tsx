@@ -4,8 +4,21 @@ import { Store, Users } from 'lucide-react';
 import { getGroupClubs, GroupClub } from '@/lib/db';
 import { getEnglishName } from '@/lib/japanese';
 import groupsExtra from '@/data/groups-extra.json';
+import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: 'Host Clubs in Kabukicho',
+  description: 'Browse all host clubs in Kabukicho — 6 major groups, 600+ shops, and 113 clubs in Tokyo\'s legendary nightlife district.',
+  alternates: { canonical: '/clubs' },
+  openGraph: {
+    title: 'Host Clubs in Kabukicho | OshiHos',
+    description: 'Browse all host clubs in Kabukicho — 6 major groups, 600+ shops, and 113 clubs in Tokyo\'s legendary nightlife district.',
+    url: 'https://www.oshi-hos.xyz/clubs',
+    type: 'website',
+  },
+};
 
 type ExtraMap = Record<string, { description_ja?: string; description_en?: string; image_urls?: string[] }>;
 

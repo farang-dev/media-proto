@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 import { ArrowLeft, Heart, Camera, MessageSquareShare, Ruler, Droplets, Cake, Award, Music2, Share2 } from 'lucide-react';
 import ShareButton from '@/components/ShareButton';
 import { getHost, getHostsByShop } from '@/lib/db';
@@ -10,6 +11,39 @@ import { getEnglishName, looksLikeDate } from '@/lib/japanese';
 import TikTokEmbed from '@/components/TikTokEmbed';
 
 export const dynamic = 'force-dynamic';
+
+const SITE = 'https://www.oshi-hos.xyz';
+
+export async function generateMetadata(props: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await props.params;
+  const host = await getHost(id);
+  if (!host) return {};
+
+  const name = getEnglishName(host.name_ja, host.name_en);
+  const shopName = host.shop?.name_ja || '';
+  const desc = host.bio_ja
+    ? host.bio_ja.slice(0, 160).replace(/\n/g, ' ')
+    : `${name} — Kabukicho host at ${shopName}. Profile, rankings, and social links on OshiHos.`;
+
+  return {
+    title: `${name} | Kabukicho Host`,
+    description: desc,
+    alternates: { canonical: `/hosts/${host.id}` },
+    openGraph: {
+      title: `${name} | OshiHos`,
+      description: desc,
+      url: `${SITE}/hosts/${host.id}`,
+      images: host.image_urls?.[0] ? [{ url: host.image_urls[0], width: 600, height: 800, alt: name }] : undefined,
+      type: 'profile',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${name} | OshiHos`,
+      description: desc,
+      images: host.image_urls?.[0] ? [host.image_urls[0]] : undefined,
+    },
+  };
+}
 
 function normalizeBirthday(birthday: string | undefined): string {
   if (!birthday) return '';
@@ -52,7 +86,27 @@ export default async function HostPage(props: { params: Promise<{ id: string }> 
 
   const sameShopHosts = await getHostsByShop(host.shop_id, host.id);
 
+  const personJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: host.name_ja,
+    alternateName: host.name_en || undefined,
+    url: `${SITE}/hosts/${host.id}`,
+    image: host.image_urls?.[0] || undefined,
+    worksFor: shop ? { '@type': 'Organization', name: shop.name_ja } : undefined,
+    height: host.height || undefined,
+    birthDate: host.birthday || undefined,
+    sameAs: [
+      host.instagram_url,
+      host.twitter_url,
+      host.tiktok_url,
+      host.youtube_url,
+    ].filter(Boolean),
+  };
+
   return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
     <div className="min-h-screen bg-background text-foreground">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <Link
@@ -303,5 +357,6 @@ export default async function HostPage(props: { params: Promise<{ id: string }> 
         )}
       </div>
     </div>
+    </>
   );
 }

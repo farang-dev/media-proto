@@ -105,7 +105,7 @@ export default function OpenGraphImage() {
           letterSpacing: '0.1em',
         }}
       >
-        oshihos.com
+        oshi-hos.xyz
       </div>
       <div
         style={{

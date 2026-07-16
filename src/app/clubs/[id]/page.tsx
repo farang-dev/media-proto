@@ -1,11 +1,39 @@
 import React from 'react';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 import { ArrowLeft, Store, Users, Heart, MapPin, Navigation } from 'lucide-react';
 import { getShopWithHosts, Host } from '@/lib/db';
 import { getEnglishName, looksLikeDate, getEnglishAddress, getGoogleMapsUrl } from '@/lib/japanese';
 import CommentSection from '@/components/CommentSection';
 
 export const dynamic = 'force-dynamic';
+
+const SITE = 'https://www.oshi-hos.xyz';
+
+export async function generateMetadata(props: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await props.params;
+  const { shop } = await getShopWithHosts(id);
+  if (!shop || (shop.address_ja && !shop.address_ja.includes('歌舞伎町'))) return {};
+
+  const name = getEnglishName(shop.name_ja, shop.name_en);
+  const groupName = shop.group ? getEnglishName(shop.group.name_ja, shop.group.name_en) : '';
+  const desc = shop.description_en
+    || `${name} — Kabukicho host club${groupName ? ` from ${groupName}` : ''}. View hosts, ratings, and more on OshiHos.`;
+
+  return {
+    title: `${name} | Kabukicho Host Club`,
+    description: desc.slice(0, 160),
+    alternates: { canonical: `/clubs/${shop.id}` },
+    openGraph: {
+      title: `${name} | OshiHos`,
+      description: desc.slice(0, 160),
+      url: `${SITE}/clubs/${shop.id}`,
+      images: shop.image_urls?.[0] ? [{ url: shop.image_urls[0], width: 1200, height: 630, alt: name }] : undefined,
+      type: 'website',
+    },
+  };
+}
 
 function normalizeBirthday(birthday: string | undefined): string {
   if (!birthday) return '';

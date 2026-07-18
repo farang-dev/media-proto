@@ -1,9 +1,10 @@
 import type { MetadataRoute } from 'next';
 import { articles } from '@/data/blog';
+import { supabase } from '@/lib/supabase';
 
 const SITE = 'https://www.oshi-hos.xyz';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     { url: `${SITE}/`, lastModified: new Date(), changeFrequency: 'daily', priority: 1.0 },
     { url: `${SITE}/clubs`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
@@ -25,5 +26,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticPages, ...blogPages];
+  // Dynamic: individual club pages (only Kabukicho shops)
+  const { data: shops } = await supabase
+    .from('shops')
+    .select('id, address_ja');
+
+  const clubPages: MetadataRoute.Sitemap = (shops || [])
+    .filter((s) => s.address_ja?.includes('歌舞伎町'))
+    .map((s) => ({
+      url: `${SITE}/clubs/${s.id}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    }));
+
+  // Dynamic: individual host pages
+  const { data: hosts } = await supabase
+    .from('hosts')
+    .select('id')
+    .eq('is_active', true);
+
+  const hostPages: MetadataRoute.Sitemap = (hosts || []).map((h) => ({
+    url: `${SITE}/hosts/${h.id}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
+  }));
+
+  return [...staticPages, ...blogPages, ...clubPages, ...hostPages];
 }

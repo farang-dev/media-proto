@@ -1,0 +1,726 @@
+{
+  "indexed": {
+    "https://www.oshi-hos.xyz/": {
+      "submitted_at": "2026-07-18T16:08:58.954676+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/clubs": {
+      "submitted_at": "2026-07-18T16:09:00.123863+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/ranking": {
+      "submitted_at": "2026-07-18T16:09:01.156818+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/no1-host": {
+      "submitted_at": "2026-07-18T16:09:02.459870+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/events": {
+      "submitted_at": "2026-07-18T16:09:03.885444+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/blog": {
+      "submitted_at": "2026-07-18T16:09:04.954371+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/map": {
+      "submitted_at": "2026-07-18T16:09:06.049875+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/hos-tv": {
+      "submitted_at": "2026-07-18T16:09:07.130563+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/hos-match": {
+      "submitted_at": "2026-07-18T16:09:08.198951+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/threads": {
+      "submitted_at": "2026-07-18T16:09:09.278934+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/terms": {
+      "submitted_at": "2026-07-18T16:09:10.437823+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/blog/host-club-guide-for-foreigners": {
+      "submitted_at": "2026-07-18T16:09:11.974186+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/blog/host-club-system-and-pricing": {
+      "submitted_at": "2026-07-18T16:09:12.941047+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/blog/host-groups-in-kabukicho": {
+      "submitted_at": "2026-07-18T16:09:13.974717+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/blog/first-visit-how-to-prepare": {
+      "submitted_at": "2026-07-18T16:09:14.948865+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/blog/host-club-etiquette-and-tips": {
+      "submitted_at": "2026-07-18T16:09:16.467818+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/blog/faq-about-host-clubs": {
+      "submitted_at": "2026-07-18T16:09:17.476722+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/blog/hosokyaku-meaning": {
+      "submitted_at": "2026-07-18T16:09:18.518021+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/blog/bakudan-meaning": {
+      "submitted_at": "2026-07-18T16:09:19.556962+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/blog/hime-culture": {
+      "submitted_at": "2026-07-18T16:09:20.538409+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/blog/customer-types-guide": {
+      "submitted_at": "2026-07-18T16:09:21.576473+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/blog/dekin-guide": {
+      "submitted_at": "2026-07-18T16:09:22.678011+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/blog/shimei-nomination-guide": {
+      "submitted_at": "2026-07-18T16:09:23.650643+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/blog/number-one-host": {
+      "submitted_at": "2026-07-18T16:09:24.888677+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/blog/romance-sales-guide": {
+      "submitted_at": "2026-07-18T16:09:26.197191+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/blog/champagne-tower-guide": {
+      "submitted_at": "2026-07-18T16:09:27.492127+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/blog/champagne-call-guide": {
+      "submitted_at": "2026-07-18T16:09:28.538377+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/blog/house-bottle-guide": {
+      "submitted_at": "2026-07-18T16:09:29.579536+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/blog/dom-perignon-guide": {
+      "submitted_at": "2026-07-18T16:09:31.020957+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/blog/host-club-bottle-guide": {
+      "submitted_at": "2026-07-18T16:09:32.037399+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/blog/last-song-guide": {
+      "submitted_at": "2026-07-18T16:09:33.076755+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/blog/going-solo-guide": {
+      "submitted_at": "2026-07-18T16:09:34.117741+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/blog/host-club-dress-code": {
+      "submitted_at": "2026-07-18T16:09:35.156780+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/blog/how-to-choose-your-host": {
+      "submitted_at": "2026-07-18T16:09:36.551220+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/blog/conversation-topics": {
+      "submitted_at": "2026-07-18T16:09:37.588250+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/blog/when-to-leave": {
+      "submitted_at": "2026-07-18T16:09:38.701944+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/blog/second-visit-guide": {
+      "submitted_at": "2026-07-18T16:09:39.854488+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/blog/event-guide": {
+      "submitted_at": "2026-07-18T16:09:40.889462+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/blog/group-visit-guide": {
+      "submitted_at": "2026-07-18T16:09:41.971541+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/blog/host-club-myths": {
+      "submitted_at": "2026-07-18T16:09:42.961590+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/blog/kabukicho-safety-guide": {
+      "submitted_at": "2026-07-18T16:09:43.976243+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/blog/pillow-business-guide": {
+      "submitted_at": "2026-07-18T16:09:45.076917+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/blog/overspending-guide": {
+      "submitted_at": "2026-07-18T16:09:46.116908+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/blog/host-addiction-guide": {
+      "submitted_at": "2026-07-18T16:09:47.232808+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/blog/group-dandy-guide": {
+      "submitted_at": "2026-07-18T16:09:48.840238+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/blog/air-group-guide": {
+      "submitted_at": "2026-07-18T16:09:50.068960+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/blog/acqua-group-guide": {
+      "submitted_at": "2026-07-18T16:09:51.082432+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/blog/l-collection-guide": {
+      "submitted_at": "2026-07-18T16:09:52.079973+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/blog/osaka-host-club-guide": {
+      "submitted_at": "2026-07-18T16:09:53.448239+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/blog/sapporo-host-club-guide": {
+      "submitted_at": "2026-07-18T16:09:54.563592+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/blog/fukuoka-host-club-guide": {
+      "submitted_at": "2026-07-18T16:09:55.904206+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/blog/host-club-industry-data": {
+      "submitted_at": "2026-07-18T16:09:57.133121+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/blog/kabukicho-host-history": {
+      "submitted_at": "2026-07-18T16:09:58.123759+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/blog/host-club-regulation": {
+      "submitted_at": "2026-07-18T16:09:59.153835+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/blog/host-club-psychology": {
+      "submitted_at": "2026-07-18T16:10:00.196924+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/blog/falling-for-host": {
+      "submitted_at": "2026-07-18T16:10:01.402738+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/blog/foreigner-host-club-guide": {
+      "submitted_at": "2026-07-18T16:10:02.479727+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/clubs/79a77f36-bd0b-4d69-bbef-85f7ba68aacb": {
+      "submitted_at": "2026-07-18T16:10:03.521699+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/clubs/67e81449-881c-44fb-8033-5a3313e87245": {
+      "submitted_at": "2026-07-18T16:10:04.814841+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/clubs/d287a43b-5248-4d8a-857f-752033e61bcb": {
+      "submitted_at": "2026-07-18T16:10:06.175817+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/clubs/82718ab4-38a3-44de-bb44-6ebc9880f596": {
+      "submitted_at": "2026-07-18T16:10:07.199001+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/clubs/f396d95d-6042-49b3-960e-e8e949db68dd": {
+      "submitted_at": "2026-07-18T16:10:08.321691+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/clubs/61fb1763-58e3-410e-8985-72d65c9064a8": {
+      "submitted_at": "2026-07-18T16:10:09.320859+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/clubs/f14c223a-07be-4c3d-8819-dc12e0672373": {
+      "submitted_at": "2026-07-18T16:10:10.966520+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/clubs/57f3c25a-7c8c-4950-94f3-cdf3540bf424": {
+      "submitted_at": "2026-07-18T16:10:11.961808+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/clubs/8a53dcd3-36b4-4ccd-8aa3-3cefa06c88a9": {
+      "submitted_at": "2026-07-18T16:10:13.000168+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/clubs/5178f9eb-9e9c-45d1-ba8b-1e609ffc6c56": {
+      "submitted_at": "2026-07-18T16:10:14.041573+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/clubs/0bfdf83e-3f8d-451e-bad8-31e2317183dc": {
+      "submitted_at": "2026-07-18T16:10:15.026241+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/clubs/91601d03-19ec-4da4-956a-135a6adb3180": {
+      "submitted_at": "2026-07-18T16:10:16.195654+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/clubs/216faf74-2027-48d1-8bac-b7b0368b64b4": {
+      "submitted_at": "2026-07-18T16:10:17.410982+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/clubs/57cc5886-223d-4008-b2c3-d046c5976967": {
+      "submitted_at": "2026-07-18T16:10:18.503516+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/clubs/0aace291-2aed-4f67-bd08-4cd3ac8ff9ea": {
+      "submitted_at": "2026-07-18T16:10:19.623766+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/clubs/8dfb1ba3-93f8-4452-a80d-c76cecb58f1b": {
+      "submitted_at": "2026-07-18T16:10:20.745594+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/clubs/6ea941b5-511b-4fa0-af60-5885c1f01088": {
+      "submitted_at": "2026-07-18T16:10:21.861010+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/clubs/d03283d3-f2dd-4ac4-af19-86b816256d04": {
+      "submitted_at": "2026-07-18T16:10:22.896885+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/clubs/9b0acefc-f542-46e2-b26f-4ada5bf03fcf": {
+      "submitted_at": "2026-07-18T16:10:23.959930+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/clubs/215dc56a-bd42-4b06-b563-48b6b4dc53c8": {
+      "submitted_at": "2026-07-18T16:10:25.008484+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/clubs/b1e009ae-1491-4721-95e4-25040d2666dc": {
+      "submitted_at": "2026-07-18T16:10:26.055921+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/clubs/7ae6e557-448e-49d6-b955-08a830952d23": {
+      "submitted_at": "2026-07-18T16:10:27.165877+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/clubs/3036d014-ae1a-491b-8cfb-48b17fe75cac": {
+      "submitted_at": "2026-07-18T16:10:28.195112+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/clubs/2f12dd71-a83b-4ab1-9fd4-8b9a64fe0ab8": {
+      "submitted_at": "2026-07-18T16:10:29.363636+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/clubs/8728c44c-7e67-42ac-b706-74d8d8f646f9": {
+      "submitted_at": "2026-07-18T16:10:30.467305+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/clubs/e2a5774f-8550-4cd7-aad4-f7cb5a7a1c99": {
+      "submitted_at": "2026-07-18T16:10:31.506592+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/clubs/44468135-af94-4e0c-9812-18bc7efe527f": {
+      "submitted_at": "2026-07-18T16:10:32.609972+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/clubs/bda4a0c3-2b50-4001-8cff-166fcafc08fa": {
+      "submitted_at": "2026-07-18T16:10:33.639296+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/clubs/40d12751-903a-40b1-a29f-8845763c7cad": {
+      "submitted_at": "2026-07-18T16:10:34.670704+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/clubs/3ea7fa87-0888-439c-84e2-620792ca98ba": {
+      "submitted_at": "2026-07-18T16:10:36.147974+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/clubs/3fffab95-c40b-47c1-8f19-665e68331d17": {
+      "submitted_at": "2026-07-18T16:10:37.244643+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/clubs/8fa08a64-873f-40d4-8e29-939d06396a72": {
+      "submitted_at": "2026-07-18T16:10:38.608348+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/clubs/ec0134a9-26d5-4782-8221-203635937c3e": {
+      "submitted_at": "2026-07-18T16:10:39.650439+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/clubs/294a2073-842b-4794-972b-c01f74ac8cdc": {
+      "submitted_at": "2026-07-18T16:10:40.631924+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/clubs/8cc48e5e-b692-46f2-9f19-6beba19d0515": {
+      "submitted_at": "2026-07-18T16:10:41.984711+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/clubs/d1c526f3-8065-4a78-bec2-234c27059887": {
+      "submitted_at": "2026-07-18T16:10:42.905354+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/clubs/7373bb7e-b954-41a5-8536-54b0574c6c6d": {
+      "submitted_at": "2026-07-18T16:10:44.134733+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/clubs/e565a833-5b92-4bc3-8f45-a90faae32460": {
+      "submitted_at": "2026-07-18T16:10:45.156631+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/clubs/c6f48769-1506-431e-9b37-e01e0a602efb": {
+      "submitted_at": "2026-07-18T16:10:46.196912+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/clubs/0104ae2b-7d0a-4e36-a161-5d5973d4f681": {
+      "submitted_at": "2026-07-18T16:10:47.514701+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/clubs/e2e4eb0b-81b9-4b94-8e1f-70839b6be6f2": {
+      "submitted_at": "2026-07-18T16:10:48.600479+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/clubs/e6e99acc-c420-4aac-8320-d58187638176": {
+      "submitted_at": "2026-07-18T16:10:49.595727+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/clubs/9b83b82b-a6f0-4b64-b63c-88cfbd9a31d2": {
+      "submitted_at": "2026-07-18T16:10:50.893670+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/clubs/7b5f3ddf-00a0-4ed0-ba1e-be67973a3ac8": {
+      "submitted_at": "2026-07-18T16:10:51.902306+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/clubs/c36928d6-4f55-458c-9033-7ed3d90a1145": {
+      "submitted_at": "2026-07-18T16:10:52.958189+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/clubs/3b7cacd4-8315-4920-a19e-7b46bed176a5": {
+      "submitted_at": "2026-07-18T16:10:53.963456+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/clubs/54af4a5f-c006-46d5-b674-771b97d87fbf": {
+      "submitted_at": "2026-07-18T16:10:55.011792+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/clubs/164e1c20-a928-4c7c-9710-446a7201534b": {
+      "submitted_at": "2026-07-18T16:10:55.949630+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/clubs/305a66c2-4d7e-4ca7-8cde-67d571705b06": {
+      "submitted_at": "2026-07-18T16:10:57.344870+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/clubs/40edd70a-88c6-4c81-9462-6a07c710d099": {
+      "submitted_at": "2026-07-18T16:10:58.490276+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/clubs/677275ca-5b90-491f-9502-494b518245a9": {
+      "submitted_at": "2026-07-18T16:10:59.588510+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/clubs/92085c5e-4f1c-4b2b-9c6c-3607ae05ceaf": {
+      "submitted_at": "2026-07-18T16:11:00.678339+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/clubs/624c6157-498d-45c0-8189-7ebef5f4422c": {
+      "submitted_at": "2026-07-18T16:11:01.704858+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/clubs/4ab916cd-9ab2-4458-8679-e3f48c12764e": {
+      "submitted_at": "2026-07-18T16:11:02.751880+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/clubs/feaf1c03-3107-4038-b32b-1ad9f15a97aa": {
+      "submitted_at": "2026-07-18T16:11:03.896505+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/clubs/347ab6d5-74bf-4237-8c2f-67978f230e8d": {
+      "submitted_at": "2026-07-18T16:11:05.332135+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/clubs/84d956d3-ac5b-48e6-b9e7-c917f94edd0f": {
+      "submitted_at": "2026-07-18T16:11:06.514354+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/clubs/1df69afd-723f-48f9-8861-acd02054d7be": {
+      "submitted_at": "2026-07-18T16:11:07.524000+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/clubs/2fb8fee5-a9bb-4b40-9131-e3c4170cdb06": {
+      "submitted_at": "2026-07-18T16:11:08.547573+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/clubs/f1f9721f-73b5-4142-99b0-af4d51e82a62": {
+      "submitted_at": "2026-07-18T16:11:09.942312+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/clubs/0715d241-6e57-41fb-9168-0efb1161dfb3": {
+      "submitted_at": "2026-07-18T16:11:10.944288+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/clubs/2f8dcd37-5868-49c2-89e9-b592c97de943": {
+      "submitted_at": "2026-07-18T16:11:11.913690+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/clubs/50bfd990-4aab-4fc6-8756-860e50970a10": {
+      "submitted_at": "2026-07-18T16:11:12.899160+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/clubs/4de4ea45-924a-4ebd-ab5b-d023c6bbdc50": {
+      "submitted_at": "2026-07-18T16:11:13.897623+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/clubs/f1bc3d59-6f72-4233-996f-a7bdc9d3855e": {
+      "submitted_at": "2026-07-18T16:11:15.041118+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/clubs/07b88342-2add-4357-9b72-4390e245d635": {
+      "submitted_at": "2026-07-18T16:11:16.036933+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/clubs/d03112f0-e08f-4a6c-8f3f-d3405edcd42a": {
+      "submitted_at": "2026-07-18T16:11:17.065006+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/clubs/894287fe-3d1d-4f95-87a4-1956f872a5fe": {
+      "submitted_at": "2026-07-18T16:11:18.085675+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/clubs/9a30f24c-d1ee-4e1e-b9c2-55fcd9299ce0": {
+      "submitted_at": "2026-07-18T16:11:19.072853+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/clubs/f21a14cb-759e-4fb5-9a03-077fdb43e209": {
+      "submitted_at": "2026-07-18T16:11:20.692516+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/clubs/591273fa-1ca3-40e1-a3f3-0f8d32b85a76": {
+      "submitted_at": "2026-07-18T16:11:21.628983+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/clubs/3221cce0-0918-4625-b316-b9b87aeb4fdd": {
+      "submitted_at": "2026-07-18T16:11:23.010005+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/clubs/6c4d0829-0a1e-4c8d-9a1b-8d1db9bbdc09": {
+      "submitted_at": "2026-07-18T16:11:24.046103+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/clubs/ffd31924-a3a6-43ce-8b9b-2b275d33f9f9": {
+      "submitted_at": "2026-07-18T16:11:25.225417+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/clubs/f0262705-d9a3-4bb6-a06e-44eb5d85c1ac": {
+      "submitted_at": "2026-07-18T16:11:26.839082+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/clubs/f1a2a415-bf34-4bae-8815-a9d75edf85be": {
+      "submitted_at": "2026-07-18T16:11:27.843338+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/clubs/e6f801a1-3ebf-4096-b3e2-c8804f88c56a": {
+      "submitted_at": "2026-07-18T16:11:28.877623+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/clubs/96afc51c-69b0-4ffb-af2e-5663f2263247": {
+      "submitted_at": "2026-07-18T16:11:30.214556+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/clubs/44a94710-86ba-46a9-8a1d-053ed1402301": {
+      "submitted_at": "2026-07-18T16:11:31.298641+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/clubs/695556bd-8831-41b7-8832-b8cf8c52094b": {
+      "submitted_at": "2026-07-18T16:11:32.671527+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/clubs/8df9479c-53fc-445c-8795-79fa8187f989": {
+      "submitted_at": "2026-07-18T16:11:33.642694+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/clubs/70c78eab-2b35-4ca2-812b-06de73000118": {
+      "submitted_at": "2026-07-18T16:11:34.866797+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/clubs/414e8ef5-c020-4ecc-a6fc-f873736f2e07": {
+      "submitted_at": "2026-07-18T16:11:35.996854+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/clubs/ff42465a-5785-48c3-ac3e-a8dab245025b": {
+      "submitted_at": "2026-07-18T16:11:37.055021+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/clubs/91d071f5-870f-4925-b586-8d07e18ff113": {
+      "submitted_at": "2026-07-18T16:11:38.019762+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/clubs/829732ef-3006-48c6-9578-63181ef6ad05": {
+      "submitted_at": "2026-07-18T16:11:39.058868+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/clubs/474bc06a-4f2e-4f5d-8288-6b9c55a9307f": {
+      "submitted_at": "2026-07-18T16:11:40.116650+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/clubs/4130e3bd-c4a3-41cf-9e20-dd04a25dc352": {
+      "submitted_at": "2026-07-18T16:11:41.274807+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/clubs/387c51df-caa2-4f0e-af89-8ad35fabdaa8": {
+      "submitted_at": "2026-07-18T16:11:42.267637+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/clubs/c89bbe18-ba25-4b3b-adc7-9b8dea33bdeb": {
+      "submitted_at": "2026-07-18T16:11:43.304673+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/clubs/043f812b-be0e-4b0c-9bf8-5c24727ceebb": {
+      "submitted_at": "2026-07-18T16:11:44.276942+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/clubs/9528fa59-220c-4fb3-9c88-09647e89dab0": {
+      "submitted_at": "2026-07-18T16:11:45.400985+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/clubs/30800769-04d7-458c-9e9e-88630cf1d373": {
+      "submitted_at": "2026-07-18T16:11:46.806573+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/clubs/7d4cb4ea-59f2-4af6-aacd-a1496881b11f": {
+      "submitted_at": "2026-07-18T16:11:47.885242+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/clubs/92cd6186-d8a9-442c-9c29-54d9f6383711": {
+      "submitted_at": "2026-07-18T16:11:48.968330+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/clubs/8e6f59eb-f5f4-4ade-bcec-ba62b68a06e5": {
+      "submitted_at": "2026-07-18T16:11:49.986435+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/clubs/82ec757a-94d6-45b6-ab60-fd9dcd42a0f6": {
+      "submitted_at": "2026-07-18T16:11:51.204442+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/clubs/27699772-accc-40c8-8cef-90a750e17d61": {
+      "submitted_at": "2026-07-18T16:11:52.196945+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/clubs/7acc92c8-d320-4fb3-b155-a89ec193fd5a": {
+      "submitted_at": "2026-07-18T16:11:53.257264+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/clubs/c1b20a50-defe-4985-8d72-1fd4efdbdec9": {
+      "submitted_at": "2026-07-18T16:11:54.484470+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/clubs/831e3061-9873-43ab-95b9-1d86166f0846": {
+      "submitted_at": "2026-07-18T16:11:55.476405+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/clubs/ed9cee49-ad08-4c2d-bf20-6a6fe5f1887a": {
+      "submitted_at": "2026-07-18T16:11:56.593833+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/clubs/1843899e-c39d-4636-9ef3-906fb67ba63c": {
+      "submitted_at": "2026-07-18T16:11:57.732028+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/clubs/b5b684a4-9241-405f-8b88-c2cff422c64d": {
+      "submitted_at": "2026-07-18T16:11:58.814217+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/clubs/d4f4cf60-0a7d-4a51-9079-9b26f7723dd2": {
+      "submitted_at": "2026-07-18T16:11:59.935059+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/clubs/7dd3e341-3850-443e-822d-4fd28d8f0838": {
+      "submitted_at": "2026-07-18T16:12:00.943612+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/clubs/ba829b37-7b39-42d8-b4ed-a9e4f91f5fa7": {
+      "submitted_at": "2026-07-18T16:12:01.976404+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/clubs/e9d9107f-3d18-440a-9aa3-568e7ce05051": {
+      "submitted_at": "2026-07-18T16:12:03.085134+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/clubs/869e987a-a32e-4a5e-9f6b-e7acc1dad648": {
+      "submitted_at": "2026-07-18T16:12:04.314787+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/clubs/0c23d9e0-14cc-4359-baec-7cc49fb8ea07": {
+      "submitted_at": "2026-07-18T16:12:05.377118+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/clubs/e1cd86d1-2ab6-4fdf-a52f-f08e3bc726d7": {
+      "submitted_at": "2026-07-18T16:12:06.371473+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/clubs/148a8e71-3549-48ce-a2da-d2bc4ea1ab23": {
+      "submitted_at": "2026-07-18T16:12:07.291359+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/clubs/751987da-6595-4b92-8c2f-7fb1cf572c77": {
+      "submitted_at": "2026-07-18T16:12:08.269125+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/hosts/75c243ff-8fe3-4357-a396-fe064a626792": {
+      "submitted_at": "2026-07-18T16:12:09.316349+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/hosts/8f7726ad-0d68-4ac9-83d3-50ab3c846f43": {
+      "submitted_at": "2026-07-18T16:12:10.441063+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/hosts/98e4ef93-6d51-4db1-bb50-4f206549a461": {
+      "submitted_at": "2026-07-18T16:12:11.383890+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/hosts/e00534e8-4692-4f54-a655-0bd0c90a3194": {
+      "submitted_at": "2026-07-18T16:12:12.436060+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/hosts/93f56940-d98c-4b89-bb3d-97afb42e7509": {
+      "submitted_at": "2026-07-18T16:12:13.415233+00:00",
+      "sa": 5
+    },
+    "https://www.oshi-hos.xyz/hosts/7416fcf9-26a8-4c14-8cf1-8b981385585a": {
+      "submitted_at": "2026-07-18T16:12:14.759490+00:00",
+      "sa": 1
+    },
+    "https://www.oshi-hos.xyz/hosts/e6e1497e-3df0-4049-b007-7fe40674b760": {
+      "submitted_at": "2026-07-18T16:12:15.954218+00:00",
+      "sa": 2
+    },
+    "https://www.oshi-hos.xyz/hosts/a5163e70-6fb5-47ab-8bad-56cfbb0c5ec2": {
+      "submitted_at": "2026-07-18T16:12:16.998919+00:00",
+      "sa": 3
+    },
+    "https://www.oshi-hos.xyz/hosts/4528bfed-f32c-4b5f-8639-404fb61003aa": {
+      "submitted_at": "2026-07-18T16:12:18.135925+00:00",
+      "sa": 4
+    },
+    "https://www.oshi-hos.xyz/hosts/4007627f-58ef-4ea9-9b0a-f960aa2afd45": {
+      "submitted_at": "2026-07-18T16:12:19.144320+00:00",
+      "sa": 5
+    }
+  },
+  "failed": {},
+  "last_run": "2026-07-18T16:12:19.445397+00:00"
+}

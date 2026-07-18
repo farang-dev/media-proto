@@ -19,18 +19,40 @@ export async function generateMetadata(props: { params: Promise<{ id: string }> 
   const name = getEnglishName(shop.name_ja, shop.name_en);
   const groupName = shop.group ? getEnglishName(shop.group.name_ja, shop.group.name_en) : '';
   const desc = shop.description_en
-    || `${name} — Kabukicho host club${groupName ? ` from ${groupName}` : ''}. View hosts, ratings, and more on OshiHos.`;
+    || `${name} — Kabukicho host club${groupName ? ` from ${groupName}` : ''}. View hosts, ratings, and more.`;
+
+  const title = groupName
+    ? `${name} — ${groupName} Kabukicho Host Club`
+    : `${name} — Kabukicho Host Club`;
+
+  const keywords = [
+    `${shop.name_ja} 歌舞伎町 ホストクラブ`,
+    `${shop.name_ja} kabukicho host club`,
+    `${name} kabukicho host club`,
+    `${name} shinjuku host club`,
+    `${name} tokyo host club`,
+    groupName ? `${groupName} kabukicho` : '',
+    groupName ? `${groupName} host club` : '',
+    '歌舞伎町 ホストクラブ', 'kabukicho host club', 'shinjuku host club', 'tokyo host club',
+  ].filter(Boolean);
 
   return {
-    title: `${name} | Kabukicho Host Club`,
+    title,
     description: desc.slice(0, 160),
+    keywords,
     alternates: { canonical: `/clubs/${shop.id}` },
     openGraph: {
-      title: `${name} | OshiHos`,
+      title,
       description: desc.slice(0, 160),
       url: `${SITE}/clubs/${shop.id}`,
       images: shop.image_urls?.[0] ? [{ url: shop.image_urls[0], width: 1200, height: 630, alt: name }] : undefined,
       type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description: desc.slice(0, 160),
+      images: shop.image_urls?.[0] ? [shop.image_urls[0]] : undefined,
     },
   };
 }
@@ -121,7 +143,19 @@ export default async function ShopPage(props: { params: Promise<{ id: string }> 
   const heroImage = shop.image_urls?.[0] || shop.logo_url || '';
   const descriptionEn = shop.description_en || '';
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE },
+      { '@type': 'ListItem', position: 2, name: 'Host Clubs', item: `${SITE}/clubs` },
+      { '@type': 'ListItem', position: 3, name: shopName },
+    ],
+  };
+
   return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
     <div className="min-h-screen bg-background text-foreground">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <Link
@@ -215,5 +249,6 @@ export default async function ShopPage(props: { params: Promise<{ id: string }> 
         </div>
       </div>
     </div>
+    </>
   );
 }

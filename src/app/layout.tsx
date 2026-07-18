@@ -17,6 +17,8 @@ export const metadata: Metadata = {
     "host club", "kabukicho", "shinjuku", "tokyo nightlife", "oshi hos",
     "host ranking", "japanese host club", "歌舞伎町", "ホストクラブ",
     "推しホス", "oshihos", "host culture japan",
+    "kabukicho host club", "host club tokyo", "shinjuku nightlife",
+    "host club guide", "tokyo host", "kabukicho nightlife",
   ],
   authors: [{ name: "OshiHos" }],
   creator: "OshiHos",

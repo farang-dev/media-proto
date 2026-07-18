@@ -5,14 +5,25 @@ import { articles } from '@/data/blog';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Host Club Culture Guide',
-  description: 'In-depth guides about Kabukicho host club culture — pricing, etiquette, safety tips, and cultural insights for international visitors.',
+  title: 'Kabukicho Host Club Guide — Pricing, Etiquette & Culture Tips',
+  description: 'In-depth guides about Kabukicho host club culture — pricing, etiquette, safety tips, nomination systems, and cultural insights for international visitors to Tokyo.',
+  keywords: [
+    'kabukicho host club guide', 'host club etiquette', 'host club pricing tokyo',
+    'how to go to host club', 'host club tips for beginners', 'kabukicho culture guide',
+    'ホストクラブ マナー', 'ホストクラブ 料金', '歌舞伎町 初めて',
+    'host club foreigner guide', 'shinjuku host club first time',
+  ],
   alternates: { canonical: '/blog' },
   openGraph: {
-    title: 'Host Club Culture Guide | OshiHos',
-    description: 'In-depth guides about Kabukicho host club culture — pricing, etiquette, safety tips, and cultural insights for international visitors.',
+    title: 'Kabukicho Host Club Guide — Pricing, Etiquette & Culture Tips',
+    description: 'In-depth guides about Kabukicho host club culture — pricing, etiquette, safety tips, and cultural insights.',
     url: 'https://www.oshi-hos.xyz/blog',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Kabukicho Host Club Guide — Pricing, Etiquette & Culture Tips',
+    description: 'In-depth guides about Kabukicho host club culture — pricing, etiquette, safety tips.',
   },
 };
 

@@ -9,14 +9,25 @@ import type { Metadata } from 'next';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Host Clubs in Kabukicho',
-  description: 'Browse all host clubs in Kabukicho — 6 major groups, 600+ shops, and 113 clubs in Tokyo\'s legendary nightlife district.',
+  title: 'Kabukicho Host Clubs — Complete Guide to All Clubs in Shinjuku',
+  description: 'Browse all host clubs in Kabukicho — 6 major groups, 600+ shops, and 113 clubs in Shinjuku\'s legendary nightlife district. Find the best host clubs in Tokyo.',
+  keywords: [
+    'kabukicho host club', 'host club shinjuku', 'host clubs tokyo',
+    'kabukicho host clubs list', 'best host club kabukicho', 'tokyo host club guide',
+    '歌舞伎町 ホストクラブ', 'ホストクラブ 歌舞伎町', '東京 ホストクラブ',
+    'shinjuku nightlife host', 'kabukicho host club directory',
+  ],
   alternates: { canonical: '/clubs' },
   openGraph: {
-    title: 'Host Clubs in Kabukicho | OshiHos',
-    description: 'Browse all host clubs in Kabukicho — 6 major groups, 600+ shops, and 113 clubs in Tokyo\'s legendary nightlife district.',
+    title: 'Kabukicho Host Clubs — Complete Guide to All Clubs in Shinjuku',
+    description: 'Browse all host clubs in Kabukicho — 6 major groups, 600+ shops, and 113 clubs in Shinjuku\'s legendary nightlife district.',
     url: 'https://www.oshi-hos.xyz/clubs',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Kabukicho Host Clubs — Complete Guide to All Clubs in Shinjuku',
+    description: 'Browse all host clubs in Kabukicho — 6 major groups, 600+ shops, and 113 clubs.',
   },
 };
 

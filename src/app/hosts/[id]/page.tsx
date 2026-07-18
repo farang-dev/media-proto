@@ -21,16 +21,35 @@ export async function generateMetadata(props: { params: Promise<{ id: string }> 
 
   const name = getEnglishName(host.name_ja, host.name_en);
   const shopName = host.shop?.name_ja || '';
+  const shopNameEn = host.shop ? getEnglishName(host.shop.name_ja, host.shop.name_en) : '';
+  const groupName = host.shop?.group ? getEnglishName(host.shop.group.name_ja, host.shop.group.name_en) : '';
   const desc = host.bio_ja
     ? host.bio_ja.slice(0, 160).replace(/\n/g, ' ')
-    : `${name} — Kabukicho host at ${shopName}. Profile, rankings, and social links on OshiHos.`;
+    : `${name} — Kabukicho host at ${shopNameEn || shopName}. Profile, rankings, and social links.`;
+
+  const title = shopNameEn
+    ? `${name} — Kabukicho Host at ${shopNameEn}`
+    : `${name} — Kabukicho Host${shopName ? ` at ${shopName}` : ''}`;
+
+  const keywords = [
+    `${host.name_ja} 歌舞伎町 ホスト`,
+    `${host.name_ja} kabukicho host`,
+    `${name} kabukicho host`,
+    `${name} shinjuku host`,
+    `${name} tokyo host`,
+    shopNameEn ? `${shopNameEn} host` : '',
+    shopNameEn ? `${shopNameEn} kabukicho` : '',
+    groupName ? `${groupName} host` : '',
+    '歌舞伎町 ホスト', 'kabukicho host', 'shinjuku host', 'tokyo host',
+  ].filter(Boolean);
 
   return {
-    title: `${name} | Kabukicho Host`,
+    title,
     description: desc,
+    keywords,
     alternates: { canonical: `/hosts/${host.id}` },
     openGraph: {
-      title: `${name} | OshiHos`,
+      title: `${name} — Kabukicho Host${shopNameEn ? ` at ${shopNameEn}` : ''}`,
       description: desc,
       url: `${SITE}/hosts/${host.id}`,
       images: host.image_urls?.[0] ? [{ url: host.image_urls[0], width: 600, height: 800, alt: name }] : undefined,
@@ -38,7 +57,7 @@ export async function generateMetadata(props: { params: Promise<{ id: string }> 
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${name} | OshiHos`,
+      title: `${name} — Kabukicho Host${shopNameEn ? ` at ${shopNameEn}` : ''}`,
       description: desc,
       images: host.image_urls?.[0] ? [host.image_urls[0]] : undefined,
     },
@@ -104,9 +123,21 @@ export default async function HostPage(props: { params: Promise<{ id: string }> 
     ].filter(Boolean),
   };
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE },
+      { '@type': 'ListItem', position: 2, name: 'Host Clubs', item: `${SITE}/clubs` },
+      ...(shop ? [{ '@type': 'ListItem' as const, position: 3 as const, name: getEnglishName(shop.name_ja, shop.name_en), item: `${SITE}/clubs/${shop.id}` }] : []),
+      { '@type': 'ListItem', position: shop ? 4 : 3, name: name },
+    ],
+  };
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
     <div className="min-h-screen bg-background text-foreground">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <Link

@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { ArrowLeft, Heart, Camera, MessageSquareShare, Ruler, Droplets, Cake, Award, Music2, Share2 } from 'lucide-react';
 import ShareButton from '@/components/ShareButton';
+import ImageGallery from '@/components/ImageGallery';
 import { getHost, getHostsByShop } from '@/lib/db';
 import { supabase } from '@/lib/supabase';
 import type { Host } from '@/lib/db';
@@ -151,25 +152,7 @@ export default async function HostPage(props: { params: Promise<{ id: string }> 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left: Image gallery */}
           <div className="lg:col-span-1 sm:max-w-[300px]">
-            <div className="rounded-2xl overflow-hidden border border-card-border bg-card-bg">
-              <div className="aspect-[3/4] relative">
-                <img
-                  src={mainImage}
-                  alt={host.name_ja}
-                  className="w-full h-full object-cover object-top host-img"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/5 to-transparent" />
-              </div>
-              {otherImages.length > 0 && (
-                <div className="grid grid-cols-4 gap-1 p-2">
-                  {otherImages.map((url, i) => (
-                    <div key={i} className="aspect-square rounded-lg overflow-hidden bg-background">
-                      <img src={url} alt="" className="w-full h-full object-cover host-img" loading="lazy" />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+            <ImageGallery images={[mainImage, ...otherImages]} name={host.name_ja} />
           </div>
 
           {/* Right: Info */}
